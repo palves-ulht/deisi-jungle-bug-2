@@ -16,10 +16,15 @@ public class Player {
         posicaoActual = pos;
     }
 
-    Player(int identificador, String nome, char idEspecie) {
+    int getEnergia() {
+        return this.energia;
+    }
+
+    Player(int identificador, String nome, char idEspecie, int energia) {
         this.identificador = identificador;
         this.nome = nome;
         this.idEspecie = idEspecie;
+        this.energia = energia;
     }
 
     public void setEtapa(int etapa) {

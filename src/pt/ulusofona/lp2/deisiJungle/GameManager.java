@@ -95,31 +95,33 @@ public class GameManager {
             String nome = strings[1];
             char idEspecie = strings[2].charAt(0);
 
-            Player first = new Player(id, nome, idEspecie);
+            Player first = new Player(id, nome, idEspecie, initialEnergy);
             first.setPosicaoActual(1);
 
-            if (first.getIdentificador() < 1) {
+
+          /*  if (first.getIdentificador() < 1) {
+                return false;
+            }*/
+            if (first.getNome() == null || first.getNome().isEmpty()) {
                 return false;
             }
-            if (first.getNome() == null || first.getNome().equals("")) {
+            if (first.getIdEspecie() != 'E' && first.getIdEspecie() != 'T' && first.getIdEspecie() != 'P' && first.getIdEspecie() != 'Z' && first.getIdEspecie() != 'L') {
                 return false;
             }
-            if (first.getIdEspecie() != 'E' || first.getIdEspecie() != 'T' || first.getIdEspecie() != 'P' || first.getIdEspecie() != 'Z' || first.getIdEspecie() != 'L') {
-                return false;
-            }
-            if (first.getIdentificador() == 'Z') {
+            if (first.getIdEspecie() == 'Z') {
                 contadorTarzan++;
+            }
+            if (contadorTarzan > 1) {
+                return false;
             }
             if (!minhaListaPlayers.containsKey(id)) {
                 minhaListaPlayers.put(id, first);
+                meusJogadores.add(first);
             } else {
                 return false;
             }
-            meusJogadores.add(first);
         }
-        if (contadorTarzan > 1) {
-            return false;
-        }
+
         return true;
     }
 
@@ -143,30 +145,42 @@ public class GameManager {
     }
 
     public String[] getSquareInfo(int squareNr) {
-        if (squareNr < 1 || squareNr > 6) {
+        if (squareNr <= 0 && squareNr > tamanhoMapa) {
             return null;
         }
-        FileMapa[] minhasInformacao = new FileMapa[getTamanhoMapa()];
-        for (int contador = 0; contador < minhasInformacao.length; contador++) {
-            if (contador == minhasInformacao.length - 1) {
-                minhasInformacao[contador] = new FileMapa("finish.png", "Meta", "");
-            } else {
-                minhasInformacao[contador] = new FileMapa("blank.png", "Vazio", "");
+        String[] arrayRetornar = new String[3];
+        if (squareNr < tamanhoMapa) {
+            arrayRetornar[0] = "blank.png";
+            arrayRetornar[1] = "Vazio";
+            for (Player meusJogadore : meusJogadores) {
+                if (meusJogadore.getPosicaoActual() == squareNr) {
+                    arrayRetornar[2] += meusJogadore.getIdentificador() + ",";
+                }
             }
+            return arrayRetornar;
+        } else {
+            arrayRetornar[0] = "finish.png";
+            arrayRetornar[1] = "Meta";
+            for (Player meusJogadore : meusJogadores) {
+                if (meusJogadore.getPosicaoActual() == squareNr) {
+                    arrayRetornar[2] += meusJogadore.getIdentificador() + ",";
+                }
+            }
+            return arrayRetornar;
         }
-        return new String[]{Arrays.toString(minhasInformacao)};
     }
 
     public String[] getPlayerInfo(int playerId) {
-        String[] getInformationPlayer = new String[4];
+        String[] meuJogadorRetornar = new String[4];
         if (meusJogadores != null) {
-            for (Player players : meusJogadores) {
-                if (playerId == players.getIdentificador()) {
-                    getInformationPlayer[0] = String.valueOf(players.getIdentificador());
-                    getInformationPlayer[1] = players.getNome();
-                    getInformationPlayer[2] = String.valueOf(players.getIdEspecie());
+            for (Player jogador : meusJogadores) {
+                if (jogador.getIdentificador() == playerId) {
+                    meuJogadorRetornar[0] = String.valueOf(jogador.getIdentificador());
+                    meuJogadorRetornar[1] = jogador.getNome();
+                    meuJogadorRetornar[2] = String.valueOf(jogador.getIdEspecie());
+                    meuJogadorRetornar[3] = String.valueOf(jogador.getEnergia());
 
-                    return getInformationPlayer;
+                    return meuJogadorRetornar;
                 }
             }
         }
