@@ -104,21 +104,12 @@ public class GameManager {
             if (first.getNome() == null || first.getNome().equals("")) {
                 return false;
             }
-            for (Especies especies : minhasEspecies) {
-                if (first.getIdEspecie() == especies.getIdentificador()) {
-                    contadorEspecies++;
-                }
-                if (especies.getIdentificador() == 'Z') {
-                    contadorTarzan++;
-                }
-            }
-            if (contadorEspecies == 0) {
+            if (first.getIdEspecie() != 'E' || first.getIdEspecie() != 'T' || first.getIdEspecie() != 'P' || first.getIdEspecie() != 'Z' || first.getIdEspecie() != 'L') {
                 return false;
             }
-            if (contadorTarzan > 1) {
-                return false;
+            if (first.getIdentificador() == 'Z') {
+                contadorTarzan++;
             }
-
             if (!minhaListaPlayers.containsKey(id)) {
                 minhaListaPlayers.put(id, first);
             } else {
@@ -126,28 +117,29 @@ public class GameManager {
             }
             meusJogadores.add(first);
         }
+        if (contadorTarzan > 1) {
+            return false;
+        }
         return true;
     }
 
     public int[] getPlayerIds(int squareNr) {
-        int contador = 0;
-        if (squareNr < 1 || squareNr > 6) {
-            return new int[1];
+        if (squareNr <= 0 || squareNr > tamanhoMapa) {
+            return new int[0];
         }
-        for (Player jogadores : meusJogadores) {
-            if (jogadores.getEtapa() > 0) {
-                contador++;
+        ArrayList<Integer> arrayAuxiliar = new ArrayList<>();
+        for (Player players : meusJogadores) {
+            if (players.getPosicaoActual() == squareNr) {
+                arrayAuxiliar.add(players.getIdentificador());
             }
         }
-        int[] arrayReturn = new int[contador];
-        contador = 0;
-        for (Player jogadores : meusJogadores) {
-            if (jogadores.getEtapa() > 0) {
-                arrayReturn[contador] = jogadores.getIdentificador();
+        int[] meuArray = new int[arrayAuxiliar.size()];
+        if (arrayAuxiliar.size() > 0) {
+            for (int i = 0; i < arrayAuxiliar.size(); i++) {
+                meuArray[i] = arrayAuxiliar.get(i);
             }
-            contador++;
         }
-        return arrayReturn;
+        return meuArray;
     }
 
     public String[] getSquareInfo(int squareNr) {
