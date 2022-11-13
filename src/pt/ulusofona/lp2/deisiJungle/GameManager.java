@@ -1,10 +1,7 @@
 package pt.ulusofona.lp2.deisiJungle;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GameManager {
 
@@ -78,7 +75,7 @@ public class GameManager {
     public boolean createInitialJungle(int jungleSize, int initialEnergy, String[][] playersInfo) {
 
         mapaJogo = new HashMap<>();
-        mapaJogo.put(jungleSize, playersInfo);
+        mapaJogo.put(1, playersInfo);
         tamanhoMapa = jungleSize;
         jogadorActual = jodadorComMenorId(playersInfo);
 
@@ -114,12 +111,17 @@ public class GameManager {
             if (contadorTarzan > 1) {
                 return false;
             }
-            if (!minhaListaPlayers.containsKey(id)) {
-                minhaListaPlayers.put(id, first);
-                meusJogadores.add(first);
-            } else {
+            try {
+                if (!minhaListaPlayers.containsKey(id)) {
+                    minhaListaPlayers.put(id, first);
+                    meusJogadores.add(first);
+                } else {
+                    return false;
+                }
+            } catch (NumberFormatException exception) {
                 return false;
             }
+
         }
 
         return true;
@@ -184,6 +186,7 @@ public class GameManager {
                 }
             }
         }
+
         return null;
     }
 
@@ -211,21 +214,29 @@ public class GameManager {
     }
 
     public boolean moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
-        int destino = 0;
+        Collections.sort(meusJogadores, new Comparator<Player>() {
+            @Override
+            public int compare(Player o1, Player o2) {
+                if (o1.getIdentificador() > o2.getIdentificador()) {
+                    return o2.getIdentificador();
+                }
+                return o1.getIdentificador();
+            }
+        });
         if (!bypassValidations) {
             if (nrSquares < 1 || nrSquares > 6) {
                 return false;
             }
         }
-        for (Map.Entry<Integer, String[][]> iteration : mapaJogo.entrySet()) {
-            String[][] matrixAuxiliar = iteration.getValue();
-            for (int posicao = 0; posicao < matrixAuxiliar.length; posicao++) {
-                if (matrixAuxiliar[jogadorActual] != null) {
-                    //matrixAuxiliar[jogadorActual]
-                }
+
+        for (Player meuPlayer : meusJogadores) {
+            if((meuPlayer.getPosicaoActual() + nrSquares) < tamanhoMapa){
+                meuPlayer.setPosicaoActual(nrSquares);
+            }else{
+                meuPlayer.setEnergia(tamanhoMapa);
             }
-            destino = jogadorActual + nrSquares;
         }
+
         return true;
     }
 

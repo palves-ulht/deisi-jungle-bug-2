@@ -13,11 +13,14 @@ public class Player {
     }
 
     void setPosicaoActual(int pos) {
-        posicaoActual = pos;
+        posicaoActual += pos;
     }
 
     int getEnergia() {
         return this.energia;
+    }
+    void setEnergia(int energia){
+        energia -= 2;
     }
 
     Player(int identificador, String nome, char idEspecie, int energia) {
