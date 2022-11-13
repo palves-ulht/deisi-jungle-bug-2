@@ -1,14 +1,16 @@
 package pt.ulusofona.lp2.deisiJungle;
 
-
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameManager {
 
 
     private int tamanhoMapa;
+    private int jogadorActual;
 
     public void setTamanhoMapa(int tamanhoMapa) {
         this.tamanhoMapa = tamanhoMapa;
@@ -18,8 +20,14 @@ public class GameManager {
         return this.tamanhoMapa;
     }
 
+    public int getJogadorActual() {
+        return this.jogadorActual;
+    }
+
     ArrayList<Especies> minhasEspecies = new ArrayList<>();
     ArrayList<Player> meusJogadores = new ArrayList<>();
+
+    HashMap<Integer, String[][]> mapaJogo;
 
     public String[][] getSpecies() {
 
@@ -53,13 +61,36 @@ public class GameManager {
         return especies;
     }
 
+    int jodadorComMenorId(String[][] playersInfo) {
+        int menorId = Integer.parseInt(playersInfo[0][0]);
+        int posicao = 0;
+        for (int contador = 1; contador < playersInfo.length; contador++) {
+            if (Integer.parseInt(playersInfo[contador][0]) < menorId) {
+                menorId = Integer.parseInt(playersInfo[contador][0]);
+                posicao = contador;
+            }
+        }
+        return posicao;
+    }
+
     public boolean createInitialJungle(int jungleSize, int initialEnergy, String[][] playersInfo) {
-        setTamanhoMapa(jungleSize);
+
+        mapaJogo = new HashMap<>();
+        mapaJogo.put(jungleSize, playersInfo);
+        tamanhoMapa = jungleSize;
+        jogadorActual = jodadorComMenorId(playersInfo);
+
+
+        if (playersInfo.length < 2) {
+            return false;
+        }
+
         int cont = 0;
         for (String[] strings : playersInfo) {
             if (Integer.parseInt(strings[0]) < 0) {
                 return false;
             }
+
             for (Player jogador : meusJogadores) {
                 if (Integer.parseInt(strings[0]) == jogador.getIdentificador()) {
                     return false;
@@ -136,16 +167,14 @@ public class GameManager {
 
     public String[] getCurrentPlayerInfo() {
         String[] info = new String[4];
-        for (Player jogador : meusJogadores) {
-            if (jogador.getEtapa() == 1) {
-                info[0] = String.valueOf(jogador.getIdentificador());
-                info[1] = jogador.getNome();
-                info[2] = String.valueOf(jogador.getIdEspecie());
-                info[3] = String.valueOf(jogador.getEnergia());
-                break;
-            }
+        if (meusJogadores != null) {
+            info[0] = String.valueOf(meusJogadores.get(jogadorActual).getIdentificador());
+            info[1] = meusJogadores.get(jogadorActual).getNome();
+            info[2] = String.valueOf(meusJogadores.get(jogadorActual).getIdEspecie());
+            info[3] = String.valueOf(meusJogadores.get(jogadorActual).getEnergia());
+            return info;
         }
-        return info;
+        return null;
     }
 
     public String[][] getPlayersInfo() {
@@ -156,16 +185,27 @@ public class GameManager {
             arrayRetornar[contador][1] = jogador.getNome();
             arrayRetornar[contador][2] = String.valueOf(jogador.getIdEspecie());
             arrayRetornar[contador][3] = String.valueOf(jogador.getEnergia());
+            contador++;
         }
         return arrayRetornar;
     }
 
     public boolean moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
+        int destino = 0;
         if (!bypassValidations) {
-            return nrSquares >= 1 && nrSquares <= 6;
+            if (nrSquares < 1 || nrSquares > 6) {
+                return false;
+            }
         }
-
-
+        for (Map.Entry<Integer, String[][]> iteration : mapaJogo.entrySet()) {
+            String[][] matrixAuxiliar = iteration.getValue();
+            for (int posicao = 0; posicao < matrixAuxiliar.length; posicao++) {
+                if (matrixAuxiliar[jogadorActual] != null) {
+                    //matrixAuxiliar[jogadorActual]
+                }
+            }
+            destino = jogadorActual + nrSquares;
+        }
         return true;
     }
 
