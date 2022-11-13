@@ -80,35 +80,40 @@ public class GameManager {
         tamanhoMapa = jungleSize;
         jogadorActual = jodadorComMenorId(playersInfo);
 
-
+        // Verifica o Numero de jogadores do tabuleiro:
         if (playersInfo.length < 2) {
             return false;
         }
 
-        int cont = 0;
-        for (String[] strings : playersInfo) {
-            if (Integer.parseInt(strings[0]) < 0) {
+        // Verifica se existe ID duplicados:
+        int idDuplicado = Integer.parseInt(playersInfo[0][0]);
+        for (int i = 1; i < playersInfo.length; i++) {
+            if (idDuplicado == Integer.parseInt(playersInfo[i][0])) {
                 return false;
             }
+        }
 
-            for (Player jogador : meusJogadores) {
-                if (Integer.parseInt(strings[0]) == jogador.getIdentificador()) {
-                    return false;
-                }
-            }
-            if (strings[1] == null || strings[1].equals("")) {
+        // Verifica o nome se é null ou vazio:
+        for (int i = 0; i < playersInfo.length; i++) {
+            if (playersInfo[i][1] == null || playersInfo[i][1].equals("")) {
                 return false;
             }
+        }
 
-            for (Especies especie : minhasEspecies) {
-                if (strings[2].charAt(0) != especie.getIdentificador()) {
-                    cont++;
+        //Verifica se a especie dada, existe nas especies existentes na base de dados:
+        int contadorEspecie = 0;
+        for (int i = 0; i < playersInfo.length; i++) {
+            for (int j = 0; j < minhasEspecies.size(); j++) {
+                if (playersInfo[i][2].charAt(0) == minhasEspecies.get(j).getIdentificador()) {
+                    contadorEspecie++;
                 }
-                if (cont == minhasEspecies.size()) {
-                    return false;
-                }
-                meusJogadores.add(new Player(Integer.parseInt(strings[0]), strings[1], strings[0].charAt(0), initialEnergy));
             }
+            if (contadorEspecie == 0) {
+                return false;
+            }
+        }
+        for (int i = 0; i < playersInfo.length; i++) {
+            meusJogadores.add(new Player(Integer.parseInt(playersInfo[i][0]), playersInfo[i][1], playersInfo[i][2].charAt(0), initialEnergy));
         }
         return true;
     }
