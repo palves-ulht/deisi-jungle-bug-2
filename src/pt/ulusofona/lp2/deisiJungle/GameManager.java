@@ -25,6 +25,8 @@ public class GameManager {
     }
 
     ArrayList<Especies> minhasEspecies = new ArrayList<>();
+
+    HashMap<Integer, Player> minhaListaPlayers = new HashMap<>();
     ArrayList<Player> meusJogadores = new ArrayList<>();
 
     HashMap<Integer, String[][]> mapaJogo;
@@ -80,40 +82,49 @@ public class GameManager {
         tamanhoMapa = jungleSize;
         jogadorActual = jodadorComMenorId(playersInfo);
 
-        // Verifica o Numero de jogadores do tabuleiro:
-        if (playersInfo.length < 2) {
+        int contadorEspecies = 0;
+        int contadorTarzan = 0;
+        if (playersInfo.length < 2 || playersInfo.length > 4) {
             return false;
         }
+        if (jungleSize < playersInfo.length * 2) {
+            return false;
+        }
+        for (String[] strings : playersInfo) {
+            int id = Integer.parseInt(strings[0]);
+            String nome = strings[1];
+            char idEspecie = strings[2].charAt(0);
 
-        // Verifica se existe ID duplicados:
-        int idDuplicado = Integer.parseInt(playersInfo[0][0]);
-        for (int i = 1; i < playersInfo.length; i++) {
-            if (idDuplicado == Integer.parseInt(playersInfo[i][0])) {
+            Player first = new Player(id, nome, idEspecie);
+            first.setPosicaoActual(1);
+
+            if (first.getIdentificador() < 1) {
                 return false;
             }
-        }
-
-        // Verifica o nome se é null ou vazio:
-        for (int i = 0; i < playersInfo.length; i++) {
-            if (playersInfo[i][1] == null || playersInfo[i][1].equals("")) {
+            if (first.getNome() == null || first.getNome().equals("")) {
                 return false;
             }
-        }
-
-        //Verifica se a especie dada, existe nas especies existentes na base de dados:
-        int contadorEspecie = 0;
-        for (int i = 0; i < playersInfo.length; i++) {
-            for (int j = 0; j < minhasEspecies.size(); j++) {
-                if (playersInfo[i][2].charAt(0) == minhasEspecies.get(j).getIdentificador()) {
-                    contadorEspecie++;
+            for (Especies especies : minhasEspecies) {
+                if (first.getIdEspecie() == especies.getIdentificador()) {
+                    contadorEspecies++;
+                }
+                if (especies.getIdentificador() == 'Z') {
+                    contadorTarzan++;
                 }
             }
-            if (contadorEspecie == 0) {
+            if (contadorEspecies == 0) {
                 return false;
             }
-        }
-        for (int i = 0; i < playersInfo.length; i++) {
-            meusJogadores.add(new Player(Integer.parseInt(playersInfo[i][0]), playersInfo[i][1], playersInfo[i][2].charAt(0), initialEnergy));
+            if (contadorTarzan > 1) {
+                return false;
+            }
+
+            if (!minhaListaPlayers.containsKey(id)) {
+                minhaListaPlayers.put(id, first);
+            } else {
+                return false;
+            }
+            meusJogadores.add(first);
         }
         return true;
     }
@@ -162,7 +173,7 @@ public class GameManager {
                     getInformationPlayer[0] = String.valueOf(players.getIdentificador());
                     getInformationPlayer[1] = players.getNome();
                     getInformationPlayer[2] = String.valueOf(players.getIdEspecie());
-                    getInformationPlayer[3] = String.valueOf(players.getEnergia());
+
                     return getInformationPlayer;
                 }
             }
@@ -176,7 +187,6 @@ public class GameManager {
             info[0] = String.valueOf(meusJogadores.get(jogadorActual).getIdentificador());
             info[1] = meusJogadores.get(jogadorActual).getNome();
             info[2] = String.valueOf(meusJogadores.get(jogadorActual).getIdEspecie());
-            info[3] = String.valueOf(meusJogadores.get(jogadorActual).getEnergia());
             return info;
         }
         return null;
@@ -189,7 +199,6 @@ public class GameManager {
             arrayRetornar[contador][0] = String.valueOf(jogador.getIdentificador());
             arrayRetornar[contador][1] = jogador.getNome();
             arrayRetornar[contador][2] = String.valueOf(jogador.getIdEspecie());
-            arrayRetornar[contador][3] = String.valueOf(jogador.getEnergia());
             contador++;
         }
         return arrayRetornar;

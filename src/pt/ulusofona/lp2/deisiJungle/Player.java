@@ -5,15 +5,23 @@ public class Player {
     private String nome;
     private char idEspecie;
     private int energia;
-    private int turnoActual;
+    private int posicaoActual;
     private int etapa;
 
-    Player(int identificador, String nome, char idEspecie, int energia) {
+    int getPosicaoActual() {
+        return this.posicaoActual;
+    }
+
+    void setPosicaoActual(int pos) {
+        posicaoActual = pos;
+    }
+
+    Player(int identificador, String nome, char idEspecie) {
         this.identificador = identificador;
         this.nome = nome;
         this.idEspecie = idEspecie;
-        this.energia = energia;
     }
+
     public void setEtapa(int etapa) {
         if (etapa == 0) {
             this.etapa = 1;
@@ -39,13 +47,5 @@ public class Player {
 
     char getIdEspecie() {
         return this.idEspecie;
-    }
-
-    int getEnergia() {
-        return this.energia;
-    }
-
-    int getTurnoActual() {
-        return this.turnoActual;
     }
 }
