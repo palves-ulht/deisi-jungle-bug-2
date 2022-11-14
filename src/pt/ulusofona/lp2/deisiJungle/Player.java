@@ -42,8 +42,7 @@ public class Player {
         return this.etapa;
     }
 
-    Player() {
-    }
+
 
     int getIdentificador() {
         return this.identificador;
