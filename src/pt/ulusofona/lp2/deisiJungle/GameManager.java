@@ -62,12 +62,21 @@ public class GameManager {
         return especies;
     }
 
+    int jogadorActual(ArrayList<Player> meusJogadores) {
+        if (meusJogadores.size() > 0) {
+            int jogadaAtual = meusJogadores.get(0).getIdentificador();
+            for (Player meusJogadore : meusJogadores) {
+                if (meusJogadore.getIdentificador() < jogadaAtual) {
+                    jogadaAtual = meusJogadore.getIdentificador();
+                }
+            }
+            return jogadaAtual;
+        }
+        return 0;
+    }
+
     public boolean createInitialJungle(int jungleSize, int initialEnergy, String[][] playersInfo) {
-
-        mapaJogo = new HashMap<>();
-        mapaJogo.put(1, playersInfo);
-        tamanhoMapa = jungleSize;
-
+        setTamanhoMapa(jungleSize);
 
         int contadorEspecies = 0;
         int contadorTarzan = 0;
@@ -78,7 +87,12 @@ public class GameManager {
             return false;
         }
         for (String[] strings : playersInfo) {
-            int id = Integer.parseInt(strings[0]);
+            int id = 0;
+            try {
+                id = Integer.parseInt(strings[0]);
+            } catch (NumberFormatException ex) {
+                return false;
+            }
             String nome = strings[1];
             char idEspecie = strings[2].charAt(0);
 
@@ -97,21 +111,19 @@ public class GameManager {
             if (contadorTarzan > 1) {
                 return false;
             }
-            try {
-                if (!minhaListaPlayers.containsKey(id)) {
-                    minhaListaPlayers.put(id, first);
-                    meusJogadores.add(first);
-                } else {
-                    return false;
-                }
-            } catch (NumberFormatException exception) {
+            if (!minhaListaPlayers.containsKey(id)) {
+                minhaListaPlayers.put(id, first);
+                meusJogadores.add(first);
+            } else {
                 return false;
             }
 
         }
 
+
         return true;
     }
+
 
     public int[] getPlayerIds(int squareNr) {
         if (squareNr <= 0 || squareNr > tamanhoMapa) {
@@ -159,18 +171,9 @@ public class GameManager {
     }
 
     public String[] getPlayerInfo(int playerId) {
-        Collections.sort(meusJogadores, new Comparator<Player>() {
-            @Override
-            public int compare(Player o1, Player o2) {
-                if (o1.getIdentificador() > o2.getIdentificador()) {
-                    return o2.getIdentificador();
-                }
-                return o1.getIdentificador();
-            }
-        });
+
         String[] meuJogadorRetornar = new String[4];
         for (Player jogador : meusJogadores) {
-            setJogadorActual(jogador.getIdentificador());
             if (jogador.getIdentificador() == playerId) {
                 meuJogadorRetornar[0] = String.valueOf(jogador.getIdentificador());
                 meuJogadorRetornar[1] = jogador.getNome();
@@ -213,29 +216,25 @@ public class GameManager {
     }
 
     public boolean moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
-        Collections.sort(meusJogadores, new Comparator<Player>() {
-            @Override
-            public int compare(Player o1, Player o2) {
-                if (o1.getIdentificador() > o2.getIdentificador()) {
-                    return o2.getIdentificador();
-                }
-                return o1.getIdentificador();
-            }
-        });
+        Collections.sort(meusJogadores, Comparator.comparingInt(Player::getIdentificador));
+        jogadorActual = jogadorActual(meusJogadores);
+
         if (!bypassValidations) {
             if (nrSquares < 1 || nrSquares > 6) {
                 return false;
             }
         }
 
-        for (Player meuPlayer : meusJogadores) {
-            setJogadorActual(meuPlayer.getIdentificador());
-            if ((meuPlayer.getPosicaoActual() + nrSquares) < tamanhoMapa) {
-                meuPlayer.setPosicaoActual(nrSquares);
+        for (int contador = 0; contador < meusJogadores.size(); contador++) {
+            if ((meusJogadores.get(contador).getPosicaoActual() + nrSquares) < tamanhoMapa) {
+                if (meusJogadores.get(contador).getIdentificador() == jogadorActual) {
+                    meusJogadores.get(contador).setPosicaoActual(nrSquares);
+                }
             } else {
-                meuPlayer.setEnergia(tamanhoMapa);
+                meusJogadores.get(contador).setPosicaoActual(tamanhoMapa);
             }
         }
+
         return true;
     }
 

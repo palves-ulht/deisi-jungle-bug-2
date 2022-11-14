@@ -56,4 +56,5 @@ public class Player {
     char getIdEspecie() {
         return this.idEspecie;
     }
+
 }
