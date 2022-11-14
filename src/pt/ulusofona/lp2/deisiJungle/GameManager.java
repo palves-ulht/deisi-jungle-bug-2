@@ -22,7 +22,17 @@ public class GameManager {
     }
 
     void setJogadorActual(int play) {
-        jogadorActual = play;
+        int elementoMenor = meusJogadores.get(0).getIdentificador();
+        for (int i = play; i < meusJogadores.size(); i++) {
+            if (meusJogadores.get(i).getIdentificador() < elementoMenor) {
+                elementoMenor = meusJogadores.get(i).getIdentificador();
+            }
+        }
+        jogadorActual = elementoMenor;
+    }
+
+    public GameManager() {
+
     }
 
     ArrayList<Especies> minhasEspecies = new ArrayList<>();
@@ -225,37 +235,44 @@ public class GameManager {
     public boolean moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
 
         meusJogadores.sort(Comparator.comparingInt(Player::getIdentificador));
-        jogadorActual = jogadorActual(meusJogadores);
+        setJogadorActual(0);
 
         if (!bypassValidations) {
             if (nrSquares < 1 || nrSquares > 6) {
                 return false;
             }
         }
-        int cont = 0;
+
         for (int i = 0; i < meusJogadores.size(); i++) {
             if ((meusJogadores.get(i).getPosicaoActual() + nrSquares) < tamanhoMapa) {
                 if (meusJogadores.get(i).getIdentificador() == getJogadorActual()) {
                     meusJogadores.get(i).setPosicaoActual(nrSquares);
                     meusJogadores.get(i).setEnergia(meusJogadores.get(i).getEnergia());
                 }
+                setJogadorActual(i+1);
             } else {
                 meusJogadores.get(i).setPosicaoActual(tamanhoMapa);
             }
         }
-
         return true;
     }
 
     public String[] getWinnerInfo() {
         String[] winner = new String[4];
-        for (int i = 0; i < meusJogadores.size(); i++) {
-            if (meusJogadores.get(i).getPosicaoActual() >= getTamanhoMapa()) {
-                winner[0] = String.valueOf(meusJogadores.get(i).getIdentificador());
-                winner[1] = meusJogadores.get(i).getNome();
-                winner[2] = String.valueOf(meusJogadores.get(i).getIdEspecie());
-                winner[3] = String.valueOf(meusJogadores.get(i).getEnergia());
+        int cont = 0;
+        for (Player meusJogadore : meusJogadores) {
+            if (meusJogadore.getPosicaoActual() >= getTamanhoMapa()) {
+                winner[0] = String.valueOf(meusJogadore.getIdentificador());
+                winner[1] = meusJogadore.getNome();
+                winner[2] = String.valueOf(meusJogadore.getIdEspecie());
+                winner[3] = String.valueOf(meusJogadore.getEnergia());
                 return winner;
+            }else{
+                cont++;
+                if(cont ==meusJogadores.size()){
+                    return null;
+                }
+
             }
         }
         return null;
@@ -265,8 +282,8 @@ public class GameManager {
         meusJogadores.sort(Comparator.comparingInt((Player::getPosicaoActual)).reversed());
         ArrayList<String> resultadoPartida = new ArrayList<>();
         String formato = "";
-        for (int i = 0; i < meusJogadores.size(); i++) {
-            formato = meusJogadores.get(i).getNome() + ", " + meusJogadores.get(i).getIdEspecie() + ", " + meusJogadores.get(i).getPosicaoActual();
+        for (Player meusJogadore : meusJogadores) {
+            formato = meusJogadore.getNome() + ", " + meusJogadore.getIdEspecie() + ", " + meusJogadore.getPosicaoActual();
             resultadoPartida.add(formato);
         }
         return resultadoPartida;
