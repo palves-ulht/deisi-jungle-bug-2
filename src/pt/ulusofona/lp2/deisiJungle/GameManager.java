@@ -224,7 +224,7 @@ public class GameManager {
 
     public boolean moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
 
-        Collections.sort(meusJogadores, Comparator.comparingInt((Player player) -> player.getIdentificador()));
+        meusJogadores.sort(Comparator.comparingInt(Player::getIdentificador));
         jogadorActual = jogadorActual(meusJogadores);
 
         if (!bypassValidations) {
@@ -232,30 +232,44 @@ public class GameManager {
                 return false;
             }
         }
-        int contador = 0;
-        for (int i = 0; i < getTamanhoMapa(); i++) {
-            if ((meusJogadores.get(contador).getPosicaoActual() + nrSquares) < tamanhoMapa) {
-                if (meusJogadores.get(contador).getIdentificador() == jogadorActual) {
-                    meusJogadores.get(contador).setPosicaoActual(nrSquares);
-                    contador++;
-                    break;
+        int cont = 0;
+        for (int i = 0; i < meusJogadores.size(); i++) {
+            if ((meusJogadores.get(i).getPosicaoActual() + nrSquares) < tamanhoMapa) {
+                if (meusJogadores.get(i).getIdentificador() == getJogadorActual()) {
+                    meusJogadores.get(i).setPosicaoActual(nrSquares);
+                    meusJogadores.get(i).setEnergia(meusJogadores.get(i).getEnergia());
                 }
             } else {
-                meusJogadores.get(contador).setPosicaoActual(tamanhoMapa);
+                meusJogadores.get(i).setPosicaoActual(tamanhoMapa);
             }
         }
-
-        jogadorActual = meusJogadores.get(contador).getIdentificador();
 
         return true;
     }
 
     public String[] getWinnerInfo() {
+        String[] winner = new String[4];
+        for (int i = 0; i < meusJogadores.size(); i++) {
+            if (meusJogadores.get(i).getPosicaoActual() >= getTamanhoMapa()) {
+                winner[0] = String.valueOf(meusJogadores.get(i).getIdentificador());
+                winner[1] = meusJogadores.get(i).getNome();
+                winner[2] = String.valueOf(meusJogadores.get(i).getIdEspecie());
+                winner[3] = String.valueOf(meusJogadores.get(i).getEnergia());
+                return winner;
+            }
+        }
         return null;
     }
 
     public ArrayList<String> getGameResults() {
-        return null;
+        meusJogadores.sort(Comparator.comparingInt((Player::getPosicaoActual)).reversed());
+        ArrayList<String> resultadoPartida = new ArrayList<>();
+        String formato = "";
+        for (int i = 0; i < meusJogadores.size(); i++) {
+            formato = meusJogadores.get(i).getNome() + ", " + meusJogadores.get(i).getIdEspecie() + ", " + meusJogadores.get(i).getPosicaoActual();
+            resultadoPartida.add(formato);
+        }
+        return resultadoPartida;
     }
 
     public JPanel getAuthorsPanel() {
