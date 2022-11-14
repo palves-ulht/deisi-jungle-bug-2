@@ -156,7 +156,7 @@ public class GameManager {
             arrayRetornar[1] = "Vazio";
             for (Player meusJogadore : meusJogadores) {
                 if (meusJogadore.getPosicaoActual() == squareNr) {
-                    arrayRetornar[2] += meusJogadore.getIdentificador() + ",";
+                    arrayRetornar[2] = meusJogadore.getIdentificador() + "," + arrayRetornar[2];
                 }
             }
             return arrayRetornar;
@@ -166,10 +166,13 @@ public class GameManager {
             arrayRetornar[1] = "Meta";
             for (Player meusJogadore : meusJogadores) {
                 if (meusJogadore.getPosicaoActual() == squareNr) {
-                    arrayRetornar[2] += meusJogadore.getIdentificador() + ",";
+                    arrayRetornar[2] = meusJogadore.getIdentificador() + "," + arrayRetornar[2];
                 }
             }
             return arrayRetornar;
+        }
+        if (arrayRetornar[2] == null) {
+            return new String[0];
         }
         return arrayRetornar;
     }
