@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.deisiJungle;
 
+import com.sun.tools.jconsole.JConsoleContext;
+
 import javax.swing.*;
 import java.util.*;
 
@@ -25,7 +27,9 @@ public class GameManager {
 
     ArrayList<Especies> minhasEspecies = new ArrayList<>();
 
+
     HashMap<Integer, Player> minhaListaPlayers = new HashMap<>();
+    HashMap<Integer, String[][]> jogadas = new HashMap<>();
     ArrayList<Player> meusJogadores = new ArrayList<>();
 
     HashMap<Integer, String[][]> mapaJogo;
@@ -77,6 +81,7 @@ public class GameManager {
 
     public boolean createInitialJungle(int jungleSize, int initialEnergy, String[][] playersInfo) {
         setTamanhoMapa(jungleSize);
+        jogadas.put(1, playersInfo);
 
         int contadorEspecies = 0;
         int contadorTarzan = 0;
@@ -117,10 +122,7 @@ public class GameManager {
             } else {
                 return false;
             }
-
         }
-
-
         return true;
     }
 
@@ -158,7 +160,8 @@ public class GameManager {
                 }
             }
             return arrayRetornar;
-        } else {
+        }
+        if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = "finish.png";
             arrayRetornar[1] = "Meta";
             for (Player meusJogadore : meusJogadores) {
@@ -168,6 +171,7 @@ public class GameManager {
             }
             return arrayRetornar;
         }
+        return arrayRetornar;
     }
 
     public String[] getPlayerInfo(int playerId) {
@@ -216,7 +220,8 @@ public class GameManager {
     }
 
     public boolean moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
-        Collections.sort(meusJogadores, Comparator.comparingInt(Player::getIdentificador));
+
+        Collections.sort(meusJogadores, Comparator.comparingInt((Player player) -> player.getIdentificador()));
         jogadorActual = jogadorActual(meusJogadores);
 
         if (!bypassValidations) {
@@ -224,16 +229,20 @@ public class GameManager {
                 return false;
             }
         }
-
-        for (int contador = 0; contador < meusJogadores.size(); contador++) {
+        int contador = 0;
+        for (int i = 0; i < getTamanhoMapa(); i++) {
             if ((meusJogadores.get(contador).getPosicaoActual() + nrSquares) < tamanhoMapa) {
                 if (meusJogadores.get(contador).getIdentificador() == jogadorActual) {
                     meusJogadores.get(contador).setPosicaoActual(nrSquares);
+                    contador++;
+                    break;
                 }
             } else {
                 meusJogadores.get(contador).setPosicaoActual(tamanhoMapa);
             }
         }
+
+        jogadorActual = meusJogadores.get(contador).getIdentificador();
 
         return true;
     }
