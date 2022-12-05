@@ -11,8 +11,7 @@ public class Especies {
         this.icone = icone;
     }
 
-    Especies() {
-    }
+
 
     char getIdentificador() {
         return this.identificador;
