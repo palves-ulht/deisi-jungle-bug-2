@@ -32,7 +32,6 @@ public class GameManager {
     }
 
     public GameManager() {
-
     }
 
     HashMap<Character, Especies> minhasEspecies = new HashMap<>();
@@ -262,7 +261,7 @@ public class GameManager {
     }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
-        return this.createInitialJungle(jungleSize, playersInfo);
+        return null;
     }
 
     public int[] getPlayerIds(int squareNr) {
