@@ -1,59 +1,49 @@
 package pt.ulusofona.lp2.deisiJungle;
 
-public class Player {
-    private int identificador;
-    private String nome;
+public class Player extends MeuJogador {
     private char idEspecie;
-    private int energia;
     private int posicaoActual;
-    private int etapa;
+    private String consumoEnergia;
+    private String ganhoEnergiaEmDescanso;
+    private String velocidade;
 
-    int getPosicaoActual() {
-        return this.posicaoActual;
+    public String getConsumoEnergia() {
+        return consumoEnergia;
     }
 
-    void setPosicaoActual(int pos) {
-        posicaoActual += pos;
+    public void setConsumoEnergia(String consumoEnergia) {
+        this.consumoEnergia = consumoEnergia;
     }
 
-    int getEnergia() {
-        return this.energia;
-    }
-    void setEnergia(int energia){
-        energia -= 2;
+    public String getGanhoEnergiaEmDescanso() {
+        return ganhoEnergiaEmDescanso;
     }
 
-    Player(int identificador, String nome, char idEspecie, int energia) {
-        this.identificador = identificador;
-        this.nome = nome;
+    public void setGanhoEnergiaEmDescanso(String ganhoEnergiaEmDescanso) {
+        this.ganhoEnergiaEmDescanso = ganhoEnergiaEmDescanso;
+    }
+
+    public String getVelocidade() {
+        return velocidade;
+    }
+
+    public void setVelocidade(String velocidade) {
+        this.velocidade = velocidade;
+    }
+
+    public char getIdEspecie() {
+        return idEspecie;
+    }
+
+    public void setIdEspecie(char idEspecie) {
         this.idEspecie = idEspecie;
-        this.energia = energia;
     }
 
-    public void setEtapa(int etapa) {
-        if (etapa == 0) {
-            this.etapa = 1;
-        } else {
-            this.etapa += etapa;
-        }
+    public int getPosicaoActual() {
+        return posicaoActual;
     }
 
-    int getEtapa() {
-        return this.etapa;
+    public void setPosicaoActual(int posicaoActual) {
+        this.posicaoActual += posicaoActual;
     }
-
-
-
-    int getIdentificador() {
-        return this.identificador;
-    }
-
-    String getNome() {
-        return this.nome;
-    }
-
-    char getIdEspecie() {
-        return this.idEspecie;
-    }
-
 }

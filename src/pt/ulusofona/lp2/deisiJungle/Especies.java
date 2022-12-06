@@ -1,27 +1,15 @@
 package pt.ulusofona.lp2.deisiJungle;
 
-public class Especies {
-    private char identificador;
-    private String nome;
+public class Especies extends MeuJogador {
     private String icone;
 
-    Especies(char identificador, String nome, String icone) {
-        this.identificador = identificador;
-        this.nome = nome;
+
+    public String getIcone() {
+        return icone;
+    }
+
+    public void setIcone(String icone) {
         this.icone = icone;
     }
 
-
-
-    char getIdentificador() {
-        return this.identificador;
-    }
-
-    String getNome() {
-        return this.nome;
-    }
-
-    String getIcone() {
-        return this.icone;
-    }
 }
