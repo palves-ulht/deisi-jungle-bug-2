@@ -182,6 +182,31 @@ public class GameManager {
         InitializationError error = new InitializationError();
         setTamanhoMapa(jungleSize);
 
+        createInitialJungle(jungleSize, playersInfo);
+
+        for (String[] value : foodsInfo) {
+            if (minhasComidas.containsKey(value[0].charAt(0))) {
+                meuMapa.put(Integer.parseInt(value[1]), value[0]);
+            }
+        }
+
+        for (String[] strings : foodsInfo) {
+            if (strings[0].charAt(0) != 'a' && strings[0].charAt(0) != 'c' && strings[0].charAt(0) != 'e' && strings[0].charAt(0) != 'b' && strings[0].charAt(0) != 'm') {
+                error.setMessage("Os Alimentos devem ser os mesmos que a função getFoodTypes() retorna");
+                return error;
+            }
+            if (Integer.parseInt(strings[1]) <= 1 && Integer.parseInt(strings[1]) >= tamanhoMapa) {
+                error.setMessage("A Posição do alimento não pode ser inferior ou igual a 1, nem superior ou igual ao tamanho do Mapa");
+                return error;
+            }
+        }
+
+        return null;
+    }
+
+    public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
+
+        InitializationError error = new InitializationError();
 
         if (playersInfo.length < 2 || playersInfo.length > 4) {
             error.setMessage("Não Podemos Ter Menos de 2 Jogadores, Nem Mais de 4");
@@ -231,6 +256,7 @@ public class GameManager {
                 error.setMessage("Não pode haver Jogadores com o mesmo ID");
                 return error;
             }
+
         }
 
         setJogadorActual(0);
@@ -243,26 +269,7 @@ public class GameManager {
             jogadoresNumaPosicao += playersInfo[cont][0] + ",";
         }
         meuMapa.put(1, jogadoresNumaPosicao);
-        for (String[] value : foodsInfo) {
-            if (minhasComidas.containsKey(value[0].charAt(0))) {
-                meuMapa.put(Integer.parseInt(value[1]), value[0]);
-            }
-        }
-        for (String[] strings : foodsInfo) {
-            if (strings[0].charAt(0) != 'a' && strings[0].charAt(0) != 'c' && strings[0].charAt(0) != 'e' && strings[0].charAt(0) != 'b' && strings[0].charAt(0) != 'm') {
-                error.setMessage("Os Alimentos devem ser os mesmos que a função getFoodTypes() retorna");
-                return error;
-            }
-            if (Integer.parseInt(strings[1]) <= 1 && Integer.parseInt(strings[1]) >= tamanhoMapa) {
-                error.setMessage("A Posição do alimento não pode ser inferior ou igual a 1, nem superior ou igual ao tamanho do Mapa");
-                return error;
-            }
-        }
 
-        return null;
-    }
-
-    public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
         return null;
     }
 

@@ -2,7 +2,7 @@ package pt.ulusofona.lp2.deisiJungle;
 
 public class Player extends MeuJogador {
     private char idEspecie;
-    private int posicaoActual = 1;
+    private int posicaoActual;
     private String consumoEnergia;
     private String ganhoEnergiaEmDescanso;
     private String velocidade;
@@ -44,6 +44,6 @@ public class Player extends MeuJogador {
     }
 
     public void setPosicaoActual(int posicaoActual) {
-        this.posicaoActual += posicaoActual;
+        this.posicaoActual = posicaoActual;
     }
 }
