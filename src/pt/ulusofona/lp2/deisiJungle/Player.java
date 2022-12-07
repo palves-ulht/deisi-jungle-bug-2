@@ -2,7 +2,7 @@ package pt.ulusofona.lp2.deisiJungle;
 
 public class Player extends MeuJogador {
     private char idEspecie;
-    private int posicaoActual;
+    private int posicaoActual = 1;
     private String consumoEnergia;
     private String ganhoEnergiaEmDescanso;
     private String velocidade;

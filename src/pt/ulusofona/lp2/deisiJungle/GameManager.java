@@ -32,6 +32,8 @@ public class GameManager {
     }
 
     public GameManager() {
+
+
     }
 
     HashMap<Character, Especies> minhasEspecies = new HashMap<>();
