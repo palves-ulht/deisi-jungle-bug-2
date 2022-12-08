@@ -217,6 +217,8 @@ public class GameManager {
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
 
+
+
         InitializationError error = new InitializationError();
 
         if (playersInfo.length < 2 || playersInfo.length > 4) {
@@ -238,12 +240,15 @@ public class GameManager {
             }
             String nome = strings[1];
             char idEspecie = strings[2].charAt(0);
+            int energiaInicial = Integer.parseInt(minhasEnergiaPorIdEspecies.get(idEspecie));
 
             Player first = new Player();
             first.setIdentificador(id);
             first.setNome(nome);
             first.setIdEspecie(idEspecie);
-            first.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(idEspecie)));
+
+            first.setEnergiaInicial(energiaInicial);
+
             first.setPosicaoActual(1);
             first.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(idEspecie));
             first.setGanhoEnergiaEmDescanso(ganhoEnergiaPorIdEspecie.get(idEspecie));
@@ -286,7 +291,6 @@ public class GameManager {
             jogadoresNumaPosicao += playersInfo[cont][0] + ",";
         }
         meuMapa.put(1, jogadoresNumaPosicao);
-
         return null;
     }
 
