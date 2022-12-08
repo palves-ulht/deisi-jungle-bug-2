@@ -41,7 +41,7 @@ public class GameManager {
     HashMap<Character, String> perdaEnergiaPorIdEspecies = new HashMap<>();
     HashMap<Character, String> ganhoEnergiaPorIdEspecie = new HashMap<>();
 
-    HashMap<Character, Integer> minhasEnergiaPorIdEspecies = new HashMap<>();
+    HashMap<Character, String> minhasEnergiaPorIdEspecies = new HashMap<>();
 
     HashMap<Integer, Player> minhaListaPlayers = new HashMap<>();
     ArrayList<Player> meusJogadores = new ArrayList<>();
@@ -63,7 +63,7 @@ public class GameManager {
 
         minhasEspecies.put('E', especies1);
         minhasVelocidadePorIdEspecies.put(especies[0][0].charAt(0), especies[0][6]);
-        minhasEnergiaPorIdEspecies.put(especies[0][0].charAt(0), Integer.valueOf(especies[0][3]));
+        minhasEnergiaPorIdEspecies.put(especies[0][0].charAt(0), especies[0][3]);
         perdaEnergiaPorIdEspecies.put('E', especies[0][4]);
         ganhoEnergiaPorIdEspecie.put('E', especies[0][5]);
 
@@ -79,7 +79,7 @@ public class GameManager {
 
         minhasEspecies.put('L', especies2);
         minhasVelocidadePorIdEspecies.put(especies[1][0].charAt(0), especies[1][6]);
-        minhasEnergiaPorIdEspecies.put(especies[1][0].charAt(0), Integer.valueOf(especies[1][3]));
+        minhasEnergiaPorIdEspecies.put(especies[1][0].charAt(0), especies[1][3]);
         perdaEnergiaPorIdEspecies.put('L', especies[1][4]);
         ganhoEnergiaPorIdEspecie.put('L', especies[1][5]);
 
@@ -95,7 +95,7 @@ public class GameManager {
 
         minhasEspecies.put('T', especies3);
         minhasVelocidadePorIdEspecies.put(especies[2][0].charAt(0), especies[2][6]);
-        minhasEnergiaPorIdEspecies.put(especies[2][0].charAt(0), Integer.valueOf(especies[2][3]));
+        minhasEnergiaPorIdEspecies.put(especies[2][0].charAt(0), especies[2][3]);
         perdaEnergiaPorIdEspecies.put('T', especies[2][4]);
         ganhoEnergiaPorIdEspecie.put('T', especies[2][5]);
 
@@ -111,7 +111,7 @@ public class GameManager {
 
         minhasEspecies.put('P', especies4);
         minhasVelocidadePorIdEspecies.put(especies[3][0].charAt(0), especies[3][6]);
-        minhasEnergiaPorIdEspecies.put(especies[3][0].charAt(0), Integer.valueOf(especies[3][3]));
+        minhasEnergiaPorIdEspecies.put(especies[3][0].charAt(0), especies[3][3]);
         perdaEnergiaPorIdEspecies.put('P', especies[3][4]);
         ganhoEnergiaPorIdEspecie.put('P', especies[3][5]);
 
@@ -127,7 +127,7 @@ public class GameManager {
 
         minhasEspecies.put('Z', especies5);
         minhasVelocidadePorIdEspecies.put(especies[4][0].charAt(0), especies[4][6]);
-        minhasEnergiaPorIdEspecies.put(especies[4][0].charAt(0), Integer.valueOf(especies[4][3]));
+        minhasEnergiaPorIdEspecies.put(especies[4][0].charAt(0), especies[4][3]);
         perdaEnergiaPorIdEspecies.put('Z', especies[4][4]);
         ganhoEnergiaPorIdEspecie.put('Z', especies[4][5]);
 
@@ -206,8 +206,13 @@ public class GameManager {
                 error.setMessage("Os Alimentos devem ser os mesmos que a função getFoodTypes() retorna");
                 return error;
             }
-            if (Integer.parseInt(strings[1]) <= 1 && Integer.parseInt(strings[1]) >= tamanhoMapa) {
-                error.setMessage("A Posição do alimento não pode ser inferior ou igual a 1, nem superior ou igual ao tamanho do Mapa");
+            try {
+                if (Integer.parseInt(strings[1]) <= 1 && Integer.parseInt(strings[1]) >= tamanhoMapa) {
+                    error.setMessage("A Posição do alimento não pode ser inferior ou igual a 1, nem superior ou igual ao tamanho do Mapa");
+                    return error;
+                }
+            } catch (Exception e) {
+                error.setMessage("Erro");
                 return error;
             }
         }
@@ -216,7 +221,6 @@ public class GameManager {
     }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
-
 
 
         InitializationError error = new InitializationError();
@@ -246,7 +250,12 @@ public class GameManager {
             first.setNome(nome);
             first.setIdEspecie(idEspecie);
 
-            first.setEnergiaInicial(minhasEnergiaPorIdEspecies.get(idEspecie));
+            try {
+                first.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(idEspecie)));
+            } catch (Exception e) {
+                error.setMessage("Erro ao Inicializar energia");
+                return error;
+            }
 
             first.setPosicaoActual(1);
             first.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(idEspecie));
@@ -269,7 +278,11 @@ public class GameManager {
                 error.setMessage("Não pode existir mais de 1 Tarzan no Jogo");
                 return error;
             }
-            if (!minhaListaPlayers.containsKey(id)) {
+            if (id < 0) {
+                error.setMessage("Id inválido !");
+                return error;
+            }
+            if (minhaListaPlayers.get(id) == null) {
                 minhaListaPlayers.put(id, first);
                 meusJogadores.add(first);
                 meusJogadores.sort(Comparator.comparing(MeuJogador::getIdentificador));
