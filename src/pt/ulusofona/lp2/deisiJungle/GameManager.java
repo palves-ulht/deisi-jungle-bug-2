@@ -186,6 +186,11 @@ public class GameManager {
             return error;
         }
 
+        if (jungleSize < playersInfo.length * 2) {
+            error.setMessage("O Dobro do numero de jogadores não pode ser maior que o tamanho do Tabuleiro");
+            return error;
+        }
+
         setTamanhoMapa(jungleSize);
 
         createInitialJungle(jungleSize, playersInfo);
@@ -238,11 +243,11 @@ public class GameManager {
             first.setIdentificador(id);
             first.setNome(nome);
             first.setIdEspecie(idEspecie);
-            first.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(first.getIdEspecie())));
+            first.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(idEspecie)));
             first.setPosicaoActual(1);
-            first.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(first.getIdEspecie()));
-            first.setGanhoEnergiaEmDescanso(ganhoEnergiaPorIdEspecie.get(first.getIdEspecie()));
-            first.setVelocidade(minhasVelocidadePorIdEspecies.get(first.getIdEspecie()));
+            first.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(idEspecie));
+            first.setGanhoEnergiaEmDescanso(ganhoEnergiaPorIdEspecie.get(idEspecie));
+            first.setVelocidade(minhasVelocidadePorIdEspecies.get(idEspecie));
 
             if (first.getNome() == null || first.getNome().isEmpty()) {
                 error.setMessage("O Nome não pode ser null nem vazio");
