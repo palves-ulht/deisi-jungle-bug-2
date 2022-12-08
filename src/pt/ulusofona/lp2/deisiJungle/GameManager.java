@@ -180,6 +180,12 @@ public class GameManager {
 
 
         InitializationError error = new InitializationError();
+
+        if (playersInfo.length < 2 || playersInfo.length > 4) {
+            error.setMessage("Não Podemos Ter Menos de 2 Jogadores, Nem Mais de 4");
+            return error;
+        }
+
         setTamanhoMapa(jungleSize);
 
         createInitialJungle(jungleSize, playersInfo);
@@ -217,8 +223,14 @@ public class GameManager {
             return error;
         }
         int contadorTarzan = 0;
+        int id = 0;
         for (String[] strings : playersInfo) {
-            int id = Integer.parseInt(strings[0]);
+
+            try {
+                id = Integer.parseInt(strings[0]);
+            } catch (Exception e) {
+                error.setMessage("Formato fora do Parametro");
+            }
             String nome = strings[1];
             char idEspecie = strings[2].charAt(0);
 
