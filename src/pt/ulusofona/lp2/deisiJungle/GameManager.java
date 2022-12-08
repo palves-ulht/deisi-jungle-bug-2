@@ -41,7 +41,7 @@ public class GameManager {
     HashMap<Character, String> perdaEnergiaPorIdEspecies = new HashMap<>();
     HashMap<Character, String> ganhoEnergiaPorIdEspecie = new HashMap<>();
 
-    HashMap<Character, String> minhasEnergiaPorIdEspecies = new HashMap<>();
+    HashMap<Character, Integer> minhasEnergiaPorIdEspecies = new HashMap<>();
 
     HashMap<Integer, Player> minhaListaPlayers = new HashMap<>();
     ArrayList<Player> meusJogadores = new ArrayList<>();
@@ -63,7 +63,7 @@ public class GameManager {
 
         minhasEspecies.put('E', especies1);
         minhasVelocidadePorIdEspecies.put(especies[0][0].charAt(0), especies[0][6]);
-        minhasEnergiaPorIdEspecies.put(especies[0][0].charAt(0), especies[0][3]);
+        minhasEnergiaPorIdEspecies.put(especies[0][0].charAt(0), Integer.valueOf(especies[0][3]));
         perdaEnergiaPorIdEspecies.put('E', especies[0][4]);
         ganhoEnergiaPorIdEspecie.put('E', especies[0][5]);
 
@@ -79,7 +79,7 @@ public class GameManager {
 
         minhasEspecies.put('L', especies2);
         minhasVelocidadePorIdEspecies.put(especies[1][0].charAt(0), especies[1][6]);
-        minhasEnergiaPorIdEspecies.put(especies[1][0].charAt(0), especies[1][3]);
+        minhasEnergiaPorIdEspecies.put(especies[1][0].charAt(0), Integer.valueOf(especies[1][3]));
         perdaEnergiaPorIdEspecies.put('L', especies[1][4]);
         ganhoEnergiaPorIdEspecie.put('L', especies[1][5]);
 
@@ -95,7 +95,7 @@ public class GameManager {
 
         minhasEspecies.put('T', especies3);
         minhasVelocidadePorIdEspecies.put(especies[2][0].charAt(0), especies[2][6]);
-        minhasEnergiaPorIdEspecies.put(especies[2][0].charAt(0), especies[2][3]);
+        minhasEnergiaPorIdEspecies.put(especies[2][0].charAt(0), Integer.valueOf(especies[2][3]));
         perdaEnergiaPorIdEspecies.put('T', especies[2][4]);
         ganhoEnergiaPorIdEspecie.put('T', especies[2][5]);
 
@@ -111,7 +111,7 @@ public class GameManager {
 
         minhasEspecies.put('P', especies4);
         minhasVelocidadePorIdEspecies.put(especies[3][0].charAt(0), especies[3][6]);
-        minhasEnergiaPorIdEspecies.put(especies[3][0].charAt(0), especies[3][3]);
+        minhasEnergiaPorIdEspecies.put(especies[3][0].charAt(0), Integer.valueOf(especies[3][3]));
         perdaEnergiaPorIdEspecies.put('P', especies[3][4]);
         ganhoEnergiaPorIdEspecie.put('P', especies[3][5]);
 
@@ -127,7 +127,7 @@ public class GameManager {
 
         minhasEspecies.put('Z', especies5);
         minhasVelocidadePorIdEspecies.put(especies[4][0].charAt(0), especies[4][6]);
-        minhasEnergiaPorIdEspecies.put(especies[4][0].charAt(0), especies[4][3]);
+        minhasEnergiaPorIdEspecies.put(especies[4][0].charAt(0), Integer.valueOf(especies[4][3]));
         perdaEnergiaPorIdEspecies.put('Z', especies[4][4]);
         ganhoEnergiaPorIdEspecie.put('Z', especies[4][5]);
 
@@ -240,14 +240,13 @@ public class GameManager {
             }
             String nome = strings[1];
             char idEspecie = strings[2].charAt(0);
-            int energiaInicial = Integer.parseInt(minhasEnergiaPorIdEspecies.get(idEspecie));
 
             Player first = new Player();
             first.setIdentificador(id);
             first.setNome(nome);
             first.setIdEspecie(idEspecie);
 
-            first.setEnergiaInicial(energiaInicial);
+            first.setEnergiaInicial(minhasEnergiaPorIdEspecies.get(idEspecie));
 
             first.setPosicaoActual(1);
             first.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(idEspecie));
