@@ -254,6 +254,7 @@ public class GameManager {
                 first.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(idEspecie)));
             }
 
+
             first.setPosicaoActual(1);
             first.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(idEspecie));
             first.setGanhoEnergiaEmDescanso(ganhoEnergiaPorIdEspecie.get(idEspecie));
