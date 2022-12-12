@@ -178,7 +178,8 @@ public class GameManager {
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo, String[][] foodsInfo) {
 
-
+        createInitialJungle(jungleSize, playersInfo);
+        setTamanhoMapa(jungleSize);
         InitializationError error = new InitializationError();
 
         if (playersInfo.length < 2 || playersInfo.length > 4) {
@@ -191,9 +192,6 @@ public class GameManager {
             return error;
         }
 
-        setTamanhoMapa(jungleSize);
-
-        createInitialJungle(jungleSize, playersInfo);
 
         for (String[] value : foodsInfo) {
             if (minhasComidas.containsKey(value[0].charAt(0))) {
@@ -250,10 +248,12 @@ public class GameManager {
             first.setNome(nome);
             first.setIdEspecie(idEspecie);
 
-            if (minhasEnergiaPorIdEspecies.get(idEspecie) != null) {
+            try {
                 first.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(idEspecie)));
+            } catch (Exception e) {
+                error.setMessage("Erro ao Inicializar energia");
+                return error;
             }
-
 
             first.setPosicaoActual(1);
             first.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(idEspecie));
