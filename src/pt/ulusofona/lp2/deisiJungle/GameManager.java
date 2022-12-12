@@ -248,11 +248,8 @@ public class GameManager {
             first.setNome(nome);
             first.setIdEspecie(idEspecie);
 
-            try {
+            if (minhasEnergiaPorIdEspecies.get(idEspecie) != null) {
                 first.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(idEspecie)));
-            } catch (Exception e) {
-                error.setMessage("Erro ao Inicializar energia");
-                return error;
             }
 
             first.setPosicaoActual(1);
