@@ -75,7 +75,7 @@ public class GameManager {
         especies[1][5] = "10";
         especies[1][6] = "4..6";
         Especies especies2 = new Especies();
-        especies1.construtorSetando(especies[1][0].charAt(0), especies[1][1], Integer.parseInt(especies[1][3]));
+        especies2.construtorSetando(especies[1][0].charAt(0), especies[1][1], Integer.parseInt(especies[1][3]));
 
         minhasEspecies.put('L', especies2);
         minhasVelocidadePorIdEspecies.put(especies[1][0].charAt(0), especies[1][6]);
@@ -91,7 +91,7 @@ public class GameManager {
         especies[2][5] = "5";
         especies[2][6] = "1..3";
         Especies especies3 = new Especies();
-        especies1.construtorSetando(especies[2][0].charAt(0), especies[2][1], Integer.parseInt(especies[2][3]));
+        especies3.construtorSetando(especies[2][0].charAt(0), especies[2][1], Integer.parseInt(especies[2][3]));
 
         minhasEspecies.put('T', especies3);
         minhasVelocidadePorIdEspecies.put(especies[2][0].charAt(0), especies[2][6]);
@@ -107,7 +107,7 @@ public class GameManager {
         especies[3][5] = "50";
         especies[3][6] = "5..6";
         Especies especies4 = new Especies();
-        especies1.construtorSetando(especies[3][0].charAt(0), especies[3][1], Integer.parseInt(especies[3][3]));
+        especies4.construtorSetando(especies[3][0].charAt(0), especies[3][1], Integer.parseInt(especies[3][3]));
 
         minhasEspecies.put('P', especies4);
         minhasVelocidadePorIdEspecies.put(especies[3][0].charAt(0), especies[3][6]);
@@ -123,7 +123,7 @@ public class GameManager {
         especies[4][5] = "20";
         especies[4][6] = "1..6";
         Especies especies5 = new Especies();
-        especies1.construtorSetando(especies[4][0].charAt(0), especies[4][1], Integer.parseInt(especies[4][3]));
+        especies5.construtorSetando(especies[4][0].charAt(0), especies[4][1], Integer.parseInt(especies[4][3]));
 
         minhasEspecies.put('Z', especies5);
         minhasVelocidadePorIdEspecies.put(especies[4][0].charAt(0), especies[4][6]);
@@ -241,7 +241,7 @@ public class GameManager {
                 error.setMessage("Os nomes dos jogadores. Não podem ser null nem estar vazios.");
                 return error;
             }
-            if (!minhasEspecies.containsKey(jogador[2].charAt(0))) {
+            if (minhasEspecies.get(jogador[2].charAt(0)) == null) {
                 error.setMessage("A espécie tem que ser uma das que foi retornada pela função getSpecies()");
                 return error;
             }
