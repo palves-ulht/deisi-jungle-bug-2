@@ -31,11 +31,7 @@ public class GameManager {
         jogadorActual = meusJogadores.get(play).getIdentificador();
     }
 
-    public GameManager() {
-
-
-    }
-
+    public GameManager() {}
     HashMap<Character, Especies> minhasEspecies = new HashMap<>();
     HashMap<Character, String> minhasVelocidadePorIdEspecies = new HashMap<>();
     HashMap<Character, String> perdaEnergiaPorIdEspecies = new HashMap<>();
@@ -252,13 +248,13 @@ public class GameManager {
                 error.setMessage("Não pode existir mais de 1 Tarzan no Jogo");
                 return error;
             }
-            if (minhaListaPlayers.get(Integer.parseInt(jogador[0])) != null) {
-                error.setMessage("Não podem haver dois jogadores com o mesmo ID");
-                return error;
-            } else {
+            if (!minhaListaPlayers.containsKey(Integer.parseInt(jogador[0]))) {
                 minhaListaPlayers.put(Integer.parseInt(jogador[0]), players);
                 meusJogadores.add(players);
                 meusJogadores.sort(Comparator.comparing(MeuJogador::getIdentificador));
+            } else {
+                error.setMessage("Não podem haver dois jogadores com o mesmo ID");
+                return error;
             }
         }
         setJogadorActual(0);
