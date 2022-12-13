@@ -182,22 +182,81 @@ public class GameManager {
         setTamanhoMapa(jungleSize);
         InitializationError error = new InitializationError();
 
-        for (String[] item : playersInfo) {
-            if (Integer.parseInt(item[0]) < 0) {
-                error.setMessage("Id inválido !");
-                return error;
-            }
-        }
-
         if (playersInfo.length < 2 || playersInfo.length > 4) {
             error.setMessage("Não Podemos Ter Menos de 2 Jogadores, Nem Mais de 4");
             return error;
         }
-
         if (jungleSize < playersInfo.length * 2) {
             error.setMessage("O Dobro do numero de jogadores não pode ser maior que o tamanho do Tabuleiro");
             return error;
         }
+        int contadorTarzan = 0;
+        int id = 0;
+        for (String[] strings : playersInfo) {
+
+            try {
+                id = Integer.parseInt(strings[0]);
+            } catch (Exception e) {
+                error.setMessage("Formato fora do Parametro");
+            }
+            String nome = strings[1];
+            char idEspecie = strings[2].charAt(0);
+
+            Player first = new Player();
+            first.setIdentificador(id);
+            first.setNome(nome);
+            first.setIdEspecie(idEspecie);
+
+            if (minhasEnergiaPorIdEspecies.get(idEspecie) != null) {
+                first.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(idEspecie)));
+            }
+
+            first.setPosicaoActual(1);
+            first.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(idEspecie));
+            first.setGanhoEnergiaEmDescanso(ganhoEnergiaPorIdEspecie.get(idEspecie));
+            first.setVelocidade(minhasVelocidadePorIdEspecies.get(idEspecie));
+
+            if (first.getNome() == null || first.getNome().isEmpty()) {
+                error.setMessage("O Nome não pode ser null nem vazio");
+                return error;
+            }
+
+            if (idEspecie != 'L' && idEspecie != 'Z' && idEspecie != 'T' && idEspecie != 'E' && idEspecie != 'P') {
+                error.setMessage("O ID Da Espécie Não Pode Ser Diferente Daquelas Que A Função getEspecies() Retorna");
+                return error;
+            }
+            if (first.getIdEspecie() == 'Z') {
+                contadorTarzan++;
+            }
+            if (contadorTarzan > 1) {
+                error.setMessage("Não pode existir mais de 1 Tarzan no Jogo");
+                return error;
+            }
+            if (id < 0) {
+                error.setMessage("Id inválido !");
+                return error;
+            }
+            if (minhaListaPlayers.get(id) == null) {
+                minhaListaPlayers.put(id, first);
+                meusJogadores.add(first);
+                meusJogadores.sort(Comparator.comparing(MeuJogador::getIdentificador));
+            } else {
+                error.setMessage("Não pode haver Jogadores com o mesmo ID");
+                return error;
+            }
+
+        }
+
+        setJogadorActual(0);
+        String jogadoresNumaPosicao = "";
+        for (int cont = 0; cont < playersInfo.length; cont++) {
+            if (cont == playersInfo.length - 1) {
+                jogadoresNumaPosicao += playersInfo[cont][0];
+                break;
+            }
+            jogadoresNumaPosicao += playersInfo[cont][0] + ",";
+        }
+        meuMapa.put(1, jogadoresNumaPosicao);
 
         for (String[] value : foodsInfo) {
             if (minhasComidas.containsKey(value[0].charAt(0))) {
