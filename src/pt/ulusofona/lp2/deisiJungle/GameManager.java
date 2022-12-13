@@ -241,7 +241,7 @@ public class GameManager {
                 error.setMessage("Os nomes dos jogadores. Não podem ser null nem estar vazios.");
                 return error;
             }
-            if (ganhoEnergiaPorIdEspecie.get(jogador[2].charAt(0)) == null) {
+            if (jogador[2].charAt(0) != 'L' && jogador[2].charAt(0) != 'T' && jogador[2].charAt(0) != 'Z' && jogador[2].charAt(0) != 'E' && jogador[2].charAt(0) != 'P') {
                 error.setMessage("A espécie tem que ser uma das que foi retornada pela função getSpecies()");
                 return error;
             }
