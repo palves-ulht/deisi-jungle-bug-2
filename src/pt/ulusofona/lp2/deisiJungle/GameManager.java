@@ -182,6 +182,13 @@ public class GameManager {
         setTamanhoMapa(jungleSize);
         InitializationError error = new InitializationError();
 
+        for (String[] item : playersInfo) {
+            if (Integer.parseInt(item[0]) < 0) {
+                error.setMessage("Id inválido !");
+                return error;
+            }
+        }
+
         if (playersInfo.length < 2 || playersInfo.length > 4) {
             error.setMessage("Não Podemos Ter Menos de 2 Jogadores, Nem Mais de 4");
             return error;
@@ -191,7 +198,6 @@ public class GameManager {
             error.setMessage("O Dobro do numero de jogadores não pode ser maior que o tamanho do Tabuleiro");
             return error;
         }
-
 
         for (String[] value : foodsInfo) {
             if (minhasComidas.containsKey(value[0].charAt(0))) {
