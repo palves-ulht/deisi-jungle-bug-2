@@ -190,30 +190,24 @@ public class GameManager {
     }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo, String[][] foodsInfo) {
-
         setTamanhoMapa(jungleSize);
         InitializationError error = new InitializationError();
         InitializationError secondFunction = createInitialJungle(jungleSize, playersInfo);
         if (secondFunction != null) {
             return secondFunction;
         }
-
         for (String[] value : foodsInfo) {
-            if (minhasComidas.containsKey(value[0].charAt(0))) {
-                meuMapa.put(Integer.parseInt(value[1]), value[0]);
-            } else {
+            if (value[0].charAt(0) != 'a' && value[0].charAt(0) != 'b' && value[0].charAt(0) != 'e' && value[0].charAt(0) != 'c' && value[0].charAt(0) != 'a') {
                 error.setMessage("O id do alimento tem que ser um dos que foi retornado pela função getFoodTypes()");
                 return error;
             }
         }
-
         for (String[] strings : foodsInfo) {
             if (Integer.parseInt(strings[1]) <= 1 && Integer.parseInt(strings[1]) >= tamanhoMapa) {
                 error.setMessage("Os alimentos têm que estar posicionados dentro dos limites do terreno");
                 return error;
             }
         }
-
         return null;
     }
 
