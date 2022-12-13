@@ -254,10 +254,12 @@ public class GameManager {
             meusJogadores.add(players);
             meusJogadores.sort(Comparator.comparing(MeuJogador::getIdentificador));
         }
-        for (int contador = 0; contador < meusJogadores.size(); contador++) {
-            if (meusJogadores.get(contador).getIdentificador() == meusJogadores.get(contador + 1).getIdentificador()) {
-                error.setMessage("Não pode haver jogadores com o mesmo ID");
-                return error;
+        for (int i = 0; i < meusJogadores.size(); i++) {
+            for (int j = i + 1; j < meusJogadores.size(); j++) {
+                if (meusJogadores.get(i) != null && meusJogadores.get(i).getIdentificador() == meusJogadores.get(j).getIdentificador()) {
+                    error.setMessage("Não pode haver jogadores com o mesmo ID");
+                    return error;
+                }
             }
         }
         setJogadorActual(0);
