@@ -34,6 +34,21 @@ public class GameManager {
     public GameManager() {
     }
 
+    boolean existeDuplicado(String[][] playersInfo) {
+        for (int i = 0; i < playersInfo.length; i++) {
+            for (int j = i + 1; j < playersInfo.length; j++) {
+                try {
+                    if (Integer.parseInt(playersInfo[i][0]) == Integer.parseInt(playersInfo[j][0])) {
+                        return true;
+                    }
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
     HashMap<Character, Especies> minhasEspecies = new HashMap<>();
     HashMap<Character, String> minhasVelocidadePorIdEspecies = new HashMap<>();
     HashMap<Character, String> perdaEnergiaPorIdEspecies = new HashMap<>();
@@ -206,6 +221,10 @@ public class GameManager {
         int contadorTarzan = 0;
         InitializationError error = new InitializationError();
         setTamanhoMapa(jungleSize);
+        if (existeDuplicado(playersInfo)) {
+            error.setMessage("Não Podemos Ter Jogadores Com ID Iguais");
+            return error;
+        }
         if (playersInfo.length < 2 || playersInfo.length > 4) {
             error.setMessage("Não Podemos Ter Menos de 2 Jogadores, Nem Mais de 4");
             return error;
