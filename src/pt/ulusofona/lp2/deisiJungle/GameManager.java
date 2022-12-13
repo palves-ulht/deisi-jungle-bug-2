@@ -197,14 +197,19 @@ public class GameManager {
             return secondFunction;
         }
         for (String[] value : foodsInfo) {
-            if (value[0].charAt(0) != 'a' && value[0].charAt(0) != 'b' && value[0].charAt(0) != 'e' && value[0].charAt(0) != 'c' && value[0].charAt(0) != 'a') {
+            if (value[0].charAt(0) != 'b' && value[0].charAt(0) != 'e' && value[0].charAt(0) != 'a' && value[0].charAt(0) != 'c' && value[0].charAt(0) != 'm') {
                 error.setMessage("O id do alimento tem que ser um dos que foi retornado pela função getFoodTypes()");
                 return error;
             }
         }
         for (String[] strings : foodsInfo) {
-            if (Integer.parseInt(strings[1]) <= 1 && Integer.parseInt(strings[1]) >= tamanhoMapa) {
-                error.setMessage("Os alimentos têm que estar posicionados dentro dos limites do terreno");
+            try {
+                if (Integer.parseInt(strings[1]) <= 1 && Integer.parseInt(strings[1]) >= tamanhoMapa) {
+                    error.setMessage("Os alimentos têm que estar posicionados dentro dos limites do terreno");
+                    return error;
+                }
+            } catch (Exception e) {
+                error.setMessage("String fora do formato");
                 return error;
             }
         }
