@@ -204,7 +204,7 @@ public class GameManager {
         }
         for (String[] strings : foodsInfo) {
             try {
-                if (Integer.parseInt(strings[1]) <= 1 && Integer.parseInt(strings[1]) >= tamanhoMapa) {
+                if (Integer.parseInt(strings[1]) <= 1 || Integer.parseInt(strings[1]) >= tamanhoMapa) {
                     error.setMessage("Os alimentos têm que estar posicionados dentro dos limites do terreno");
                     return error;
                 }
@@ -384,31 +384,22 @@ public class GameManager {
                 for (int cont = 0; cont < nrPositions; cont++) {
                     if (meuJogador.getIdEspecie() == 'E') {
                         consumo += 4;
+                        ganhoEnergia = 10;
                     } else if (meuJogador.getIdEspecie() == 'L') {
                         consumo += 2;
+                        ganhoEnergia = 10;
                     } else if (meuJogador.getIdEspecie() == 'T') {
                         consumo += 1;
+                        ganhoEnergia = 5;
                     } else if (meuJogador.getIdEspecie() == 'P') {
                         consumo += 4;
+                        ganhoEnergia = 50;
                     } else if (meuJogador.getIdEspecie() == 'Z') {
                         consumo += 2;
+                        ganhoEnergia = 20;
                     }
                 }
-                if (meuJogador.getIdEspecie() == 'E') {
-                    ganhoEnergia = 10;
-                }
-                if (meuJogador.getIdEspecie() == 'L') {
-                    ganhoEnergia = 10;
-                }
-                if (meuJogador.getIdEspecie() == 'T') {
-                    ganhoEnergia = 5;
-                }
-                if (meuJogador.getIdEspecie() == 'P') {
-                    ganhoEnergia = 50;
-                }
-                if (meuJogador.getIdEspecie() == 'Z') {
-                    ganhoEnergia = 20;
-                }
+                break;
             }
         }
 
