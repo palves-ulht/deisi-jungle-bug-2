@@ -7,6 +7,15 @@ public class Player extends MeuJogador {
     private String ganhoEnergiaEmDescanso;
     private String velocidade;
 
+    void mover(int nrSquares, Player meuJogador, int jogadorActual) {
+        int contador = 0;
+        if (meuJogador.getIdentificador() == jogadorActual) {
+            int position = nrSquares + meuJogador.getPosicaoActual();
+            if (position >= 1) {
+                meuJogador.setPosicaoActual(nrSquares);
+            }
+        }
+    }
     public String getConsumoEnergia() {
         return consumoEnergia;
     }

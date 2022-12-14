@@ -60,9 +60,7 @@ public class GameManager {
     ArrayList<Player> meusJogadores = new ArrayList<>();
 
     public String[][] getSpecies() {
-
         String[][] especies = new String[5][7];
-
         especies[0][0] = "E";
         especies[0][1] = "Elefante";
         especies[0][2] = "elephant.png";
@@ -70,16 +68,13 @@ public class GameManager {
         especies[0][4] = "4";
         especies[0][5] = "10";
         especies[0][6] = "1..6";
-
         Especies especies1 = new Especies();
         especies1.construtorSetando(especies[0][0].charAt(0), especies[0][1], Integer.parseInt(especies[0][3]));
-
         minhasEspecies.put('E', especies1);
-        minhasVelocidadePorIdEspecies.put(especies[0][0].charAt(0), especies[0][6]);
-        minhasEnergiaPorIdEspecies.put(especies[0][0].charAt(0), especies[0][3]);
+        minhasVelocidadePorIdEspecies.put('E', especies[0][6]);
+        minhasEnergiaPorIdEspecies.put('E', especies[0][3]);
         perdaEnergiaPorIdEspecies.put('E', especies[0][4]);
         ganhoEnergiaPorIdEspecie.put('E', especies[0][5]);
-
         especies[1][0] = "L";
         especies[1][1] = "Leão";
         especies[1][2] = "lion.png";
@@ -89,13 +84,11 @@ public class GameManager {
         especies[1][6] = "4..6";
         Especies especies2 = new Especies();
         especies2.construtorSetando(especies[1][0].charAt(0), especies[1][1], Integer.parseInt(especies[1][3]));
-
         minhasEspecies.put('L', especies2);
-        minhasVelocidadePorIdEspecies.put(especies[1][0].charAt(0), especies[1][6]);
-        minhasEnergiaPorIdEspecies.put(especies[1][0].charAt(0), especies[1][3]);
+        minhasVelocidadePorIdEspecies.put('L', especies[1][6]);
+        minhasEnergiaPorIdEspecies.put('L', especies[1][3]);
         perdaEnergiaPorIdEspecies.put('L', especies[1][4]);
         ganhoEnergiaPorIdEspecie.put('L', especies[1][5]);
-
         especies[2][0] = "T";
         especies[2][1] = "Tartaruga";
         especies[2][2] = "turtle.png";
@@ -105,13 +98,11 @@ public class GameManager {
         especies[2][6] = "1..3";
         Especies especies3 = new Especies();
         especies3.construtorSetando(especies[2][0].charAt(0), especies[2][1], Integer.parseInt(especies[2][3]));
-
         minhasEspecies.put('T', especies3);
-        minhasVelocidadePorIdEspecies.put(especies[2][0].charAt(0), especies[2][6]);
-        minhasEnergiaPorIdEspecies.put(especies[2][0].charAt(0), especies[2][3]);
+        minhasVelocidadePorIdEspecies.put('T', especies[2][6]);
+        minhasEnergiaPorIdEspecies.put('T', especies[2][3]);
         perdaEnergiaPorIdEspecies.put('T', especies[2][4]);
         ganhoEnergiaPorIdEspecie.put('T', especies[2][5]);
-
         especies[3][0] = "P";
         especies[3][1] = "Passaro";
         especies[3][2] = "bird.png";
@@ -121,13 +112,11 @@ public class GameManager {
         especies[3][6] = "5..6";
         Especies especies4 = new Especies();
         especies4.construtorSetando(especies[3][0].charAt(0), especies[3][1], Integer.parseInt(especies[3][3]));
-
         minhasEspecies.put('P', especies4);
-        minhasVelocidadePorIdEspecies.put(especies[3][0].charAt(0), especies[3][6]);
-        minhasEnergiaPorIdEspecies.put(especies[3][0].charAt(0), especies[3][3]);
+        minhasVelocidadePorIdEspecies.put('P', especies[3][6]);
+        minhasEnergiaPorIdEspecies.put('P', especies[3][3]);
         perdaEnergiaPorIdEspecies.put('P', especies[3][4]);
         ganhoEnergiaPorIdEspecie.put('P', especies[3][5]);
-
         especies[4][0] = "Z";
         especies[4][1] = "Tarzan";
         especies[4][2] = "tarzan.png";
@@ -137,13 +126,11 @@ public class GameManager {
         especies[4][6] = "1..6";
         Especies especies5 = new Especies();
         especies5.construtorSetando(especies[4][0].charAt(0), especies[4][1], Integer.parseInt(especies[4][3]));
-
         minhasEspecies.put('Z', especies5);
-        minhasVelocidadePorIdEspecies.put(especies[4][0].charAt(0), especies[4][6]);
-        minhasEnergiaPorIdEspecies.put(especies[4][0].charAt(0), especies[4][3]);
+        minhasVelocidadePorIdEspecies.put('Z', especies[4][6]);
+        minhasEnergiaPorIdEspecies.put('Z', especies[4][3]);
         perdaEnergiaPorIdEspecies.put('Z', especies[4][4]);
         ganhoEnergiaPorIdEspecie.put('Z', especies[4][5]);
-
         return especies;
     }
 
@@ -299,6 +286,7 @@ public class GameManager {
         if (squareNr <= 0 && squareNr > tamanhoMapa) {
             return null;
         }
+
         String[] arrayRetornar = new String[3];
 
         if (squareNr < tamanhoMapa) {
@@ -393,110 +381,63 @@ public class GameManager {
     }
 
     public String[][] getPlayersInfo() {
+        int contador = 0;
         String[][] arrayRetornar = new String[meusJogadores.size()][5];
-        for (int i = 0; i < meusJogadores.size(); i++) {
-            arrayRetornar[i][0] = String.valueOf(meusJogadores.get(i).getIdentificador());
-            arrayRetornar[i][1] = meusJogadores.get(i).getNome();
-            arrayRetornar[i][2] = String.valueOf(meusJogadores.get(i).getIdEspecie());
-            arrayRetornar[i][3] = String.valueOf(meusJogadores.get(i).getEnergiaInicial());
-            arrayRetornar[i][4] = meusJogadores.get(i).getVelocidade();
+        for (Player jogador : meusJogadores) {
+            arrayRetornar[contador][0] = String.valueOf(jogador.getIdentificador());
+            arrayRetornar[contador][1] = jogador.getNome();
+            arrayRetornar[contador][2] = String.valueOf(jogador.getIdEspecie());
+            arrayRetornar[contador][3] = String.valueOf(jogador.getEnergiaInicial());
+            arrayRetornar[contador][4] = jogador.getVelocidade();
+            contador++;
         }
         return arrayRetornar;
     }
 
+    void movimentoValido(int nrSquares) {
+        int contador = 0;
+        MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
+        MovementResult validMoviment = new MovementResult(movimentoValido, "");
+        for (Player meusJogadore : meusJogadores) {
+            if (meusJogadore.getIdentificador() == getJogadorActual()) {
+                if (nrSquares == 0) {
+                    int x = Integer.parseInt(meusJogadore.getGanhoEnergiaEmDescanso());
+                    meusJogadore.setEnergiaInicial(meusJogadore.getEnergiaInicial() + x);
+                } else {
+                    meusJogadore.mover(nrSquares, meusJogadore, getJogadorActual());
+                }
+                if ((contador + 1) == meusJogadores.size()) {
+                    setJogadorActual(0);
+                } else {
+                    setJogadorActual(contador + 1);
+                }
+                break;
+            }
+            contador++;
+        }
+    }
+
     public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
-
         int consumo = Integer.parseInt(getCurrentPlayerEnergyInfo(nrSquares)[0]);
-        int ganho = Integer.parseInt(getCurrentPlayerEnergyInfo(nrSquares)[1]);
-
         MovementResultCode movimentoInvalido = MovementResultCode.INVALID_MOVEMENT;
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
         MovementResultCode alimento = MovementResultCode.CAUGHT_FOOD;
         MovementResultCode energia = MovementResultCode.NO_ENERGY;
-
         MovementResult invalidMoviment = new MovementResult(movimentoInvalido, "");
         MovementResult validMoviment = new MovementResult(movimentoValido, "");
         MovementResult food = new MovementResult(alimento, "");
         MovementResult energy = new MovementResult(energia, "");
-
         if (!bypassValidations) {
             if (nrSquares >= -6 && nrSquares <= 6) {
-                for (int i = 0; i < meusJogadores.size(); i++) {
-                    int posicaoActual = meusJogadores.get(i).getPosicaoActual() + nrSquares;
-                    if (meusJogadores.get(i).getIdentificador() == getJogadorActual()) {
-                        if (nrSquares < 0) {
-                            if (posicaoActual < 1) {
-                                return invalidMoviment;
-                            } else {
-                                if (meusJogadores.get(i).getEnergiaInicial() <= nrSquares) {
-                                    return energy;
-                                } else {
-                                    meusJogadores.get(i).setPosicaoActual(nrSquares);
-                                    meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() - consumo);
-                                }
-                            }
-                        } else if (nrSquares > 0) {
-                            if (posicaoActual > tamanhoMapa) {
-                                return invalidMoviment;
-                            } else {
-                                if (meusJogadores.get(i).getEnergiaInicial() <= nrSquares) {
-                                    return energy;
-                                } else {
-                                    meusJogadores.get(i).setPosicaoActual(nrSquares);
-                                    meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() - consumo);
-                                }
-                            }
-                        } else {
-                            meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() + ganho);
-                        }
-                        if ((i + 1) == meusJogadores.size()) {
-                            setJogadorActual(0);
-                        } else {
-                            setJogadorActual(i + 1);
-                        }
-                        return validMoviment;
-                    }
-                }
+                movimentoValido(nrSquares);
+                return validMoviment;
+            } else {
+                return invalidMoviment;
             }
         } else {
-            for (int i = 0; i < meusJogadores.size(); i++) {
-                int posicaoActual = meusJogadores.get(i).getPosicaoActual() + nrSquares;
-                if (meusJogadores.get(i).getIdentificador() == getJogadorActual()) {
-                    if (nrSquares < 0) {
-                        if (posicaoActual < 1) {
-                            return invalidMoviment;
-                        } else {
-                            if (meusJogadores.get(i).getEnergiaInicial() <= nrSquares) {
-                                return energy;
-                            } else {
-                                meusJogadores.get(i).setPosicaoActual(nrSquares);
-                                meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() - consumo);
-                            }
-                        }
-                    } else if (nrSquares > 0) {
-                        if (posicaoActual > tamanhoMapa) {
-                            return invalidMoviment;
-                        } else {
-                            if (meusJogadores.get(i).getEnergiaInicial() <= nrSquares) {
-                                return energy;
-                            } else {
-                                meusJogadores.get(i).setPosicaoActual(nrSquares);
-                                meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() - consumo);
-                            }
-                        }
-                    } else {
-                        meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() + ganho);
-                    }
-                    if ((i + 1) == meusJogadores.size()) {
-                        setJogadorActual(0);
-                    } else {
-                        setJogadorActual(i + 1);
-                    }
-                    return validMoviment;
-                }
-            }
+            movimentoValido(nrSquares);
+            return validMoviment;
         }
-        return validMoviment;
     }
 
     public String[] getWinnerInfo() {
