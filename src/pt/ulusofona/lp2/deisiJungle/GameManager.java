@@ -374,24 +374,23 @@ public class GameManager {
     }
 
     public String[] getCurrentPlayerEnergyInfo(int nrPositions) {
-
         String[] valueReturn = new String[2];
         int consumo = 0;
         int ganhoEnergia = 0;
-
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                consumo = Integer.parseInt(meuJogador.getConsumoEnergia()) * nrPositions;
-                ganhoEnergia = Integer.parseInt(ganhoEnergiaPorIdEspecie.get(meuJogador.getIdEspecie()));
+                if (meuJogador.getConsumoEnergia() != null) {
+                    consumo = Integer.parseInt(meuJogador.getConsumoEnergia()) * nrPositions;
+                }
+                if (ganhoEnergiaPorIdEspecie.get(meuJogador.getIdEspecie()) != null) {
+                    ganhoEnergia = Integer.parseInt(ganhoEnergiaPorIdEspecie.get(meuJogador.getIdEspecie()));
+                }
                 break;
             }
         }
-
         valueReturn[0] = String.valueOf(consumo);
         valueReturn[1] = String.valueOf(ganhoEnergia);
-
         return valueReturn;
-
     }
 
     public String[][] getPlayersInfo() {
