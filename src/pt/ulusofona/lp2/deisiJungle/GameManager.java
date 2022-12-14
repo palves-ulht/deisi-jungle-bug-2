@@ -385,7 +385,6 @@ public class GameManager {
                 if (ganhoEnergiaPorIdEspecie.get(meuJogador.getIdEspecie()) != null) {
                     ganhoEnergia = Integer.parseInt(ganhoEnergiaPorIdEspecie.get(meuJogador.getIdEspecie()));
                 }
-                break;
             }
         }
         valueReturn[0] = String.valueOf(consumo);
@@ -408,11 +407,6 @@ public class GameManager {
     }
 
     public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
-
-        do {
-            valorParaColgumelos = numerosAleatorios.nextInt(50);
-        } while (valorParaColgumelos <= 10);
-
 
         MovementResultCode movimentoInvalido = MovementResultCode.INVALID_MOVEMENT;
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
@@ -499,10 +493,7 @@ public class GameManager {
                 }
             }
         }
-
-        MovementResultCode m = MovementResultCode.NO_ENERGY;
-        return new MovementResult(m, "");
-
+        return validMoviment;
     }
 
     public String[] getWinnerInfo() {
