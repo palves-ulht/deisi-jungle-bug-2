@@ -393,15 +393,13 @@ public class GameManager {
     }
 
     public String[][] getPlayersInfo() {
-        int contador = 0;
         String[][] arrayRetornar = new String[meusJogadores.size()][5];
-        for (Player jogador : meusJogadores) {
-            arrayRetornar[contador][0] = String.valueOf(jogador.getIdentificador());
-            arrayRetornar[contador][1] = jogador.getNome();
-            arrayRetornar[contador][2] = String.valueOf(jogador.getIdEspecie());
-            arrayRetornar[contador][3] = String.valueOf(jogador.getEnergiaInicial());
-            arrayRetornar[contador][4] = jogador.getVelocidade();
-            contador++;
+        for (int i = 0; i < meusJogadores.size(); i++) {
+            arrayRetornar[i][0] = String.valueOf(meusJogadores.get(i).getIdentificador());
+            arrayRetornar[i][1] = meusJogadores.get(i).getNome();
+            arrayRetornar[i][2] = String.valueOf(meusJogadores.get(i).getIdEspecie());
+            arrayRetornar[i][3] = String.valueOf(meusJogadores.get(i).getEnergiaInicial());
+            arrayRetornar[i][4] = meusJogadores.get(i).getVelocidade();
         }
         return arrayRetornar;
     }
