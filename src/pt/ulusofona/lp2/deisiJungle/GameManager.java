@@ -381,24 +381,8 @@ public class GameManager {
 
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                for (int cont = 0; cont < nrPositions; cont++) {
-                    if (meuJogador.getIdEspecie() == 'E') {
-                        consumo += 4;
-                        ganhoEnergia = 10;
-                    } else if (meuJogador.getIdEspecie() == 'L') {
-                        consumo += 2;
-                        ganhoEnergia = 10;
-                    } else if (meuJogador.getIdEspecie() == 'T') {
-                        consumo += 1;
-                        ganhoEnergia = 5;
-                    } else if (meuJogador.getIdEspecie() == 'P') {
-                        consumo += 4;
-                        ganhoEnergia = 50;
-                    } else if (meuJogador.getIdEspecie() == 'Z') {
-                        consumo += 2;
-                        ganhoEnergia = 20;
-                    }
-                }
+                consumo = Integer.parseInt(meuJogador.getConsumoEnergia()) * nrPositions;
+                ganhoEnergia = Integer.parseInt(ganhoEnergiaPorIdEspecie.get(meuJogador.getIdEspecie()));
                 break;
             }
         }
