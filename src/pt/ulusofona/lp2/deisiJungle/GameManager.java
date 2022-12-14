@@ -401,10 +401,16 @@ public class GameManager {
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getIdentificador() == getJogadorActual()) {
                 if (nrSquares == 0) {
-                    int x = Integer.parseInt(meusJogadore.getGanhoEnergiaEmDescanso());
-                    meusJogadore.setEnergiaInicial(meusJogadore.getEnergiaInicial() + x);
+                    if(meusJogadore.getGanhoEnergiaEmDescanso() != null) {
+                        int x = Integer.parseInt(meusJogadore.getGanhoEnergiaEmDescanso());
+                        meusJogadore.setEnergiaInicial(meusJogadore.getEnergiaInicial() + x);
+                    }
                 } else {
                     meusJogadore.mover(nrSquares, meusJogadore, getJogadorActual());
+                    if(meusJogadore.getConsumoEnergia() != null) {
+                        int x = Integer.parseInt(meusJogadore.getConsumoEnergia());
+                        meusJogadore.setEnergiaInicial(meusJogadore.getEnergiaInicial() - x);
+                    }
                 }
                 if ((contador + 1) == meusJogadores.size()) {
                     setJogadorActual(0);
