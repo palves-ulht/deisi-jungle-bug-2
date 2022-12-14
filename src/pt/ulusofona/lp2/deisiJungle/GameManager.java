@@ -408,6 +408,9 @@ public class GameManager {
 
     public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
 
+        int consumo = Integer.parseInt(getCurrentPlayerEnergyInfo(nrSquares)[0]);
+        int ganho = Integer.parseInt(getCurrentPlayerEnergyInfo(nrSquares)[1]);
+
         MovementResultCode movimentoInvalido = MovementResultCode.INVALID_MOVEMENT;
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
         MovementResultCode alimento = MovementResultCode.CAUGHT_FOOD;
@@ -421,75 +424,77 @@ public class GameManager {
         if (!bypassValidations) {
             if (nrSquares >= -6 && nrSquares <= 6) {
                 for (int i = 0; i < meusJogadores.size(); i++) {
-                    if ((meusJogadores.get(i).getPosicaoActual() + nrSquares) >= 1 && (meusJogadores.get(i).getPosicaoActual() + nrSquares) < tamanhoMapa) {
-                        if (meusJogadores.get(i).getIdentificador() == getJogadorActual()) {
-                            meusJogadores.get(i).setPosicaoActual(nrSquares);
-                            if (nrSquares == 0) {
-                                int energiaActual = meusJogadores.get(i).getEnergiaInicial() + Integer.parseInt(meusJogadores.get(i).getGanhoEnergiaEmDescanso());
-                                meusJogadores.get(i).setEnergiaInicial(energiaActual);
-                            }
-
-                            if (meusJogadores.get(i).getEnergiaInicial() <= 0) {
-                                return energy;
-                            }
-
-                            if (meuMapa.get(meusJogadores.get(i).getPosicaoActual()) != null) {
-                                if (meuMapa.get(meusJogadores.get(i).getPosicaoActual()).equals("b")) {
-                                    meuMapa.put(meusJogadores.get(i).getPosicaoActual(), null);
-                                } else if (meuMapa.get(meusJogadores.get(i).getPosicaoActual()).equals("e")) {
-                                    if (meusJogadores.get(i).getIdEspecie() == 'E' || meusJogadores.get(i).getIdEspecie() == 'T' || meusJogadores.get(i).getIdEspecie() == 'Z') {
-                                        meusJogadores.get(i).setEnergiaInicial((meusJogadores.get(i).getEnergiaInicial() + 20));
-                                    } else {
-                                        meusJogadores.get(i).setEnergiaInicial((meusJogadores.get(i).getEnergiaInicial() - 20));
-                                    }
-                                    meuMapa.put(meusJogadores.get(i).getPosicaoActual(), null);
-                                } else if (meuMapa.get(meusJogadores.get(i).getPosicaoActual()).equals("a")) {
-                                    if (meusJogadores.get(i).getIdEspecie() == 'L' || meusJogadores.get(i).getIdEspecie() == 'P' || meusJogadores.get(i).getIdEspecie() == 'E') {
-                                        meusJogadores.get(i).setEnergiaInicial((meusJogadores.get(i).getEnergiaInicial() + 15));
-                                    } else {
-                                        meusJogadores.get(i).setEnergiaInicial((int) (meusJogadores.get(i).getEnergiaInicial() + (meusJogadores.get(i).getEnergiaInicial() * (0.2))));
-                                    }
-                                    meuMapa.put(meusJogadores.get(i).getPosicaoActual(), null);
-                                } else if (meuMapa.get(meusJogadores.get(i).getPosicaoActual()).equals("c")) {
-                                    if (jogadas <= 12) {
-                                        if (meusJogadores.get(i).getIdEspecie() == 'L' || meusJogadores.get(i).getIdEspecie() == 'Z' || meusJogadores.get(i).getIdEspecie() == 'T' || meusJogadores.get(i).getIdEspecie() == 'P') {
-                                            meusJogadores.get(i).setEnergiaInicial((meusJogadores.get(i).getEnergiaInicial() + 50));
-                                            meuMapa.put(meusJogadores.get(i).getPosicaoActual(), null);
-                                        }
-                                    } else {
-                                        if (meusJogadores.get(i).getIdEspecie() == 'L' || meusJogadores.get(i).getIdEspecie() == 'Z' || meusJogadores.get(i).getIdEspecie() == 'T' || meusJogadores.get(i).getIdEspecie() == 'P') {
-                                            meusJogadores.get(i).setEnergiaInicial((meusJogadores.get(i).getEnergiaInicial() / 2));
-                                            meuMapa.put(meusJogadores.get(i).getPosicaoActual(), null);
-                                        }
-                                    }
-                                } else if (meuMapa.get(meusJogadores.get(i).getPosicaoActual()).equals("m")) {
-                                    if (nrSquares % 2 == 0) {
-                                        meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() + (meusJogadores.get(i).getEnergiaInicial() * (valorParaColgumelos / 100)));
-                                    } else {
-                                        meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() - (meusJogadores.get(i).getEnergiaInicial() * (valorParaColgumelos / 100)));
-                                    }
-
-                                    meuMapa.put(meusJogadores.get(i).getPosicaoActual(), null);
+                    int posicaoActual = meusJogadores.get(i).getPosicaoActual() + nrSquares;
+                    if (meusJogadores.get(i).getIdentificador() == getJogadorActual()) {
+                        if (nrSquares < 0) {
+                            if (posicaoActual < 1) {
+                                return invalidMoviment;
+                            } else {
+                                if (meusJogadores.get(i).getEnergiaInicial() <= nrSquares) {
+                                    return energy;
+                                } else {
+                                    meusJogadores.get(i).setPosicaoActual(nrSquares);
+                                    meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() - consumo);
                                 }
                             }
-
-                            int energiaActual = meusJogadores.get(i).getEnergiaInicial() - Integer.parseInt(meusJogadores.get(i).getConsumoEnergia()) * nrSquares;
-                            meusJogadores.get(i).setEnergiaInicial(energiaActual);
-
-                            if ((i + 1) == meusJogadores.size()) {
-                                setJogadorActual(0);
+                        } else if (nrSquares > 0) {
+                            if (posicaoActual > tamanhoMapa) {
+                                return invalidMoviment;
                             } else {
-                                setJogadorActual(i + 1);
+                                if (meusJogadores.get(i).getEnergiaInicial() <= nrSquares) {
+                                    return energy;
+                                } else {
+                                    meusJogadores.get(i).setPosicaoActual(nrSquares);
+                                    meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() - consumo);
+                                }
                             }
-                            jogadas++;
-                            return validMoviment;
+                        } else {
+                            meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() + ganho);
                         }
-
-                    } else if ((meusJogadores.get(i).getPosicaoActual() + nrSquares) == tamanhoMapa) {
-                        meusJogadores.get(i).setPosicaoActual(tamanhoMapa);
-                    } else {
-                        return invalidMoviment;
+                        if ((i + 1) == meusJogadores.size()) {
+                            setJogadorActual(0);
+                        } else {
+                            setJogadorActual(i + 1);
+                        }
+                        return validMoviment;
                     }
+                }
+            }
+        } else {
+            for (int i = 0; i < meusJogadores.size(); i++) {
+                int posicaoActual = meusJogadores.get(i).getPosicaoActual() + nrSquares;
+                if (meusJogadores.get(i).getIdentificador() == getJogadorActual()) {
+                    if (nrSquares < 0) {
+                        if (posicaoActual < 1) {
+                            return invalidMoviment;
+                        } else {
+                            if (meusJogadores.get(i).getEnergiaInicial() <= nrSquares) {
+                                return energy;
+                            } else {
+                                meusJogadores.get(i).setPosicaoActual(nrSquares);
+                                meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() - consumo);
+                            }
+                        }
+                    } else if (nrSquares > 0) {
+                        if (posicaoActual > tamanhoMapa) {
+                            return invalidMoviment;
+                        } else {
+                            if (meusJogadores.get(i).getEnergiaInicial() <= nrSquares) {
+                                return energy;
+                            } else {
+                                meusJogadores.get(i).setPosicaoActual(nrSquares);
+                                meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() - consumo);
+                            }
+                        }
+                    } else {
+                        meusJogadores.get(i).setEnergiaInicial(meusJogadores.get(i).getEnergiaInicial() + ganho);
+                    }
+                    if ((i + 1) == meusJogadores.size()) {
+                        setJogadorActual(0);
+                    } else {
+                        setJogadorActual(i + 1);
+                    }
+                    return validMoviment;
                 }
             }
         }
