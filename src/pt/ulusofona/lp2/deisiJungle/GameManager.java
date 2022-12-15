@@ -188,7 +188,7 @@ public class GameManager {
         return null;
     }
 
-    int EnergiaRetornar(Player jogador) {
+    int energiaRetornar(Player jogador) {
         if (jogador.getIdEspecie() == 'E') {
             return 180;
         } else if (jogador.getIdEspecie() == 'L') {
@@ -201,6 +201,7 @@ public class GameManager {
             return 180;
         }
     }
+
     int perdaEnergia(Player jogador) {
         if (jogador.getIdEspecie() == 'E') {
             return 4;
@@ -214,6 +215,7 @@ public class GameManager {
             return 2;
         }
     }
+
     int ganhoEnergia(Player jogador) {
         if (jogador.getIdEspecie() == 'E') {
             return 10;
@@ -227,6 +229,7 @@ public class GameManager {
             return 20;
         }
     }
+
     String velocidades(Player jogador) {
         if (jogador.getIdEspecie() == 'E') {
             return "1..6";
@@ -268,7 +271,7 @@ public class GameManager {
             players.setNome(jogador[1]);
             players.setIdEspecie(jogador[2].charAt(0));
 
-            players.setEnergiaInicial(EnergiaRetornar(players));
+            players.setEnergiaInicial(energiaRetornar(players));
             players.setConsumoEnergia(String.valueOf(perdaEnergia(players)));
             players.setGanhoEnergiaEmDescanso(String.valueOf(ganhoEnergia(players)));
             players.setPosicaoActual(1);
@@ -405,28 +408,8 @@ public class GameManager {
         int ganhoEnergia = 0;
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                for (int i = 1; i <= nrPositions; i++) {
-                    if (meuJogador.getIdEspecie() == 'E') {
-                        consumo += 4;
-                        ganhoEnergia = 10;
-                    } else if (meuJogador.getIdEspecie() == 'L') {
-                        consumo += 2;
-                        ganhoEnergia = 10;
-
-                    } else if (meuJogador.getIdEspecie() == 'T') {
-                        consumo += 1;
-                        ganhoEnergia = 5;
-
-                    } else if (meuJogador.getIdEspecie() == 'Z') {
-                        consumo += 2;
-                        ganhoEnergia = 20;
-
-                    } else if (meuJogador.getIdEspecie() == 'P') {
-                        consumo += 4;
-                        ganhoEnergia = 50;
-
-                    }
-                }
+                consumo = Integer.parseInt(meuJogador.getConsumoEnergia()) * nrPositions;
+                ganhoEnergia = Integer.parseInt(meuJogador.getGanhoEnergiaEmDescanso());
                 break;
             }
         }
@@ -451,8 +434,6 @@ public class GameManager {
 
     void movimentoValido(int nrSquares) {
         int contador = 0;
-        MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
-        MovementResult validMoviment = new MovementResult(movimentoValido, "");
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getIdentificador() == getJogadorActual()) {
                 if (nrSquares == 0) {
