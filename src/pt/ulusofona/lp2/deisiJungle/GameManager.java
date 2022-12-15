@@ -50,12 +50,6 @@ public class GameManager {
     }
 
     HashMap<Character, Especies> minhasEspecies = new HashMap<>();
-    HashMap<Character, String> minhasVelocidadePorIdEspecies = new HashMap<>();
-    HashMap<Character, String> perdaEnergiaPorIdEspecies = new HashMap<>();
-    HashMap<Character, String> ganhoEnergiaPorIdEspecie = new HashMap<>();
-
-    HashMap<Character, String> minhasEnergiaPorIdEspecies = new HashMap<>();
-
     HashMap<Integer, Player> minhaListaPlayers = new HashMap<>();
     ArrayList<Player> meusJogadores = new ArrayList<>();
 
@@ -184,6 +178,7 @@ public class GameManager {
                 error.setMessage("String fora do formato");
                 return error;
             }
+            meuMapa.put(Integer.parseInt(strings[1]), strings[0]);
         }
         return null;
     }
