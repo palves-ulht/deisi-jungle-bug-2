@@ -477,21 +477,15 @@ public class GameManager {
     }
 
     public String[] getWinnerInfo() {
-        String[] winner = new String[4];
-        int cont = 0;
+        String[] winner = new String[5];
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getPosicaoActual() >= getTamanhoMapa()) {
                 winner[0] = String.valueOf(meusJogadore.getIdentificador());
                 winner[1] = meusJogadore.getNome();
                 winner[2] = String.valueOf(meusJogadore.getIdEspecie());
                 winner[3] = String.valueOf(meusJogadore.getEnergiaInicial());
+                winner[4] = String.valueOf(meusJogadore.getVelocidade());
                 return winner;
-            } else {
-                cont++;
-                if (cont == meusJogadores.size()) {
-                    return null;
-                }
-
             }
         }
         return null;

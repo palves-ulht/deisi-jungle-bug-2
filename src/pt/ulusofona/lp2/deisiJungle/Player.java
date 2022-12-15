@@ -8,7 +8,6 @@ public class Player extends MeuJogador {
     private String velocidade;
 
     void mover(int nrSquares, Player meuJogador, int jogadorActual) {
-        int contador = 0;
         if (meuJogador.getIdentificador() == jogadorActual) {
             int position = nrSquares + meuJogador.getPosicaoActual();
             if (position >= 1) {
