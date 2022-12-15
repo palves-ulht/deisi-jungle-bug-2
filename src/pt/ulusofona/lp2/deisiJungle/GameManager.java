@@ -367,9 +367,31 @@ public class GameManager {
         int ganhoEnergia = 0;
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                consumo = 10;
-                ganhoEnergia = 10;
-                break;
+                if (meuJogador.getIdEspecie() == 'E') {
+                    consumo = 4 * nrPositions;
+                    ganhoEnergia = 10;
+                    break;
+                }
+                if (meuJogador.getIdEspecie() == 'L') {
+                    consumo = 2 * nrPositions;
+                    ganhoEnergia = 10;
+                    break;
+                }
+                if (meuJogador.getIdEspecie() == 'T') {
+                    consumo = nrPositions;
+                    ganhoEnergia = 5;
+                    break;
+                }
+                if (meuJogador.getIdEspecie() == 'Z') {
+                    consumo = 2 * nrPositions;
+                    ganhoEnergia = 20;
+                    break;
+                }
+                if (meuJogador.getIdEspecie() == 'P') {
+                    consumo = 4 * nrPositions;
+                    ganhoEnergia = 50;
+                    break;
+                }
             }
         }
         valueReturn[0] = String.valueOf(consumo);
