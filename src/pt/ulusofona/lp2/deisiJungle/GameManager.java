@@ -408,7 +408,7 @@ public class GameManager {
                 break;
             }
         }
-        valueReturn[0] = String.valueOf(consumo);
+        valueReturn[0] = String.valueOf(consumo).replace("-","");
         valueReturn[1] = String.valueOf(ganhoEnergia);
         return valueReturn;
     }
@@ -473,19 +473,20 @@ public class GameManager {
 
     public String[] getWinnerInfo() {
         String[] winner = new String[5];
-        for (Player meusJogadore : meusJogadores) {
-            if (meusJogadore.getPosicaoActual() >= getTamanhoMapa()) {
-                winner[0] = String.valueOf(meusJogadore.getIdentificador());
-                winner[1] = meusJogadore.getNome();
-                winner[2] = String.valueOf(meusJogadore.getIdEspecie());
-                winner[3] = String.valueOf(meusJogadore.getEnergiaInicial());
-                winner[4] = String.valueOf(meusJogadore.getVelocidade());
-                return winner;
+        for (int contaMapa = 0; contaMapa < getTamanhoMapa(); contaMapa++) {
+            for (Player meusJogadore : meusJogadores) {
+                if (meusJogadore.getPosicaoActual() >= getTamanhoMapa()) {
+                    winner[0] = String.valueOf(meusJogadore.getIdentificador());
+                    winner[1] = meusJogadore.getNome();
+                    winner[2] = String.valueOf(meusJogadore.getIdEspecie());
+                    winner[3] = String.valueOf(meusJogadore.getEnergiaInicial());
+                    winner[4] = String.valueOf(meusJogadore.getVelocidade());
+                    return winner;
+                }
             }
         }
         return null;
     }
-
 
     public ArrayList<String> getGameResults() {
         meusJogadores.sort(Comparator.comparingInt((Player::getPosicaoActual)).reversed());
