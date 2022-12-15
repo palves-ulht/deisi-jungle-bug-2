@@ -408,7 +408,7 @@ public class GameManager {
                 break;
             }
         }
-        valueReturn[0] = String.valueOf(consumo).replace("-","");
+        valueReturn[0] = String.valueOf(consumo).replace("-", "");
         valueReturn[1] = String.valueOf(ganhoEnergia);
         return valueReturn;
     }
@@ -427,7 +427,11 @@ public class GameManager {
         return arrayRetornar;
     }
 
-    void movimentoValido(int nrSquares) {
+    MovementResult movimentoValido(int nrSquares) {
+        MovementResultCode energia = MovementResultCode.NO_ENERGY;
+        MovementResult energy = new MovementResult(energia, "");
+        MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
+        MovementResult validMoviment = new MovementResult(movimentoValido, "");
         int contador = 0;
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getIdentificador() == getJogadorActual()) {
@@ -435,7 +439,14 @@ public class GameManager {
                     int x = Integer.parseInt(meusJogadore.getGanhoEnergiaEmDescanso());
                     meusJogadore.setEnergiaInicial(meusJogadore.getEnergiaInicial() + x);
                 } else {
-                    meusJogadore.mover(nrSquares, meusJogadore, getJogadorActual());
+                    if (meusJogadore.getEnergiaInicial() < nrSquares) {
+                        return energy;
+                    } else {
+                        meusJogadore.mover(nrSquares, meusJogadore, getJogadorActual());
+                        int consumo = Integer.parseInt(getCurrentPlayerEnergyInfo(nrSquares)[0]);
+                        int enerigaInicial = meusJogadore.getEnergiaInicial();
+                        meusJogadore.setEnergiaInicial(enerigaInicial-consumo);
+                    }
                 }
                 if ((contador + 1) == meusJogadores.size()) {
                     setJogadorActual(0);
@@ -446,6 +457,7 @@ public class GameManager {
             }
             contador++;
         }
+        return validMoviment;
     }
 
     public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
@@ -460,14 +472,12 @@ public class GameManager {
         MovementResult energy = new MovementResult(energia, "");
         if (!bypassValidations) {
             if (nrSquares >= -6 && nrSquares <= 6) {
-                movimentoValido(nrSquares);
-                return validMoviment;
+                return movimentoValido(nrSquares);
             } else {
                 return invalidMoviment;
             }
         } else {
-            movimentoValido(nrSquares);
-            return validMoviment;
+            return movimentoValido(nrSquares);
         }
     }
 
