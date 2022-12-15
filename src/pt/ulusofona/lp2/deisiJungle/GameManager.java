@@ -265,7 +265,6 @@ public class GameManager {
             }
             players.setNome(jogador[1]);
             players.setIdEspecie(jogador[2].charAt(0));
-
             players.setEnergiaInicial(energiaRetornar(players));
             players.setConsumoEnergia(String.valueOf(perdaEnergia(players)));
             players.setGanhoEnergiaEmDescanso(String.valueOf(ganhoEnergia(players)));
@@ -319,9 +318,6 @@ public class GameManager {
     }
 
     public String[] getSquareInfo(int squareNr) {
-        if (squareNr <= 0 && squareNr > tamanhoMapa) {
-            return null;
-        }
 
         String[] arrayRetornar = new String[3];
 
@@ -331,6 +327,7 @@ public class GameManager {
                 arrayRetornar[1] = "Vazio";
             } else if (squareNr == 1) {
                 arrayRetornar[0] = "blank.png";
+                arrayRetornar[1] = "Vazio";
                 for (int contador = 0; contador < meusJogadores.size(); contador++) {
                     if (contador == meusJogadores.size() - 1) {
                         arrayRetornar[2] += meusJogadores.get(contador).getIdentificador();
@@ -445,7 +442,7 @@ public class GameManager {
                         meusJogadore.mover(nrSquares, meusJogadore, getJogadorActual());
                         int consumo = Integer.parseInt(getCurrentPlayerEnergyInfo(nrSquares)[0]);
                         int enerigaInicial = meusJogadore.getEnergiaInicial();
-                        meusJogadore.setEnergiaInicial(enerigaInicial-consumo);
+                        meusJogadore.setEnergiaInicial(enerigaInicial - consumo);
                     }
                 }
                 if ((contador + 1) == meusJogadores.size()) {
