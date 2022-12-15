@@ -71,10 +71,7 @@ public class GameManager {
         Especies especies1 = new Especies();
         especies1.construtorSetando(especies[0][0].charAt(0), especies[0][1], Integer.parseInt(especies[0][3]));
         minhasEspecies.put('E', especies1);
-        minhasVelocidadePorIdEspecies.put('E', especies[0][6]);
-        minhasEnergiaPorIdEspecies.put('E', especies[0][3]);
-        perdaEnergiaPorIdEspecies.put('E', especies[0][4]);
-        ganhoEnergiaPorIdEspecie.put('E', especies[0][5]);
+
         especies[1][0] = "L";
         especies[1][1] = "Leão";
         especies[1][2] = "lion.png";
@@ -85,10 +82,7 @@ public class GameManager {
         Especies especies2 = new Especies();
         especies2.construtorSetando(especies[1][0].charAt(0), especies[1][1], Integer.parseInt(especies[1][3]));
         minhasEspecies.put('L', especies2);
-        minhasVelocidadePorIdEspecies.put('L', especies[1][6]);
-        minhasEnergiaPorIdEspecies.put('L', especies[1][3]);
-        perdaEnergiaPorIdEspecies.put('L', especies[1][4]);
-        ganhoEnergiaPorIdEspecie.put('L', especies[1][5]);
+
         especies[2][0] = "T";
         especies[2][1] = "Tartaruga";
         especies[2][2] = "turtle.png";
@@ -99,10 +93,7 @@ public class GameManager {
         Especies especies3 = new Especies();
         especies3.construtorSetando(especies[2][0].charAt(0), especies[2][1], Integer.parseInt(especies[2][3]));
         minhasEspecies.put('T', especies3);
-        minhasVelocidadePorIdEspecies.put('T', especies[2][6]);
-        minhasEnergiaPorIdEspecies.put('T', especies[2][3]);
-        perdaEnergiaPorIdEspecies.put('T', especies[2][4]);
-        ganhoEnergiaPorIdEspecie.put('T', especies[2][5]);
+
         especies[3][0] = "P";
         especies[3][1] = "Passaro";
         especies[3][2] = "bird.png";
@@ -113,10 +104,7 @@ public class GameManager {
         Especies especies4 = new Especies();
         especies4.construtorSetando(especies[3][0].charAt(0), especies[3][1], Integer.parseInt(especies[3][3]));
         minhasEspecies.put('P', especies4);
-        minhasVelocidadePorIdEspecies.put('P', especies[3][6]);
-        minhasEnergiaPorIdEspecies.put('P', especies[3][3]);
-        perdaEnergiaPorIdEspecies.put('P', especies[3][4]);
-        ganhoEnergiaPorIdEspecie.put('P', especies[3][5]);
+
         especies[4][0] = "Z";
         especies[4][1] = "Tarzan";
         especies[4][2] = "tarzan.png";
@@ -127,10 +115,7 @@ public class GameManager {
         Especies especies5 = new Especies();
         especies5.construtorSetando(especies[4][0].charAt(0), especies[4][1], Integer.parseInt(especies[4][3]));
         minhasEspecies.put('Z', especies5);
-        minhasVelocidadePorIdEspecies.put('Z', especies[4][6]);
-        minhasEnergiaPorIdEspecies.put('Z', especies[4][3]);
-        perdaEnergiaPorIdEspecies.put('Z', especies[4][4]);
-        ganhoEnergiaPorIdEspecie.put('Z', especies[4][5]);
+
         return especies;
     }
 
@@ -203,6 +188,59 @@ public class GameManager {
         return null;
     }
 
+    int EnergiaRetornar(Player jogador) {
+        if (jogador.getIdEspecie() == 'E') {
+            return 180;
+        } else if (jogador.getIdEspecie() == 'L') {
+            return 80;
+        } else if (jogador.getIdEspecie() == 'T') {
+            return 150;
+        } else if (jogador.getIdEspecie() == 'P') {
+            return 70;
+        } else {
+            return 180;
+        }
+    }
+    int perdaEnergia(Player jogador) {
+        if (jogador.getIdEspecie() == 'E') {
+            return 4;
+        } else if (jogador.getIdEspecie() == 'L') {
+            return 2;
+        } else if (jogador.getIdEspecie() == 'T') {
+            return 1;
+        } else if (jogador.getIdEspecie() == 'P') {
+            return 4;
+        } else {
+            return 2;
+        }
+    }
+    int ganhoEnergia(Player jogador) {
+        if (jogador.getIdEspecie() == 'E') {
+            return 10;
+        } else if (jogador.getIdEspecie() == 'L') {
+            return 10;
+        } else if (jogador.getIdEspecie() == 'T') {
+            return 5;
+        } else if (jogador.getIdEspecie() == 'P') {
+            return 50;
+        } else {
+            return 20;
+        }
+    }
+    String velocidades(Player jogador) {
+        if (jogador.getIdEspecie() == 'E') {
+            return "1..6";
+        } else if (jogador.getIdEspecie() == 'L') {
+            return "4..6";
+        } else if (jogador.getIdEspecie() == 'T') {
+            return "1..3";
+        } else if (jogador.getIdEspecie() == 'P') {
+            return "5..6";
+        } else {
+            return "1..6";
+        }
+    }
+
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
         int contadorTarzan = 0;
         InitializationError error = new InitializationError();
@@ -229,13 +267,13 @@ public class GameManager {
             }
             players.setNome(jogador[1]);
             players.setIdEspecie(jogador[2].charAt(0));
-            if (minhasEnergiaPorIdEspecies.get(jogador[2].charAt(0)) != null) {
-                players.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(jogador[2].charAt(0))));
-            }
-            players.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(jogador[2].charAt(0)));
-            players.setGanhoEnergiaEmDescanso(ganhoEnergiaPorIdEspecie.get(jogador[2].charAt(0)));
+
+            players.setEnergiaInicial(EnergiaRetornar(players));
+            players.setConsumoEnergia(String.valueOf(perdaEnergia(players)));
+            players.setGanhoEnergiaEmDescanso(String.valueOf(ganhoEnergia(players)));
             players.setPosicaoActual(1);
-            players.setVelocidade(minhasVelocidadePorIdEspecies.get(jogador[2].charAt(0)));
+            players.setVelocidade(velocidades(players));
+
             if (Integer.parseInt(jogador[0]) < 0) {
                 error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
                 return error;
@@ -367,31 +405,29 @@ public class GameManager {
         int ganhoEnergia = 0;
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                if (meuJogador.getIdEspecie() == 'E') {
-                    consumo = 4 * nrPositions;
-                    ganhoEnergia = 10;
-                    break;
+                for (int i = 1; i <= nrPositions; i++) {
+                    if (meuJogador.getIdEspecie() == 'E') {
+                        consumo += 4;
+                        ganhoEnergia = 10;
+                    } else if (meuJogador.getIdEspecie() == 'L') {
+                        consumo += 2;
+                        ganhoEnergia = 10;
+
+                    } else if (meuJogador.getIdEspecie() == 'T') {
+                        consumo += 1;
+                        ganhoEnergia = 5;
+
+                    } else if (meuJogador.getIdEspecie() == 'Z') {
+                        consumo += 2;
+                        ganhoEnergia = 20;
+
+                    } else if (meuJogador.getIdEspecie() == 'P') {
+                        consumo += 4;
+                        ganhoEnergia = 50;
+
+                    }
                 }
-                if (meuJogador.getIdEspecie() == 'L') {
-                    consumo = 2 * nrPositions;
-                    ganhoEnergia = 10;
-                    break;
-                }
-                if (meuJogador.getIdEspecie() == 'T') {
-                    consumo = nrPositions;
-                    ganhoEnergia = 5;
-                    break;
-                }
-                if (meuJogador.getIdEspecie() == 'Z') {
-                    consumo = 2 * nrPositions;
-                    ganhoEnergia = 20;
-                    break;
-                }
-                if (meuJogador.getIdEspecie() == 'P') {
-                    consumo = 4 * nrPositions;
-                    ganhoEnergia = 50;
-                    break;
-                }
+                break;
             }
         }
         valueReturn[0] = String.valueOf(consumo);
