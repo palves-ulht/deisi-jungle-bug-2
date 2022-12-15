@@ -400,9 +400,15 @@ public class GameManager {
         int ganhoEnergia = 0;
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                consumo = Integer.parseInt(meuJogador.getConsumoEnergia()) * nrPositions;
-                ganhoEnergia = Integer.parseInt(meuJogador.getGanhoEnergiaEmDescanso());
-                break;
+                if(meuJogador.getIdEspecie() == 'T'){
+                    consumo = 1;
+                    ganhoEnergia = Integer.parseInt(meuJogador.getGanhoEnergiaEmDescanso());
+                    break;
+                }else {
+                    consumo = Integer.parseInt(meuJogador.getConsumoEnergia()) * nrPositions;
+                    ganhoEnergia = Integer.parseInt(meuJogador.getGanhoEnergiaEmDescanso());
+                    break;
+                }
             }
         }
         valueReturn[0] = String.valueOf(consumo).replace("-", "");
@@ -471,7 +477,7 @@ public class GameManager {
             if (nrSquares >= -6 && nrSquares <= 6) {
                 return movimentoValido(nrSquares);
             } else {
-                return invalidMoviment;
+                return null;
             }
         } else {
             return movimentoValido(nrSquares);
