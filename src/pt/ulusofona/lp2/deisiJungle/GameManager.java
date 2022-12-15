@@ -178,62 +178,11 @@ public class GameManager {
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo, String[][] foodsInfo) {
         setTamanhoMapa(jungleSize);
-        int contadorTarzan = 0;
         InitializationError error = new InitializationError();
-        setTamanhoMapa(jungleSize);
-        if (existeDuplicado(playersInfo)) {
-            error.setMessage("Não Podemos Ter Jogadores Com ID Iguais");
-            return error;
+        InitializationError secondFunction = createInitialJungle(jungleSize, playersInfo);
+        if (secondFunction != null) {
+            return secondFunction;
         }
-        if (playersInfo.length < 2 || playersInfo.length > 4) {
-            error.setMessage("Não Podemos Ter Menos de 2 Jogadores, Nem Mais de 4");
-            return error;
-        }
-        if (jungleSize < playersInfo.length * 2) {
-            error.setMessage("O mapa tem de ter, pelo menos, duas posições por cada jogador que esteja em jogo.");
-            return error;
-        }
-        for (String[] jogador : playersInfo) {
-            Player players = new Player();
-            try {
-                players.setIdentificador(Integer.parseInt(jogador[0]));
-            } catch (Exception e) {
-                error.setMessage("Formato do ID Inesperado");
-                return error;
-            }
-            players.setNome(jogador[1]);
-            players.setIdEspecie(jogador[2].charAt(0));
-            if (minhasEnergiaPorIdEspecies.get(jogador[2].charAt(0)) != null) {
-                players.setEnergiaInicial(Integer.parseInt(minhasEnergiaPorIdEspecies.get(jogador[2].charAt(0))));
-            }
-            players.setConsumoEnergia(perdaEnergiaPorIdEspecies.get(jogador[2].charAt(0)));
-            players.setGanhoEnergiaEmDescanso(ganhoEnergiaPorIdEspecie.get(jogador[2].charAt(0)));
-            players.setPosicaoActual(1);
-            players.setVelocidade(minhasVelocidadePorIdEspecies.get(jogador[2].charAt(0)));
-            if (Integer.parseInt(jogador[0]) < 0) {
-                error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
-                return error;
-            }
-            if (jogador[1] == null || jogador[1].isEmpty()) {
-                error.setMessage("Os nomes dos jogadores. Não podem ser null nem estar vazios.");
-                return error;
-            }
-            if (jogador[2].charAt(0) != 'L' && jogador[2].charAt(0) != 'T' && jogador[2].charAt(0) != 'Z' && jogador[2].charAt(0) != 'E' && jogador[2].charAt(0) != 'P') {
-                error.setMessage("A espécie tem que ser uma das que foi retornada pela função getSpecies()");
-                return error;
-            }
-            if (players.getIdEspecie() == 'Z') {
-                contadorTarzan++;
-            }
-            if (contadorTarzan > 1) {
-                error.setMessage("Não pode existir mais de 1 Tarzan no Jogo");
-                return error;
-            }
-            minhaListaPlayers.put(Integer.parseInt(jogador[0]), players);
-            meusJogadores.add(players);
-            meusJogadores.sort(Comparator.comparing(MeuJogador::getIdentificador));
-        }
-        setJogadorActual(0);
         for (String[] value : foodsInfo) {
             if (value[0].charAt(0) != 'b' && value[0].charAt(0) != 'e' && value[0].charAt(0) != 'a' && value[0].charAt(0) != 'c' && value[0].charAt(0) != 'm') {
                 error.setMessage("O id do alimento tem que ser um dos que foi retornado pela função getFoodTypes()");
@@ -418,12 +367,9 @@ public class GameManager {
         int ganhoEnergia = 0;
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                if (meuJogador.getConsumoEnergia() != null) {
-                    consumo = Integer.parseInt(meuJogador.getConsumoEnergia()) * nrPositions;
-                }
-                if (ganhoEnergiaPorIdEspecie.get(meuJogador.getIdEspecie()) != null) {
-                    ganhoEnergia = Integer.parseInt(ganhoEnergiaPorIdEspecie.get(meuJogador.getIdEspecie()));
-                }
+                consumo = 10;
+                ganhoEnergia = 10;
+                break;
             }
         }
         valueReturn[0] = String.valueOf(consumo);
@@ -452,16 +398,10 @@ public class GameManager {
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getIdentificador() == getJogadorActual()) {
                 if (nrSquares == 0) {
-                    if(meusJogadore.getGanhoEnergiaEmDescanso() != null) {
-                        int x = Integer.parseInt(meusJogadore.getGanhoEnergiaEmDescanso());
-                        meusJogadore.setEnergiaInicial(meusJogadore.getEnergiaInicial() + x);
-                    }
+                    int x = Integer.parseInt(meusJogadore.getGanhoEnergiaEmDescanso());
+                    meusJogadore.setEnergiaInicial(meusJogadore.getEnergiaInicial() + x);
                 } else {
                     meusJogadore.mover(nrSquares, meusJogadore, getJogadorActual());
-                    if(meusJogadore.getConsumoEnergia() != null) {
-                        int x = Integer.parseInt(meusJogadore.getConsumoEnergia());
-                        meusJogadore.setEnergiaInicial(meusJogadore.getEnergiaInicial() - x);
-                    }
                 }
                 if ((contador + 1) == meusJogadores.size()) {
                     setJogadorActual(0);
