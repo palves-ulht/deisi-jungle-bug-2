@@ -404,7 +404,6 @@ public class GameManager {
                 valueReturn[0] = String.valueOf(consumo).replace("-", "");
                 ganhoEnergia = Integer.parseInt(meuJogador.getGanhoEnergiaEmDescanso());
                 valueReturn[1] = String.valueOf(ganhoEnergia);
-                break;
             }
         }
         return valueReturn;
