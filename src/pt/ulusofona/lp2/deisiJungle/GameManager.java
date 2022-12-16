@@ -367,9 +367,9 @@ public class GameManager {
         int ganhoEnergia;
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                consumo = meuJogador.getConsumoEnergia() * nrPositions;
+                consumo = pegaConsumo(especiesL, meuJogador.getIdEspecie()) * nrPositions;
                 valueReturn[0] = String.valueOf(consumo).replace("-", "");
-                ganhoEnergia = meuJogador.getGanhoEnergia();
+                ganhoEnergia = pegaGanho(especiesL, meuJogador.getIdEspecie());
                 valueReturn[1] = String.valueOf(ganhoEnergia);
             }
         }
@@ -383,8 +383,8 @@ public class GameManager {
             arrayRetornar[count][0] = String.valueOf(jogador.getIdentificador());
             arrayRetornar[count][1] = jogador.getNome();
             arrayRetornar[count][2] = String.valueOf(jogador.getIdEspecie());
-            arrayRetornar[count][3] = String.valueOf(jogador.getEnergiaInicial());
-            arrayRetornar[count][4] = jogador.getVelocidade();
+            arrayRetornar[count][3] = String.valueOf(pegaEnergia(especiesL, jogador.getIdEspecie()));
+            arrayRetornar[count][4] = pegaVelocidade(especiesL, jogador.getIdEspecie());
             count++;
         }
         return arrayRetornar;
