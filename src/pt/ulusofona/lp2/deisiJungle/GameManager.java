@@ -48,6 +48,7 @@ public class GameManager {
     }
 
     HashMap<Character, Especies> minhasEspecies = new HashMap<>();
+    ArrayList<Especies> especiesL = new ArrayList<>();
     HashMap<Integer, Player> minhaListaPlayers = new HashMap<>();
     ArrayList<Player> meusJogadores = new ArrayList<>();
 
@@ -63,7 +64,7 @@ public class GameManager {
         especies[0][6] = "1..6";
         Elefante elefante = new Elefante('E', "Elefante", "elephant.png");
         minhasEspecies.put('E', elefante);
-
+        especiesL.add(elefante);
         especies[1][0] = "L";
         especies[1][1] = "Leão";
         especies[1][2] = "lion.png";
@@ -73,7 +74,7 @@ public class GameManager {
         especies[1][6] = "4..6";
         Leao leao = new Leao('L', "Leao", "lion.png");
         minhasEspecies.put('L', leao);
-
+        especiesL.add(leao);
         especies[2][0] = "T";
         especies[2][1] = "Tartaruga";
         especies[2][2] = "turtle.png";
@@ -83,7 +84,7 @@ public class GameManager {
         especies[2][6] = "1..3";
         Tartaruga tartaruga = new Tartaruga('T', "Tartaruga", "turtle.png");
         minhasEspecies.put('T', tartaruga);
-
+        especiesL.add(tartaruga);
         especies[3][0] = "P";
         especies[3][1] = "Passaro";
         especies[3][2] = "bird.png";
@@ -93,7 +94,7 @@ public class GameManager {
         especies[3][6] = "5..6";
         Passaro passaro = new Passaro('P', "Passaro", "bird.png");
         minhasEspecies.put('P', passaro);
-
+        especiesL.add(passaro);
         especies[4][0] = "Z";
         especies[4][1] = "Tarzan";
         especies[4][2] = "tarzan.png";
@@ -103,7 +104,7 @@ public class GameManager {
         especies[4][6] = "1..6";
         Tarzan tarzan = new Tarzan('Z', "Tarzan", "tarzan.png");
         minhasEspecies.put('Z', tarzan);
-
+        especiesL.add(tarzan);
         return especies;
     }
 
@@ -189,7 +190,7 @@ public class GameManager {
             return error;
         }
         for (String[] jogador : playersInfo) {
-            for (Especies minhaEspecie : minhasEspecies.values()) {
+            for (Especies minhaEspecie : especiesL) {
                 if (minhaEspecie.getId() == jogador[2].charAt(0)) {
                     Player players = new Player(minhaEspecie.getId(), minhaEspecie.getNome(), minhaEspecie.getIcone());
                     try {
@@ -227,10 +228,10 @@ public class GameManager {
                     minhaListaPlayers.put(Integer.parseInt(jogador[0]), players);
                     meusJogadores.add(players);
                     meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
+                    setJogadorActual(0);
                 }
             }
         }
-        setJogadorActual(0);
         return null;
     }
 
