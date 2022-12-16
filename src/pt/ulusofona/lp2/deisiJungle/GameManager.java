@@ -410,13 +410,17 @@ public class GameManager {
     }
 
     public String[][] getPlayersInfo() {
+        int count = 0;
         String[][] arrayRetornar = new String[meusJogadores.size()][5];
-        for (int count = 0; count < arrayRetornar.length; count++) {
-            arrayRetornar[count][0] = String.valueOf(meusJogadores.get(count).getIdentificador());
-            arrayRetornar[count][1] = meusJogadores.get(count).getNome();
-            arrayRetornar[count][2] = String.valueOf(meusJogadores.get(count).getIdEspecie());
-            arrayRetornar[count][3] = String.valueOf(meusJogadores.get(count).getEnergiaInicial());
-            arrayRetornar[count][4] = meusJogadores.get(count).getVelocidade();
+        for (Player jogador : meusJogadores) {
+            if (minhaListaPlayers.get(jogador.getIdentificador()) != null) {
+                arrayRetornar[count][0] = String.valueOf(minhaListaPlayers.get(jogador.getIdentificador()).getIdentificador());
+                arrayRetornar[count][1] = minhaListaPlayers.get(jogador.getIdentificador()).getNome();
+                arrayRetornar[count][2] = String.valueOf(minhaListaPlayers.get(jogador.getIdentificador()).getIdEspecie());
+                arrayRetornar[count][3] = String.valueOf(minhaListaPlayers.get(jogador.getIdentificador()).getEnergiaInicial());
+                arrayRetornar[count][4] = minhaListaPlayers.get(jogador.getIdentificador()).getVelocidade();
+            }
+            count++;
         }
         return arrayRetornar;
     }
