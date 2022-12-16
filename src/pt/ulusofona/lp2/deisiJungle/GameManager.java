@@ -147,31 +147,34 @@ public class GameManager {
 
     int pegaEnergia(ArrayList<Especies> minhas, char especie) {
         for (Especies especies : minhas) {
-            if(especies.getId() == especie){
+            if (especies.getId() == especie) {
                 return especies.getEnergiaInicial();
             }
         }
         return 0;
     }
+
     int pegaConsumo(ArrayList<Especies> minhas, char especie) {
         for (Especies especies : minhas) {
-            if(especies.getId() == especie){
+            if (especies.getId() == especie) {
                 return especies.getConsumoEnergia();
             }
         }
         return 0;
     }
+
     int pegaGanho(ArrayList<Especies> minhas, char especie) {
         for (Especies especies : minhas) {
-            if(especies.getId() == especie){
+            if (especies.getId() == especie) {
                 return especies.getGanhoEnergia();
             }
         }
         return 0;
     }
+
     String pegaVelocidade(ArrayList<Especies> minhas, char especie) {
         for (Especies especies : minhas) {
-            if(especies.getId() == especie){
+            if (especies.getId() == especie) {
                 return especies.getVelocidade();
             }
         }
@@ -363,14 +366,10 @@ public class GameManager {
 
     public String[] getCurrentPlayerEnergyInfo(int nrPositions) {
         String[] valueReturn = new String[2];
-        int consumo;
-        int ganhoEnergia;
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                consumo = pegaConsumo(especiesL, meuJogador.getIdEspecie()) * nrPositions;
-                valueReturn[0] = String.valueOf(consumo).replace("-", "");
-                ganhoEnergia = pegaGanho(especiesL, meuJogador.getIdEspecie());
-                valueReturn[1] = String.valueOf(ganhoEnergia);
+                valueReturn[0] = String.valueOf(pegaConsumo(especiesL, meuJogador.getIdEspecie()) * nrPositions).replace("-", "");
+                valueReturn[1] = String.valueOf(pegaGanho(especiesL, meuJogador.getIdEspecie()));
             }
         }
         return valueReturn;
