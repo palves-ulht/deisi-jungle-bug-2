@@ -271,6 +271,10 @@ public class GameManager {
             players.setPosicaoActual(1);
             players.setVelocidade(velocidades(players));
 
+            minhaListaPlayers.put(Integer.parseInt(jogador[0]), players);
+            meusJogadores.add(players);
+            meusJogadores.sort(Comparator.comparing(MeuJogador::getIdentificador));
+
             if (Integer.parseInt(jogador[0]) < 0) {
                 error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
                 return error;
@@ -290,9 +294,6 @@ public class GameManager {
                 error.setMessage("Não pode existir mais de 1 Tarzan no Jogo");
                 return error;
             }
-            minhaListaPlayers.put(Integer.parseInt(jogador[0]), players);
-            meusJogadores.add(players);
-            meusJogadores.sort(Comparator.comparing(MeuJogador::getIdentificador));
         }
         setJogadorActual(0);
         return null;
