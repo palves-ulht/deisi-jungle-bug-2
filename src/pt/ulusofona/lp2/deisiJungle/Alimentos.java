@@ -1,11 +1,9 @@
 package pt.ulusofona.lp2.deisiJungle;
 
 public class Alimentos {
-
-    private char identificador;
-    private String nomeAlimento;
-    private String iconAlimento;
-
+    protected char identificador;
+    protected String nomeAlimento;
+    protected String iconAlimento;
     public char getIdentificador() {
         return identificador;
     }
