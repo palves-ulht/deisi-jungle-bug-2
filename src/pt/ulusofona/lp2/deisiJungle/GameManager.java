@@ -145,6 +145,39 @@ public class GameManager {
         return foods;
     }
 
+    int pegaEnergia(ArrayList<Especies> minhas, char especie) {
+        for (Especies especies : minhas) {
+            if(especies.getId() == especie){
+                return especies.getEnergiaInicial();
+            }
+        }
+        return 0;
+    }
+    int pegaConsumo(ArrayList<Especies> minhas, char especie) {
+        for (Especies especies : minhas) {
+            if(especies.getId() == especie){
+                return especies.getConsumoEnergia();
+            }
+        }
+        return 0;
+    }
+    int pegaGanho(ArrayList<Especies> minhas, char especie) {
+        for (Especies especies : minhas) {
+            if(especies.getId() == especie){
+                return especies.getGanhoEnergia();
+            }
+        }
+        return 0;
+    }
+    String pegaVelocidade(ArrayList<Especies> minhas, char especie) {
+        for (Especies especies : minhas) {
+            if(especies.getId() == especie){
+                return especies.getVelocidade();
+            }
+        }
+        return "";
+    }
+
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo, String[][] foodsInfo) {
         setTamanhoMapa(jungleSize);
         InitializationError error = new InitializationError();
@@ -200,11 +233,11 @@ public class GameManager {
             }
             players.setNome(jogador[1]);
             players.setIdEspecie(jogador[2].charAt(0));
-            players.setEnergiaInicial(minhasEspecies.get(jogador[2].charAt(0)).getEnergiaInicial());
-            players.setConsumoEnergia(minhasEspecies.get(jogador[2].charAt(0)).getConsumoEnergia());
-            players.setGanhoEnergia(minhasEspecies.get(jogador[2].charAt(0)).getGanhoEnergia());
+            players.setEnergiaInicial(pegaEnergia(especiesL, jogador[2].charAt(0)));
+            players.setConsumoEnergia(pegaConsumo(especiesL, jogador[2].charAt(0)));
+            players.setGanhoEnergia(pegaGanho(especiesL, jogador[2].charAt(0)));
             players.setPosicaoActual(1);
-            players.setVelocidade(minhasEspecies.get(jogador[2].charAt(0)).getVelocidade());
+            players.setVelocidade(pegaVelocidade(especiesL, jogador[2].charAt(0)));
             if (Integer.parseInt(jogador[0]) < 0) {
                 error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
                 return error;
