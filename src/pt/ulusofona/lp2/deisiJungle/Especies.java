@@ -15,6 +15,9 @@ public class Especies {
         this.icone = image;
     }
 
+    public Especies() {
+    }
+
     public void setId(char id) {
         this.id = id;
     }

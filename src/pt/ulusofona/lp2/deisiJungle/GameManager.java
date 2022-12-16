@@ -174,6 +174,7 @@ public class GameManager {
     }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
+
         int contadorTarzan = 0;
         InitializationError error = new InitializationError();
         setTamanhoMapa(jungleSize);
@@ -190,47 +191,43 @@ public class GameManager {
             return error;
         }
         for (String[] jogador : playersInfo) {
-            for (Especies minhaEspecie : especiesL) {
-                if (minhaEspecie.getId() == jogador[2].charAt(0)) {
-                    Player players = new Player(minhaEspecie.getId(), minhaEspecie.getNome(), minhaEspecie.getIcone());
-                    try {
-                        players.setIdentificador(Integer.parseInt(jogador[0]));
-                    } catch (Exception e) {
-                        error.setMessage("Formato do ID Inesperado");
-                        return error;
-                    }
-                    players.setNome(jogador[1]);
-                    players.setIdEspecie(jogador[2].charAt(0));
-                    players.setEnergiaInicial(minhasEspecies.get(jogador[2].charAt(0)).getEnergiaInicial());
-                    players.setConsumoEnergia(minhasEspecies.get(jogador[2].charAt(0)).getConsumoEnergia());
-                    players.setGanhoEnergia(minhasEspecies.get(jogador[2].charAt(0)).getGanhoEnergia());
-                    players.setPosicaoActual(1);
-                    players.setVelocidade(minhasEspecies.get(jogador[2].charAt(0)).getVelocidade());
-                    if (Integer.parseInt(jogador[0]) < 0) {
-                        error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
-                        return error;
-                    }
-                    if (jogador[1] == null || jogador[1].isEmpty()) {
-                        error.setMessage("Os nomes dos jogadores. Não podem ser null nem estar vazios.");
-                        return error;
-                    }
-                    if (jogador[2].charAt(0) != 'L' && jogador[2].charAt(0) != 'T' && jogador[2].charAt(0) != 'Z' && jogador[2].charAt(0) != 'E' && jogador[2].charAt(0) != 'P') {
-                        error.setMessage("A espécie tem que ser uma das que foi retornada pela função getSpecies()");
-                        return error;
-                    }
-                    if (players.getIdEspecie() == 'Z') {
-                        contadorTarzan++;
-                    }
-                    if (contadorTarzan > 1) {
-                        error.setMessage("Não pode existir mais de 1 Tarzan no Jogo");
-                        return error;
-                    }
-                    minhaListaPlayers.put(Integer.parseInt(jogador[0]), players);
-                    meusJogadores.add(players);
-                    meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
-                    setJogadorActual(0);
-                }
+            Player players = new Player();
+            try {
+                players.setIdentificador(Integer.parseInt(jogador[0]));
+            } catch (Exception e) {
+                error.setMessage("Formato do ID Inesperado");
+                return error;
             }
+            players.setNome(jogador[1]);
+            players.setIdEspecie(jogador[2].charAt(0));
+            players.setEnergiaInicial(minhasEspecies.get(jogador[2].charAt(0)).getEnergiaInicial());
+            players.setConsumoEnergia(minhasEspecies.get(jogador[2].charAt(0)).getConsumoEnergia());
+            players.setGanhoEnergia(minhasEspecies.get(jogador[2].charAt(0)).getGanhoEnergia());
+            players.setPosicaoActual(1);
+            players.setVelocidade(minhasEspecies.get(jogador[2].charAt(0)).getVelocidade());
+            if (Integer.parseInt(jogador[0]) < 0) {
+                error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
+                return error;
+            }
+            if (jogador[1] == null || jogador[1].isEmpty()) {
+                error.setMessage("Os nomes dos jogadores. Não podem ser null nem estar vazios.");
+                return error;
+            }
+            if (jogador[2].charAt(0) != 'L' && jogador[2].charAt(0) != 'T' && jogador[2].charAt(0) != 'Z' && jogador[2].charAt(0) != 'E' && jogador[2].charAt(0) != 'P') {
+                error.setMessage("A espécie tem que ser uma das que foi retornada pela função getSpecies()");
+                return error;
+            }
+            if (players.getIdEspecie() == 'Z') {
+                contadorTarzan++;
+            }
+            if (contadorTarzan > 1) {
+                error.setMessage("Não pode existir mais de 1 Tarzan no Jogo");
+                return error;
+            }
+            minhaListaPlayers.put(Integer.parseInt(jogador[0]), players);
+            meusJogadores.add(players);
+            meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
+            setJogadorActual(0);
         }
         return null;
     }

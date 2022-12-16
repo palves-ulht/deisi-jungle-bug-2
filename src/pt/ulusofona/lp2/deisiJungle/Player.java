@@ -5,8 +5,13 @@ public class Player extends Especies {
     private String nome;
     private int posicaoActual;
     private char idEspecie;
+
     Player(char id, String name, String image) {
         super(id, name, image);
+    }
+
+    Player() {
+
     }
 
     void mover(int nrSquares, Player meuJogador, int jogadorActual) {
