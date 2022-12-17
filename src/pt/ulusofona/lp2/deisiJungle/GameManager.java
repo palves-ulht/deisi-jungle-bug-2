@@ -62,7 +62,7 @@ public class GameManager {
         especies[0][4] = "4";
         especies[0][5] = "10";
         especies[0][6] = "1..6";
-        minhasEspecies.put('E', new Elefante('E', "Elefante", "elephant.png", "1..6", 180, 4, 10));
+
         especies[1][0] = "L";
         especies[1][1] = "Leão";
         especies[1][2] = "lion.png";
@@ -70,7 +70,7 @@ public class GameManager {
         especies[1][4] = "2";
         especies[1][5] = "10";
         especies[1][6] = "4..6";
-        minhasEspecies.put('L', new Leao('L', "Leao", "lion.png", "4..6", 80, 2, 10));
+
         especies[2][0] = "T";
         especies[2][1] = "Tartaruga";
         especies[2][2] = "turtle.png";
@@ -78,7 +78,7 @@ public class GameManager {
         especies[2][4] = "1";
         especies[2][5] = "5";
         especies[2][6] = "1..3";
-        minhasEspecies.put('T', new Tartaruga('T', "Tartaruga", "turtle.png", "1..3", 150, 1, 5));
+
         especies[3][0] = "P";
         especies[3][1] = "Passaro";
         especies[3][2] = "bird.png";
@@ -86,7 +86,7 @@ public class GameManager {
         especies[3][4] = "4";
         especies[3][5] = "50";
         especies[3][6] = "5..6";
-        minhasEspecies.put('P', new Passaro('P', "Passaro", "bird.png", "5..6", 70, 4, 50));
+
         especies[4][0] = "Z";
         especies[4][1] = "Tarzan";
         especies[4][2] = "tarzan.png";
@@ -94,7 +94,7 @@ public class GameManager {
         especies[4][4] = "2";
         especies[4][5] = "20";
         especies[4][6] = "1..6";
-        minhasEspecies.put('Z', new Tarzan('Z', "Tarzan", "tarzan.png", "1..6", 70, 2, 20));
+
         return especies;
     }
 
@@ -172,6 +172,12 @@ public class GameManager {
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
 
+        minhasEspecies.put('E', new Elefante('E', "Elefante", "elephant.png", "1..6", 180, 4, 10));
+        minhasEspecies.put('L', new Leao('L', "Leao", "lion.png", "4..6", 80, 2, 10));
+        minhasEspecies.put('P', new Passaro('P', "Passaro", "bird.png", "5..6", 70, 4, 50));
+        minhasEspecies.put('Z', new Tarzan('Z', "Tarzan", "tarzan.png", "1..6", 70, 2, 20));
+        minhasEspecies.put('T', new Tartaruga('T', "Tartaruga", "turtle.png", "1..3", 150, 1, 5));
+
         int contadorTarzan = 0;
         InitializationError error = new InitializationError();
         setTamanhoMapa(jungleSize);
@@ -196,13 +202,12 @@ public class GameManager {
                 return error;
             }
             players.setNome(jogador[1]);
+
             for (Map.Entry<Character, Especies> minhas : minhasEspecies.entrySet()) {
                 if (minhas.getKey() == jogador[2].charAt(0)) {
                     players.setEspecies(minhas.getValue());
-                    //players.setEnergiaActual(minhas.getValue().getEnergiaInicial());
                 }
             }
-
             players.setPosicaoActual(1);
             if (Integer.parseInt(jogador[0]) < 0) {
                 error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
