@@ -1,7 +1,7 @@
 package pt.ulusofona.lp2.deisiJungle;
 
-public class Especies {
-    protected char id;
+public abstract class Especies {
+    protected char idEspecie;
     protected String nome;
     protected String icone;
     protected int energiaInicial;
@@ -10,16 +10,17 @@ public class Especies {
     protected String velocidade;
 
     Especies(char id, String name, String image) {
-        this.id = id;
+        this.idEspecie = id;
         this.nome = name;
         this.icone = image;
     }
 
     public Especies() {
+
     }
 
-    public void setId(char id) {
-        this.id = id;
+    public void setIdEspecie(char idEspecie) {
+        this.idEspecie = idEspecie;
     }
 
     public void setNome(String nome) {
@@ -46,9 +47,10 @@ public class Especies {
         this.velocidade = velocidade;
     }
 
-    public char getId() {
-        return id;
+    public char getIdEspecie() {
+        return idEspecie;
     }
+
 
     public String getNome() {
         return nome;
@@ -72,5 +74,9 @@ public class Especies {
 
     public String getVelocidade() {
         return velocidade;
+    }
+
+    int pegaEnergia(char idEspecie) {
+        return energiaInicial;
     }
 }

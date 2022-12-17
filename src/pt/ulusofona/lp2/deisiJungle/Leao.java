@@ -5,9 +5,9 @@ public class Leao extends Especies{
         super(id, name, image);
     }
     @Override
-    public char getId() {
-        id = 'L';
-        return id;
+    public char getIdEspecie() {
+        idEspecie = 'E';
+        return idEspecie;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package pt.ulusofona.lp2.deisiJungle;
 
+
 import javax.swing.*;
 import java.io.File;
 import java.util.*;
@@ -145,40 +146,11 @@ public class GameManager {
         return foods;
     }
 
-    int pegaEnergia(ArrayList<Especies> minhas, char especie) {
-        for (Especies especies : minhas) {
-            if (especies.getId() == especie) {
-                return especies.getEnergiaInicial();
-            }
+    Especies retornaEnergia(char especie) {
+        if (minhasEspecies.get(especie) != null) {
+            return minhasEspecies.get(especie);
         }
-        return 0;
-    }
-
-    int pegaConsumo(ArrayList<Especies> minhas, char especie) {
-        for (Especies especies : minhas) {
-            if (especies.getId() == especie) {
-                return especies.getConsumoEnergia();
-            }
-        }
-        return 0;
-    }
-
-    int pegaGanho(ArrayList<Especies> minhas, char especie) {
-        for (Especies especies : minhas) {
-            if (especies.getId() == especie) {
-                return especies.getGanhoEnergia();
-            }
-        }
-        return 0;
-    }
-
-    String pegaVelocidade(ArrayList<Especies> minhas, char especie) {
-        for (Especies especies : minhas) {
-            if (especies.getId() == especie) {
-                return especies.getVelocidade();
-            }
-        }
-        return "";
+        return null;
     }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo, String[][] foodsInfo) {
@@ -236,11 +208,11 @@ public class GameManager {
             }
             players.setNome(jogador[1]);
             players.setIdEspecie(jogador[2].charAt(0));
-            players.setEnergiaInicial(pegaEnergia(especiesL, jogador[2].charAt(0)));
-            players.setConsumoEnergia(pegaConsumo(especiesL, jogador[2].charAt(0)));
-            players.setGanhoEnergia(pegaGanho(especiesL, jogador[2].charAt(0)));
+            players.setEnergiaInicial(retornaEnergia(jogador[2].charAt(0)).getEnergiaInicial());
+            players.setConsumoEnergia(retornaEnergia(jogador[2].charAt(0)).getConsumoEnergia());
+            players.setGanhoEnergia(retornaEnergia(jogador[2].charAt(0)).getGanhoEnergia());
             players.setPosicaoActual(1);
-            players.setVelocidade(pegaVelocidade(especiesL, jogador[2].charAt(0)));
+            players.setVelocidade(retornaEnergia(jogador[2].charAt(0)).getVelocidade());
             if (Integer.parseInt(jogador[0]) < 0) {
                 error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
                 return error;
@@ -368,8 +340,8 @@ public class GameManager {
         String[] valueReturn = new String[2];
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                valueReturn[0] = String.valueOf(pegaConsumo(especiesL, meuJogador.getIdEspecie()) * nrPositions).replace("-", "");
-                valueReturn[1] = String.valueOf(pegaGanho(especiesL, meuJogador.getIdEspecie()));
+                valueReturn[0] = String.valueOf(meuJogador.getConsumoEnergia()*nrPositions).replace("-", "");
+                valueReturn[1] = String.valueOf(meuJogador.getGanhoEnergia());
             }
         }
         return valueReturn;
@@ -382,12 +354,13 @@ public class GameManager {
             arrayRetornar[count][0] = String.valueOf(jogador.getIdentificador());
             arrayRetornar[count][1] = jogador.getNome();
             arrayRetornar[count][2] = String.valueOf(jogador.getIdEspecie());
-            arrayRetornar[count][3] = String.valueOf(pegaEnergia(especiesL, jogador.getIdEspecie()));
-            arrayRetornar[count][4] = pegaVelocidade(especiesL, jogador.getIdEspecie());
+            arrayRetornar[count][3] = String.valueOf(jogador.getEnergiaInicial());
+            arrayRetornar[count][4] = jogador.getVelocidade();
             count++;
         }
         return arrayRetornar;
     }
+
 
     MovementResult movimentoValido(int nrSquares) {
         MovementResultCode energia = MovementResultCode.NO_ENERGY;

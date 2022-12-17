@@ -2,18 +2,14 @@ package pt.ulusofona.lp2.deisiJungle;
 
 public class Player extends Especies {
     private int identificador;
-    private String nome;
     private int posicaoActual;
-    private char idEspecie;
 
     Player(char id, String name, String image) {
         super(id, name, image);
     }
-
-    Player() {
+    Player(){
 
     }
-
     void mover(int nrSquares, Player meuJogador, int jogadorActual) {
         if (meuJogador.getIdentificador() == jogadorActual) {
             int position = nrSquares + meuJogador.getPosicaoActual();
@@ -22,6 +18,7 @@ public class Player extends Especies {
             }
         }
     }
+
 
     public int getPosicaoActual() {
         return posicaoActual;
@@ -39,13 +36,6 @@ public class Player extends Especies {
         this.identificador = identificador;
     }
 
-    public char getIdEspecie() {
-        return idEspecie;
-    }
-
-    public void setIdEspecie(char idEspecie) {
-        this.idEspecie = idEspecie;
-    }
 
     @Override
     public String getNome() {

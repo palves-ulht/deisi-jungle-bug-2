@@ -7,9 +7,9 @@ public class Tartaruga extends Especies{
     }
 
     @Override
-    public char getId() {
-        id = 'T';
-        return id;
+    public char getIdEspecie() {
+        idEspecie = 'E';
+        return idEspecie;
     }
 
     @Override

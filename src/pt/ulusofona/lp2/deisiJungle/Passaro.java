@@ -7,9 +7,9 @@ public class Passaro extends Especies{
     }
 
     @Override
-    public char getId() {
-        id = 'P';
-        return id;
+    public char getIdEspecie() {
+        idEspecie = 'E';
+        return idEspecie;
     }
 
     @Override

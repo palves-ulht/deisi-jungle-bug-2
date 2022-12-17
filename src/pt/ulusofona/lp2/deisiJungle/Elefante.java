@@ -6,9 +6,9 @@ public class Elefante extends Especies {
     }
 
     @Override
-    public char getId() {
-        id = 'E';
-        return id;
+    public char getIdEspecie() {
+        idEspecie = 'E';
+        return idEspecie;
     }
 
     @Override
