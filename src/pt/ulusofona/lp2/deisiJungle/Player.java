@@ -4,6 +4,7 @@ public class Player {
     private int identificador;
     String nome;
     private int posicaoActual;
+    private int energiaActual;
     private Especies especies;
     Player(){
     }
@@ -22,6 +23,14 @@ public class Player {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getEnergiaActual() {
+        return energiaActual;
+    }
+
+    public void setEnergiaActual(int energiaActual) {
+        this.energiaActual = energiaActual;
     }
 
     public int getPosicaoActual() {

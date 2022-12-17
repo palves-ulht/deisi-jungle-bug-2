@@ -171,13 +171,11 @@ public class GameManager {
     }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
-
         minhasEspecies.put('E', new Elefante('E', "Elefante", "elephant.png", "1..6", 180, 4, 10));
         minhasEspecies.put('L', new Leao('L', "Leao", "lion.png", "4..6", 80, 2, 10));
         minhasEspecies.put('P', new Passaro('P', "Passaro", "bird.png", "5..6", 70, 4, 50));
         minhasEspecies.put('Z', new Tarzan('Z', "Tarzan", "tarzan.png", "1..6", 70, 2, 20));
         minhasEspecies.put('T', new Tartaruga('T', "Tartaruga", "turtle.png", "1..3", 150, 1, 5));
-
         int contadorTarzan = 0;
         InitializationError error = new InitializationError();
         setTamanhoMapa(jungleSize);
@@ -202,10 +200,10 @@ public class GameManager {
                 return error;
             }
             players.setNome(jogador[1]);
-
             for (Map.Entry<Character, Especies> minhas : minhasEspecies.entrySet()) {
                 if (minhas.getKey() == jogador[2].charAt(0)) {
                     players.setEspecies(minhas.getValue());
+                    players.setEnergiaActual(minhas.getValue().getEnergiaInicial());
                 }
             }
             players.setPosicaoActual(1);
@@ -310,7 +308,7 @@ public class GameManager {
                 meuJogadorRetornar[0] = String.valueOf(jogador.getIdentificador());
                 meuJogadorRetornar[1] = jogador.getNome();
                 meuJogadorRetornar[2] = String.valueOf(jogador.getEspecies().getIdEspecie());
-                meuJogadorRetornar[3] = String.valueOf(jogador.getEspecies().getEnergiaInicial());
+                meuJogadorRetornar[3] = String.valueOf(jogador.getEnergiaActual());
                 meuJogadorRetornar[4] = String.valueOf(jogador.getEspecies().getVelocidade());
                 return meuJogadorRetornar;
             }
@@ -325,7 +323,7 @@ public class GameManager {
                 informationPlayer[0] = String.valueOf(meusPlayers.getIdentificador());
                 informationPlayer[1] = meusPlayers.getNome();
                 informationPlayer[2] = String.valueOf(meusPlayers.getEspecies().getIdEspecie());
-                informationPlayer[3] = String.valueOf(meusPlayers.getEspecies().getEnergiaInicial());
+                informationPlayer[3] = String.valueOf(meusPlayers.getEnergiaActual());
                 informationPlayer[4] = meusPlayers.getEspecies().getVelocidade();
             }
         }
@@ -350,7 +348,7 @@ public class GameManager {
             arrayRetornar[count][0] = String.valueOf(jogador.getIdentificador());
             arrayRetornar[count][1] = jogador.getNome();
             arrayRetornar[count][2] = String.valueOf(jogador.getEspecies().getIdEspecie());
-            arrayRetornar[count][3] = String.valueOf(jogador.getEspecies().getEnergiaInicial());
+            arrayRetornar[count][3] = String.valueOf(jogador.getEnergiaActual());
             arrayRetornar[count][4] = jogador.getEspecies().getVelocidade();
             count++;
         }
@@ -368,17 +366,17 @@ public class GameManager {
             if (meusJogadore.getIdentificador() == getJogadorActual()) {
                 if (nrSquares == 0) {
                     int x = meusJogadore.getEspecies().getGanhoEnergia();
-                    int y = meusJogadore.getEspecies().getEnergiaInicial();
+                    int y = meusJogadore.getEnergiaActual();
                     int soma = x + y;
-                    meusJogadore.getEspecies().setEnergiaInicial(soma);
+                    meusJogadore.setEnergiaActual(soma);
                 } else {
                     if (meusJogadore.getEspecies().getEnergiaInicial() < nrSquares) {
                         return energy;
                     } else {
                         meusJogadore.mover(nrSquares, meusJogadore, getJogadorActual());
-                        int consumo = Integer.parseInt(getCurrentPlayerEnergyInfo(nrSquares)[0]);
-                        int enerigaInicial = meusJogadore.getEspecies().getEnergiaInicial();
-                        meusJogadore.getEspecies().setEnergiaInicial(enerigaInicial - consumo);
+                        int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
+                        int enerigaInicial = meusJogadore.getEnergiaActual();
+                        meusJogadore.setEnergiaActual(enerigaInicial - consumo);
                     }
                 }
                 if ((contador + 1) == meusJogadores.size()) {
@@ -421,7 +419,7 @@ public class GameManager {
                     winner[0] = String.valueOf(meusJogadore.getIdentificador());
                     winner[1] = meusJogadore.getNome();
                     winner[2] = String.valueOf(meusJogadore.getEspecies().getIdEspecie());
-                    winner[3] = String.valueOf(meusJogadore.getEspecies().getEnergiaInicial());
+                    winner[3] = String.valueOf(meusJogadore.getEnergiaActual());
                     winner[4] = String.valueOf(meusJogadore.getEspecies().getVelocidade());
                     return winner;
                 }
