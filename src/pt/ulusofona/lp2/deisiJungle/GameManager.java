@@ -429,12 +429,14 @@ public class GameManager {
     }
 
     public ArrayList<String> getGameResults() {
+        int cont = 0;
         meusJogadores.sort(Comparator.comparingInt((Player::getPosicaoActual)).reversed());
         ArrayList<String> resultadoPartida = new ArrayList<>();
         String formato = "";
         for (Player meusJogadore : meusJogadores) {
-            formato = meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getIdEspecie() + ", " + meusJogadore.getPosicaoActual();
+            formato = "#" + cont + " " + meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getNome() + ", " + meusJogadore.getPosicaoActual();
             resultadoPartida.add(formato);
+            cont++;
         }
         return resultadoPartida;
     }
