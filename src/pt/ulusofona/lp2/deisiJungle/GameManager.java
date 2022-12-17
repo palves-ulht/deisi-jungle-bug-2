@@ -170,12 +170,16 @@ public class GameManager {
         return null;
     }
 
-    public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
+    void adicionarEspecies() {
         minhasEspecies.put('E', new Elefante('E', "Elefante", "elephant.png", "1..6", 180, 4, 10));
         minhasEspecies.put('L', new Leao('L', "Leao", "lion.png", "4..6", 80, 2, 10));
         minhasEspecies.put('P', new Passaro('P', "Passaro", "bird.png", "5..6", 70, 4, 50));
         minhasEspecies.put('Z', new Tarzan('Z', "Tarzan", "tarzan.png", "1..6", 70, 2, 20));
         minhasEspecies.put('T', new Tartaruga('T', "Tartaruga", "turtle.png", "1..3", 150, 1, 5));
+    }
+
+    public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
+        adicionarEspecies();
         int contadorTarzan = 0;
         InitializationError error = new InitializationError();
         setTamanhoMapa(jungleSize);
@@ -429,7 +433,7 @@ public class GameManager {
     }
 
     public ArrayList<String> getGameResults() {
-        int cont = 0;
+        int cont = 1;
         meusJogadores.sort(Comparator.comparingInt((Player::getPosicaoActual)).reversed());
         ArrayList<String> resultadoPartida = new ArrayList<>();
         String formato = "";
