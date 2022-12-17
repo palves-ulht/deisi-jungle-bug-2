@@ -54,7 +54,6 @@ public class GameManager {
     ArrayList<Player> meusJogadores = new ArrayList<>();
 
     public String[][] getSpecies() {
-
         String[][] especies = new String[5][7];
         especies[0][0] = "E";
         especies[0][1] = "Elefante";
@@ -63,9 +62,7 @@ public class GameManager {
         especies[0][4] = "4";
         especies[0][5] = "10";
         especies[0][6] = "1..6";
-        Elefante elefante = new Elefante('E', "Elefante", "elephant.png", "1..6", 180, 4, 10);
-        minhasEspecies.put('E', elefante);
-        especiesL.add(elefante);
+        minhasEspecies.put('E', new Elefante('E', "Elefante", "elephant.png", "1..6", 180, 4, 10));
         especies[1][0] = "L";
         especies[1][1] = "Leão";
         especies[1][2] = "lion.png";
@@ -73,9 +70,7 @@ public class GameManager {
         especies[1][4] = "2";
         especies[1][5] = "10";
         especies[1][6] = "4..6";
-        Leao leao = new Leao('L', "Leao", "lion.png", "4..6", 80, 2, 10);
-        minhasEspecies.put('L', leao);
-        especiesL.add(leao);
+        minhasEspecies.put('L', new Leao('L', "Leao", "lion.png", "4..6", 80, 2, 10));
         especies[2][0] = "T";
         especies[2][1] = "Tartaruga";
         especies[2][2] = "turtle.png";
@@ -83,9 +78,7 @@ public class GameManager {
         especies[2][4] = "1";
         especies[2][5] = "5";
         especies[2][6] = "1..3";
-        Tartaruga tartaruga = new Tartaruga('T', "Tartaruga", "turtle.png", "1..3", 150, 1, 5);
-        minhasEspecies.put('T', tartaruga);
-        especiesL.add(tartaruga);
+        minhasEspecies.put('T', new Tartaruga('T', "Tartaruga", "turtle.png", "1..3", 150, 1, 5));
         especies[3][0] = "P";
         especies[3][1] = "Passaro";
         especies[3][2] = "bird.png";
@@ -93,9 +86,7 @@ public class GameManager {
         especies[3][4] = "4";
         especies[3][5] = "50";
         especies[3][6] = "5..6";
-        Passaro passaro = new Passaro('P', "Passaro", "bird.png", "5..6", 70, 4, 50);
-        minhasEspecies.put('P', passaro);
-        especiesL.add(passaro);
+        minhasEspecies.put('P', new Passaro('P', "Passaro", "bird.png", "5..6", 70, 4, 50));
         especies[4][0] = "Z";
         especies[4][1] = "Tarzan";
         especies[4][2] = "tarzan.png";
@@ -103,9 +94,7 @@ public class GameManager {
         especies[4][4] = "2";
         especies[4][5] = "20";
         especies[4][6] = "1..6";
-        Tarzan tarzan = new Tarzan('Z', "Tarzan", "tarzan.png", "1..6", 70, 2, 20);
-        minhasEspecies.put('Z', tarzan);
-        especiesL.add(tarzan);
+        minhasEspecies.put('Z', new Tarzan('Z', "Tarzan", "tarzan.png", "1..6", 70, 2, 20));
         return especies;
     }
 
@@ -207,38 +196,37 @@ public class GameManager {
                 return error;
             }
             players.setNome(jogador[1]);
-            if (minhasEspecies.get(jogador[2].charAt(0)) != null) {
-                for (Map.Entry<Character, Especies> minhas : minhasEspecies.entrySet()) {
-                    if (minhas.getKey() == jogador[2].charAt(0)) {
-                        players.setEspecies(minhas.getValue());
-                    }
+            for (Map.Entry<Character, Especies> minhas : minhasEspecies.entrySet()) {
+                if (minhas.getKey() == jogador[2].charAt(0)) {
+                    players.setEspecies(minhas.getValue());
+                    //players.setEnergiaActual(minhas.getValue().getEnergiaInicial());
                 }
-
-                players.setPosicaoActual(1);
-                if (Integer.parseInt(jogador[0]) < 0) {
-                    error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
-                    return error;
-                }
-                if (jogador[1] == null || jogador[1].isEmpty()) {
-                    error.setMessage("Os nomes dos jogadores. Não podem ser null nem estar vazios.");
-                    return error;
-                }
-                if (jogador[2].charAt(0) != 'L' && jogador[2].charAt(0) != 'T' && jogador[2].charAt(0) != 'Z' && jogador[2].charAt(0) != 'E' && jogador[2].charAt(0) != 'P') {
-                    error.setMessage("A espécie tem que ser uma das que foi retornada pela função getSpecies()");
-                    return error;
-                }
-                if (players.getEspecies().getIdEspecie() == 'Z') {
-                    contadorTarzan++;
-                }
-                if (contadorTarzan > 1) {
-                    error.setMessage("Não pode existir mais de 1 Tarzan no Jogo");
-                    return error;
-                }
-                minhaListaPlayers.put(Integer.parseInt(jogador[0]), players);
-                meusJogadores.add(players);
-                meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
-                setJogadorActual(0);
             }
+
+            players.setPosicaoActual(1);
+            if (Integer.parseInt(jogador[0]) < 0) {
+                error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
+                return error;
+            }
+            if (jogador[1] == null || jogador[1].isEmpty()) {
+                error.setMessage("Os nomes dos jogadores. Não podem ser null nem estar vazios.");
+                return error;
+            }
+            if (jogador[2].charAt(0) != 'L' && jogador[2].charAt(0) != 'T' && jogador[2].charAt(0) != 'Z' && jogador[2].charAt(0) != 'E' && jogador[2].charAt(0) != 'P') {
+                error.setMessage("A espécie tem que ser uma das que foi retornada pela função getSpecies()");
+                return error;
+            }
+            if (players.getEspecies().getIdEspecie() == 'Z') {
+                contadorTarzan++;
+            }
+            if (contadorTarzan > 1) {
+                error.setMessage("Não pode existir mais de 1 Tarzan no Jogo");
+                return error;
+            }
+            minhaListaPlayers.put(Integer.parseInt(jogador[0]), players);
+            meusJogadores.add(players);
+            meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
+            setJogadorActual(0);
         }
         return null;
     }
@@ -401,7 +389,6 @@ public class GameManager {
     }
 
     public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
-        int consumo = Integer.parseInt(getCurrentPlayerEnergyInfo(nrSquares)[0]);
         MovementResultCode movimentoInvalido = MovementResultCode.INVALID_MOVEMENT;
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
         MovementResultCode alimento = MovementResultCode.CAUGHT_FOOD;

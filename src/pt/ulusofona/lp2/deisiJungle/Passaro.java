@@ -12,7 +12,7 @@ public class Passaro extends Especies{
     Passaro(){}
     @Override
     public char getIdEspecie() {
-        idEspecie = 'L';
+        idEspecie = 'P';
         return idEspecie;
     }
 

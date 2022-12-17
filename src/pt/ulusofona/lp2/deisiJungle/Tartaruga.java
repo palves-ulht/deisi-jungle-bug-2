@@ -12,7 +12,7 @@ public class Tartaruga extends Especies{
     Tartaruga(){}
     @Override
     public char getIdEspecie() {
-        idEspecie = 'L';
+        idEspecie = 'T';
         return idEspecie;
     }
 

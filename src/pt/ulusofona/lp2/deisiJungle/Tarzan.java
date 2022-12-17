@@ -12,7 +12,7 @@ public class Tarzan extends Especies {
     Tarzan(){}
     @Override
     public char getIdEspecie() {
-        idEspecie = 'L';
+        idEspecie = 'Z';
         return idEspecie;
     }
 
