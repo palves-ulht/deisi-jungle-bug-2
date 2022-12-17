@@ -208,11 +208,15 @@ public class GameManager {
             }
             players.setNome(jogador[1]);
             players.setIdEspecie(jogador[2].charAt(0));
-            players.setEnergiaInicial(retornaEnergia(jogador[2].charAt(0)).getEnergiaInicial());
-            players.setConsumoEnergia(retornaEnergia(jogador[2].charAt(0)).getConsumoEnergia());
-            players.setGanhoEnergia(retornaEnergia(jogador[2].charAt(0)).getGanhoEnergia());
+            for (Map.Entry<Character, Especies> minhas : minhasEspecies.entrySet()) {
+                if (minhas.getKey() == jogador[2].charAt(0)) {
+                    players.setEnergiaInicial(minhas.getValue().getEnergiaInicial());
+                    players.setConsumoEnergia(minhas.getValue().getConsumoEnergia());
+                    players.setGanhoEnergia(minhas.getValue().getGanhoEnergia());
+                    players.setVelocidade(minhas.getValue().getVelocidade());
+                }
+            }
             players.setPosicaoActual(1);
-            players.setVelocidade(retornaEnergia(jogador[2].charAt(0)).getVelocidade());
             if (Integer.parseInt(jogador[0]) < 0) {
                 error.setMessage("O ID tem de ser um valor que pertenca à gama esperada.");
                 return error;
@@ -340,7 +344,7 @@ public class GameManager {
         String[] valueReturn = new String[2];
         for (Player meuJogador : meusJogadores) {
             if (meuJogador.getIdentificador() == getJogadorActual()) {
-                valueReturn[0] = String.valueOf(meuJogador.getConsumoEnergia()*nrPositions).replace("-", "");
+                valueReturn[0] = String.valueOf(meuJogador.getConsumoEnergia() * nrPositions).replace("-", "");
                 valueReturn[1] = String.valueOf(meuJogador.getGanhoEnergia());
             }
         }
