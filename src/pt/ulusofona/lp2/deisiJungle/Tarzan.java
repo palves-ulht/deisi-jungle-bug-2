@@ -2,13 +2,17 @@ package pt.ulusofona.lp2.deisiJungle;
 
 public class Tarzan extends Especies {
 
-    Tarzan(char id, String name, String image) {
+    Tarzan(char id, String name, String image,String velocidade, int energia, int consumo, int ganho) {
         super(id, name, image);
+        this.velocidade = velocidade;
+        this.energiaInicial = energia;
+        this.consumoEnergia = consumo;
+        this.ganhoEnergia = ganho;
     }
-
+    Tarzan(){}
     @Override
     public char getIdEspecie() {
-        idEspecie = 'E';
+        idEspecie = 'L';
         return idEspecie;
     }
 
