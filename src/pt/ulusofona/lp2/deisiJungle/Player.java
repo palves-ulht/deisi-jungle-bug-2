@@ -8,7 +8,6 @@ public class Player extends Especies {
         super(id, name, image);
     }
     Player(){
-
     }
     void mover(int nrSquares, Player meuJogador, int jogadorActual) {
         if (meuJogador.getIdentificador() == jogadorActual) {
@@ -19,7 +18,34 @@ public class Player extends Especies {
         }
     }
 
+    @Override
+    public String getVelocidade() {
+        return super.getVelocidade();
+    }
 
+    @Override
+    public int getGanhoEnergia() {
+        return super.getGanhoEnergia();
+    }
+    @Override
+    public int getConsumoEnergia() {
+        return super.getConsumoEnergia();
+    }
+
+    @Override
+    public int getEnergiaInicial() {
+        return super.getEnergiaInicial();
+    }
+
+    @Override
+    public char getIdEspecie() {
+        return super.getIdEspecie();
+    }
+
+    @Override
+    public String getIcone() {
+        return super.getIcone();
+    }
     public int getPosicaoActual() {
         return posicaoActual;
     }
