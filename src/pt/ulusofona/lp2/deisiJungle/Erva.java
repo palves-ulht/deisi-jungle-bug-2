@@ -5,6 +5,9 @@ public class Erva extends Alimentos {
         super(identificador, nomeAlimento, iconAlimento);
     }
 
+    Erva() {
+    }
+
     @Override
     public char getIdentificador() {
         return identificador = 'e';

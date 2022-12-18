@@ -4,6 +4,10 @@ public class Alimentos {
     protected char identificador;
     protected String nomeAlimento;
     protected String iconAlimento;
+
+    public Alimentos() {
+    }
+
     public char getIdentificador() {
         return identificador;
     }
@@ -32,5 +36,12 @@ public class Alimentos {
         this.identificador = identificador;
         this.nomeAlimento = nomeAlimento;
         this.iconAlimento = iconAlimento;
+    }
+    String estadoCarne(int jogadas) {
+        if (jogadas > 12) {
+            return "Carne toxica";
+        } else {
+            return "Carne : +- 50 energia : " + jogadas + " jogadas";
+        }
     }
 }

@@ -5,10 +5,14 @@ public class Agua extends Alimentos {
         super(identificador, nomeAlimento, iconAlimento);
     }
 
+    Agua() {
+    }
+
     @Override
     public char getIdentificador() {
         return identificador = 'a';
     }
+
     @Override
     public String getNomeAlimento() {
         return nomeAlimento = "Agua";

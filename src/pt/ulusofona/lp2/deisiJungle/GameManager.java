@@ -165,12 +165,17 @@ public class GameManager {
                 error.setMessage("String fora do formato");
                 return error;
             }
+            minhasComidas.put('b', new Banana(3));
+            minhasComidas.put('a', new Agua());
+            minhasComidas.put('c', new Carne());
+            minhasComidas.put('m', new Cogumelos());
+            minhasComidas.put('e', new Erva());
             meuMapa.put(Integer.parseInt(strings[1]), strings[0]);
         }
         return null;
     }
 
-    void adicionarEspecies() {
+    void minhaEspecies1() {
         minhasEspecies.put('E', new Elefante('E', "Elefante", "elephant.png", "1..6", 180, 4, 10));
         minhasEspecies.put('L', new Leao('L', "Leao", "lion.png", "4..6", 80, 2, 10));
         minhasEspecies.put('P', new Passaro('P', "Passaro", "bird.png", "5..6", 70, 4, 50));
@@ -179,7 +184,7 @@ public class GameManager {
     }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
-        adicionarEspecies();
+        minhaEspecies1();
         int contadorTarzan = 0;
         InitializationError error = new InitializationError();
         setTamanhoMapa(jungleSize);
@@ -284,11 +289,7 @@ public class GameManager {
                         } else if (meusAlimentos.getIdentificador() == 'a') {
                             arrayRetornar[1] = "Agua : + 10U|20% energia";
                         } else if (meusAlimentos.getIdentificador() == 'c') {
-                            if (jogadas <= 12) {
-                                arrayRetornar[1] = "Carne : +- 50 energia : " + jogadas + " jogadas";
-                            } else {
-                                arrayRetornar[1] = "Carne toxica";
-                            }
+                            arrayRetornar[1] = meusAlimentos.estadoCarne(jogadas);
                         } else if (meusAlimentos.getIdentificador() == 'm') {
                             arrayRetornar[1] = "Cogumelo Magico: +- " + valorParaColgumelos + "% energia";
                         } else {
@@ -373,6 +374,7 @@ public class GameManager {
                     int y = meusJogadore.getEnergiaActual();
                     int soma = x + y;
                     meusJogadore.setEnergiaActual(soma);
+                    jogadas++;
                 } else {
                     if (meusJogadore.getEspecies().getEnergiaInicial() < nrSquares) {
                         return energy;
@@ -381,6 +383,7 @@ public class GameManager {
                         int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
                         int enerigaInicial = meusJogadore.getEnergiaActual();
                         meusJogadore.setEnergiaActual(enerigaInicial - consumo);
+                        jogadas++;
                     }
                 }
                 if ((contador + 1) == meusJogadores.size()) {
@@ -433,14 +436,12 @@ public class GameManager {
     }
 
     public ArrayList<String> getGameResults() {
-        int cont = 1;
         meusJogadores.sort(Comparator.comparingInt((Player::getPosicaoActual)).reversed());
         ArrayList<String> resultadoPartida = new ArrayList<>();
         String formato = "";
         for (Player meusJogadore : meusJogadores) {
-            formato = "#" + cont + " " + meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getNome() + ", " + meusJogadore.getPosicaoActual();
+            formato = meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getIdEspecie() + ", " + meusJogadore.getPosicaoActual();
             resultadoPartida.add(formato);
-            cont++;
         }
         return resultadoPartida;
     }

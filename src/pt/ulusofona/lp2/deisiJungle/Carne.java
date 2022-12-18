@@ -5,6 +5,9 @@ public class Carne extends Alimentos {
         super(identificador, nomeAlimento, iconAlimento);
     }
 
+    Carne() {
+    }
+
     @Override
     public char getIdentificador() {
         return identificador = 'c';
