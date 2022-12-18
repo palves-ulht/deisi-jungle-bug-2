@@ -270,6 +270,7 @@ public class GameManager {
             if (meuMapa.get(squareNr) == null) {
                 arrayRetornar[0] = "blank.png";
                 arrayRetornar[1] = "Vazio";
+                arrayRetornar[2] = "";
             } else if (squareNr == 1) {
                 arrayRetornar[0] = "blank.png";
                 arrayRetornar[1] = "Vazio";
@@ -365,7 +366,7 @@ public class GameManager {
         MovementResultCode energia = MovementResultCode.NO_ENERGY;
         MovementResult energy = new MovementResult(energia, "");
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
-        MovementResult validMoviment = new MovementResult(movimentoValido, "");
+        MovementResult validMoviment = new MovementResult(movimentoValido, null);
         int contador = 0;
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getIdentificador() == getJogadorActual()) {
@@ -439,8 +440,10 @@ public class GameManager {
         meusJogadores.sort(Comparator.comparingInt((Player::getPosicaoActual)).reversed());
         ArrayList<String> resultadoPartida = new ArrayList<>();
         String formato = "";
+        int contador = 0;
         for (Player meusJogadore : meusJogadores) {
-            formato = meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getIdEspecie() + ", " + meusJogadore.getPosicaoActual();
+            contador++;
+            formato = "#" + contador + " " + meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getIdEspecie() + ", " + meusJogadore.getPosicaoActual();
             resultadoPartida.add(formato);
         }
         return resultadoPartida;
