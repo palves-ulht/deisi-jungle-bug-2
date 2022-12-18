@@ -263,7 +263,9 @@ public class GameManager {
     }
 
     public String[] getSquareInfo(int squareNr) {
-
+        if (squareNr <= 0 || squareNr > tamanhoMapa) {
+            return null;
+        }
         String[] arrayRetornar = new String[3];
 
         if (squareNr < tamanhoMapa) {
@@ -300,9 +302,10 @@ public class GameManager {
                     }
                 }
             }
-        } else if (squareNr == tamanhoMapa) {
+        } else {
             arrayRetornar[0] = "finish.png";
             arrayRetornar[1] = "Meta";
+            arrayRetornar[2] = "";
         }
         return arrayRetornar;
     }
@@ -443,7 +446,7 @@ public class GameManager {
         int contador = 0;
         for (Player meusJogadore : meusJogadores) {
             contador++;
-            formato = "#" + contador + " " + meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getIdEspecie() + ", " + meusJogadore.getPosicaoActual();
+            formato = "#" + contador + " " + meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getNome() + ", " + meusJogadore.getPosicaoActual();
             resultadoPartida.add(formato);
         }
         return resultadoPartida;
