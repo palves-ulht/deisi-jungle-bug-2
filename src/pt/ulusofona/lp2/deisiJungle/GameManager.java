@@ -171,6 +171,7 @@ public class GameManager {
             minhasComidas.put('m', new Cogumelos());
             minhasComidas.put('e', new Erva());
             meuMapa.put(Integer.parseInt(strings[1]), strings[0]);
+            meuMapa.put(tamanhoMapa, "finish.png");
         }
         return null;
     }
@@ -267,45 +268,45 @@ public class GameManager {
             return null;
         }
         String[] arrayRetornar = new String[3];
-
-        if (squareNr < tamanhoMapa) {
-            if (meuMapa.get(squareNr) == null) {
-                arrayRetornar[0] = "blank.png";
-                arrayRetornar[1] = "Vazio";
-                arrayRetornar[2] = "";
-            } else if (squareNr == 1) {
-                arrayRetornar[0] = "blank.png";
-                arrayRetornar[1] = "Vazio";
-                for (int contador = 0; contador < meusJogadores.size(); contador++) {
+        if (meuMapa.get(squareNr) == null) {
+            arrayRetornar[0] = "blank.png";
+            arrayRetornar[1] = "Vazio";
+            arrayRetornar[2] = "";
+        } else {
+            for (int contador = 0; contador < meusJogadores.size(); contador++) {
+                if (meusJogadores.get(contador).getPosicaoActual() == squareNr) {
                     if (contador == meusJogadores.size() - 1) {
+                        arrayRetornar[0] = meusJogadores.get(contador).getEspecies().getIcone();
+                        arrayRetornar[1] = "Vazio";
                         arrayRetornar[2] += meusJogadores.get(contador).getIdentificador();
                         break;
-                    }
-                    arrayRetornar[2] += meusJogadores.get(contador).getIdentificador() + ",";
-                }
-            } else {
-                for (Alimentos meusAlimentos : minhasComidas.values()) {
-                    if (meusAlimentos.getIdentificador() == meuMapa.get(squareNr).charAt(0)) {
-                        arrayRetornar[0] = meusAlimentos.getIconAlimento();
-                        if (meusAlimentos.getIdentificador() == 'e') {
-                            arrayRetornar[1] = "Erva : +- 20 energia";
-                        } else if (meusAlimentos.getIdentificador() == 'a') {
-                            arrayRetornar[1] = "Agua : + 10U|20% energia";
-                        } else if (meusAlimentos.getIdentificador() == 'c') {
-                            arrayRetornar[1] = meusAlimentos.estadoCarne(jogadas);
-                        } else if (meusAlimentos.getIdentificador() == 'm') {
-                            arrayRetornar[1] = "Cogumelo Magico: +- " + valorParaColgumelos + "% energia";
-                        } else {
-                            arrayRetornar[1] = meusAlimentos.getNomeAlimento();
-                        }
-                        arrayRetornar[2] = String.valueOf(meusAlimentos.getIdentificador());
+                    } else {
+                        arrayRetornar[2] += meusJogadores.get(contador).getIdentificador() + ",";
                     }
                 }
             }
-        } else {
-            arrayRetornar[0] = "finish.png";
-            arrayRetornar[1] = "Meta";
+        }
+        if (squareNr == tamanhoMapa) {
+            arrayRetornar[0] = meuMapa.get(tamanhoMapa);
+            arrayRetornar[1] = "Vazio";
             arrayRetornar[2] = "";
+        }
+        for (Alimentos meusAlimentos : minhasComidas.values()) {
+            if (String.valueOf(meusAlimentos.getIdentificador()).equals(meuMapa.get(squareNr))) {
+                arrayRetornar[0] = meusAlimentos.getIconAlimento();
+                if (meusAlimentos.getIdentificador() == 'e') {
+                    arrayRetornar[1] = "Erva : +- 20 energia";
+                } else if (meusAlimentos.getIdentificador() == 'a') {
+                    arrayRetornar[1] = "Agua : + 10U|20% energia";
+                } else if (meusAlimentos.getIdentificador() == 'c') {
+                    arrayRetornar[1] = meusAlimentos.estadoCarne(jogadas);
+                } else if (meusAlimentos.getIdentificador() == 'm') {
+                    arrayRetornar[1] = "Cogumelo Magico: +- " + valorParaColgumelos + "% energia";
+                } else {
+                    arrayRetornar[1] = meusAlimentos.getNomeAlimento();
+                }
+                arrayRetornar[2] = "";
+            }
         }
         return arrayRetornar;
     }
