@@ -278,6 +278,7 @@ public class GameManager {
             arrayRetornar[0] = "blank.png";
             arrayRetornar[1] = "Vazio";
         }
+        arrayRetornar[2] = "";
         for (int contador = 0; contador < meusJogadores.size(); contador++) {
             if (meusJogadores.get(contador).getPosicaoActual() == squareNr) {
                 if (contador == meusJogadores.size() - 1) {
@@ -288,11 +289,6 @@ public class GameManager {
                 } else {
                     arrayRetornar[2] += meusJogadores.get(contador).getIdentificador() + ",";
                 }
-            }
-        }
-        if (arrayRetornar[2] != null) {
-            if (ultimaLetra(arrayRetornar[2]) == ',') {
-                arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length() - 1);
             }
         }
         if (squareNr == tamanhoMapa) {
@@ -406,7 +402,7 @@ public class GameManager {
                                 meusJogadore.setEnergiaActual(enerigaInicial - consumo);
                                 for (Alimentos alimentos : minhasComidas) {
                                     if (alimentos.getPosicaoNoMapa() == position) {
-                                        food = new MovementResult(comida, alimentos.getNomeAlimento());
+                                        food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
                                         return food;
                                     }
                                 }
