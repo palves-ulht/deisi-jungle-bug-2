@@ -23,7 +23,8 @@ public class GameManager {
 
     int jogadas = 0;
     int valorParaColgumelos = 0;
-    HashMap<Character, Alimentos> minhasComidas = new HashMap<>();
+    ArrayList<Alimentos> minhasComidas = new ArrayList<>();
+    HashMap<Character, Alimentos> refeicoes = new HashMap<>();
     HashMap<Integer, String> meuMapa = new HashMap<>();
 
     void setJogadorActual(int play) {
@@ -99,50 +100,35 @@ public class GameManager {
     }
 
     public String[][] getFoodTypes() {
-
         String[][] foods = new String[5][3];
-
         foods[0][0] = "b";
         foods[0][1] = "Banana";
         foods[0][2] = "bananas.png";
-        Banana banana = new Banana(foods[0][0].charAt(0), foods[0][1], foods[0][2]);
-        minhasComidas.put('b', banana);
 
         foods[1][0] = "e";
         foods[1][1] = "Erva";
         foods[1][2] = "grass.png";
-        Erva erva = new Erva(foods[1][0].charAt(0), foods[1][1], foods[1][2]);
-        minhasComidas.put('e', erva);
 
         foods[2][0] = "a";
         foods[2][1] = "Agua";
         foods[2][2] = "water.png";
-        Agua agua = new Agua(foods[2][0].charAt(0), foods[2][1], foods[2][2]);
-        minhasComidas.put('a', agua);
 
         foods[3][0] = "c";
         foods[3][1] = "Carne";
         foods[3][2] = "meat.png";
-        Carne carne = new Carne(foods[3][0].charAt(0), foods[3][1], foods[3][2]);
-        minhasComidas.put('c', carne);
 
         foods[4][0] = "m";
         foods[4][1] = "Cogumelos magicos";
         foods[4][2] = "mushroom.png";
-        Cogumelos cogumelos = new Cogumelos(foods[4][0].charAt(0), foods[4][1], foods[4][2]);
-        minhasComidas.put('m', cogumelos);
-
         return foods;
     }
 
-    Especies retornaEnergia(char especie) {
-        if (minhasEspecies.get(especie) != null) {
-            return minhasEspecies.get(especie);
-        }
-        return null;
-    }
-
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo, String[][] foodsInfo) {
+        refeicoes.put('b', new Banana());
+        refeicoes.put('c', new Carne());
+        refeicoes.put('a', new Agua());
+        refeicoes.put('m', new Cogumelos());
+        refeicoes.put('e', new Erva());
         setTamanhoMapa(jungleSize);
         InitializationError error = new InitializationError();
         InitializationError secondFunction = createInitialJungle(jungleSize, playersInfo);
@@ -165,11 +151,23 @@ public class GameManager {
                 error.setMessage("String fora do formato");
                 return error;
             }
-            minhasComidas.put('b', new Banana(3));
-            minhasComidas.put('a', new Agua());
-            minhasComidas.put('c', new Carne());
-            minhasComidas.put('m', new Cogumelos());
-            minhasComidas.put('e', new Erva());
+            Alimentos alimentos = new Alimentos();
+            alimentos.setIdentificador(strings[0].charAt(0));
+            alimentos.setPosicaoNoMapa(Integer.parseInt(strings[1]));
+            for (Map.Entry<Character, Alimentos> minhas : refeicoes.entrySet()) {
+                if (minhas.getKey() == strings[0].charAt(0)) {
+                    if (minhas.getKey() == 'b') {
+                        alimentos.setNomeAlimento(minhas.getValue().getNomeAlimento());
+                        alimentos.setContadorBananas(3);
+                        alimentos.setIconAlimento(minhas.getValue().getIconAlimento());
+                    } else {
+                        alimentos.setNomeAlimento(minhas.getValue().getNomeAlimento());
+                        alimentos.setContadorBananas(0);
+                        alimentos.setIconAlimento(minhas.getValue().getIconAlimento());
+                    }
+                }
+            }
+            minhasComidas.add(alimentos);
             meuMapa.put(Integer.parseInt(strings[1]), strings[0]);
             meuMapa.put(tamanhoMapa, "finish.png");
         }
@@ -291,7 +289,7 @@ public class GameManager {
             arrayRetornar[1] = "Vazio";
             arrayRetornar[2] = "";
         }
-        for (Alimentos meusAlimentos : minhasComidas.values()) {
+        for (Alimentos meusAlimentos : minhasComidas) {
             if (String.valueOf(meusAlimentos.getIdentificador()).equals(meuMapa.get(squareNr))) {
                 arrayRetornar[0] = meusAlimentos.getIconAlimento();
                 if (meusAlimentos.getIdentificador() == 'e') {
@@ -303,7 +301,11 @@ public class GameManager {
                 } else if (meusAlimentos.getIdentificador() == 'm') {
                     arrayRetornar[1] = "Cogumelo Magico: +- " + valorParaColgumelos + "% energia";
                 } else {
-                    arrayRetornar[1] = meusAlimentos.getNomeAlimento();
+                    for (Alimentos alimentos : minhasComidas) {
+                        if (alimentos.getIdentificador() == 'b') {
+                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : + 40 energia";
+                        }
+                    }
                 }
                 arrayRetornar[2] = "";
             }
@@ -381,13 +383,18 @@ public class GameManager {
                     meusJogadore.setEnergiaActual(soma);
                     jogadas++;
                 } else {
-                    if (meusJogadore.getEspecies().getEnergiaInicial() < nrSquares) {
+                    if (meusJogadore.getEnergiaActual() < nrSquares) {
                         return energy;
                     } else {
-                        meusJogadore.mover(nrSquares, meusJogadore, getJogadorActual());
-                        int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
-                        int enerigaInicial = meusJogadore.getEnergiaActual();
-                        meusJogadore.setEnergiaActual(enerigaInicial - consumo);
+                        if (meusJogadore.getIdentificador() == jogadorActual) {
+                            int position = nrSquares + meusJogadore.getPosicaoActual();
+                            if (position >= 1) {
+                                meusJogadore.setPosicaoActual(position);
+                                int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
+                                int enerigaInicial = meusJogadore.getEnergiaActual();
+                                meusJogadore.setEnergiaActual(enerigaInicial - consumo);
+                            }
+                        }
                         jogadas++;
                     }
                 }

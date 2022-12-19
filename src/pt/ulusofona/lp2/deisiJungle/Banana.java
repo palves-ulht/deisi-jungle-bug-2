@@ -2,14 +2,11 @@ package pt.ulusofona.lp2.deisiJungle;
 
 public class Banana extends Alimentos {
 
-    int contadorBananas;
-
     Banana(char identificador, String nomeAlimento, String iconAlimento) {
         super(identificador, nomeAlimento, iconAlimento);
     }
 
-    Banana(int contadorBananas) {
-        this.contadorBananas = contadorBananas;
+    Banana() {
     }
 
     @Override

@@ -4,6 +4,25 @@ public class Alimentos {
     protected char identificador;
     protected String nomeAlimento;
     protected String iconAlimento;
+    protected int contadorBananas;
+
+    public int getPosicaoNoMapa() {
+        return posicaoNoMapa;
+    }
+
+    public void setPosicaoNoMapa(int posicaoNoMapa) {
+        this.posicaoNoMapa = posicaoNoMapa;
+    }
+
+    protected int posicaoNoMapa;
+
+    public int getContadorBananas() {
+        return contadorBananas;
+    }
+
+    public void setContadorBananas(int contadorBananas) {
+        this.contadorBananas = contadorBananas;
+    }
 
     public Alimentos() {
     }
@@ -37,6 +56,7 @@ public class Alimentos {
         this.nomeAlimento = nomeAlimento;
         this.iconAlimento = iconAlimento;
     }
+
     String estadoCarne(int jogadas) {
         if (jogadas > 12) {
             return "Carne toxica";
