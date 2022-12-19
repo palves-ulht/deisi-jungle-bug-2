@@ -291,13 +291,15 @@ public class GameManager {
                 }
             }
         }
-
-        if (arrayRetornar[2].length() > 0) {
-            if (ultimaLetra(arrayRetornar[2]) == ',') {
-                arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length() - 1);
+        try {
+            if (arrayRetornar[2] != null) {
+                if (ultimaLetra(arrayRetornar[2]) == ',') {
+                    arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length() - 1);
+                }
             }
+        } catch (Exception e) {
+            return null;
         }
-
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
             arrayRetornar[1] = "Vazio";
@@ -321,7 +323,6 @@ public class GameManager {
                         }
                     }
                 }
-                arrayRetornar[2] = "";
             }
         }
         return arrayRetornar;
@@ -425,14 +426,6 @@ public class GameManager {
     }
 
     public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
-        MovementResultCode movimentoInvalido = MovementResultCode.INVALID_MOVEMENT;
-        MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
-        MovementResultCode alimento = MovementResultCode.CAUGHT_FOOD;
-        MovementResultCode energia = MovementResultCode.NO_ENERGY;
-        MovementResult invalidMoviment = new MovementResult(movimentoInvalido, "");
-        MovementResult validMoviment = new MovementResult(movimentoValido, "");
-        MovementResult food = new MovementResult(alimento, "");
-        MovementResult energy = new MovementResult(energia, "");
         if (!bypassValidations) {
             if (nrSquares >= -6 && nrSquares <= 6) {
                 return movimentoValido(nrSquares);
