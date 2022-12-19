@@ -261,6 +261,14 @@ public class GameManager {
         return meuArray;
     }
 
+    public static char ultimaLetra(String nome) {
+        if (nome != null && nome.length() > 0) {
+            // aqui você pega o último char
+            return nome.charAt(nome.length() - 1);
+        }
+        return (char) 0;
+    }
+
     public String[] getSquareInfo(int squareNr) {
         if (squareNr <= 0 || squareNr > tamanhoMapa) {
             return null;
@@ -283,11 +291,13 @@ public class GameManager {
                 }
             }
         }
-        if (arrayRetornar[2].charAt(arrayRetornar.length - 1) == ',') {
-            for (int i = 0; i < arrayRetornar[2].length() - 1; i++) {
-                arrayRetornar[2] += arrayRetornar[i];
+
+        if (arrayRetornar[2].length() > 0) {
+            if (ultimaLetra(arrayRetornar[2]) == ',') {
+                arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length() - 1);
             }
         }
+
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
             arrayRetornar[1] = "Vazio";
