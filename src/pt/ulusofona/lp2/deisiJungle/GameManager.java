@@ -279,16 +279,15 @@ public class GameManager {
             arrayRetornar[1] = "Vazio";
         }
         arrayRetornar[2] = "";
-        for (int contador = 0; contador < meusJogadores.size(); contador++) {
-            if (meusJogadores.get(contador).getPosicaoActual() == squareNr) {
-                arrayRetornar[0] = meusJogadores.get(contador).getEspecies().getIcone();
+        StringBuilder nova = new StringBuilder();
+        for (Player meusJogadore : meusJogadores) {
+            if (meusJogadore.getPosicaoActual() == squareNr) {
+                arrayRetornar[0] = meusJogadore.getEspecies().getIcone();
                 arrayRetornar[1] = "Vazio";
-                arrayRetornar[2] += meusJogadores.get(contador).getIdentificador() + ",";
-                if (contador == meusJogadores.size() - 1) {
-                    arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length()-1);
-                }
+                nova.append(meusJogadore.getIdentificador()).append(",");
             }
         }
+        arrayRetornar[2] = nova.substring(0, nova.length() - 1);
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
             arrayRetornar[1] = "Vazio";
