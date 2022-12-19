@@ -283,6 +283,11 @@ public class GameManager {
                 }
             }
         }
+        if (arrayRetornar[2].charAt(arrayRetornar.length - 1) == ',') {
+            for (int i = 0; i < arrayRetornar[2].length() - 1; i++) {
+                arrayRetornar[2] += arrayRetornar[i];
+            }
+        }
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
             arrayRetornar[1] = "Vazio";
