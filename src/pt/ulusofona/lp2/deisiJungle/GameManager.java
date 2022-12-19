@@ -270,17 +270,16 @@ public class GameManager {
             arrayRetornar[0] = "blank.png";
             arrayRetornar[1] = "Vazio";
             arrayRetornar[2] = "";
-        } else {
-            for (int contador = 0; contador < meusJogadores.size(); contador++) {
-                if (meusJogadores.get(contador).getPosicaoActual() == squareNr) {
-                    if (contador == meusJogadores.size() - 1) {
-                        arrayRetornar[0] = meusJogadores.get(contador).getEspecies().getIcone();
-                        arrayRetornar[1] = "Vazio";
-                        arrayRetornar[2] += meusJogadores.get(contador).getIdentificador();
-                        break;
-                    } else {
-                        arrayRetornar[2] += meusJogadores.get(contador).getIdentificador() + ",";
-                    }
+        }
+        for (int contador = 0; contador < meusJogadores.size(); contador++) {
+            if (meusJogadores.get(contador).getPosicaoActual() == squareNr) {
+                if (contador == meusJogadores.size() - 1) {
+                    arrayRetornar[0] = meusJogadores.get(contador).getEspecies().getIcone();
+                    arrayRetornar[1] = "Vazio";
+                    arrayRetornar[2] += meusJogadores.get(contador).getIdentificador();
+                    break;
+                } else {
+                    arrayRetornar[2] += meusJogadores.get(contador).getIdentificador() + ",";
                 }
             }
         }
