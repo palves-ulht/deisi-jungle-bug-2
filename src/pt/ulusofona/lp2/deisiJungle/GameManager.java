@@ -277,7 +277,6 @@ public class GameManager {
         if (meuMapa.get(squareNr) == null) {
             arrayRetornar[0] = "blank.png";
             arrayRetornar[1] = "Vazio";
-            arrayRetornar[2] = "";
         }
         for (int contador = 0; contador < meusJogadores.size(); contador++) {
             if (meusJogadores.get(contador).getPosicaoActual() == squareNr) {
@@ -298,7 +297,7 @@ public class GameManager {
         }
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
-            arrayRetornar[1] = "Meta";
+            arrayRetornar[1] = "Vazio";
         }
         for (Alimentos meusAlimentos : minhasComidas) {
             if (String.valueOf(meusAlimentos.getIdentificador()).equals(meuMapa.get(squareNr))) {
@@ -405,15 +404,15 @@ public class GameManager {
                                 int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
                                 int enerigaInicial = meusJogadore.getEnergiaActual();
                                 meusJogadore.setEnergiaActual(enerigaInicial - consumo);
+                                for (Alimentos alimentos : minhasComidas) {
+                                    if (alimentos.getPosicaoNoMapa() == position) {
+                                        food = new MovementResult(comida, alimentos.getNomeAlimento());
+                                        return food;
+                                    }
+                                }
                             }
                         }
                         jogadas++;
-                    }
-                    for (Alimentos alimentos : minhasComidas) {
-                        if (alimentos.getPosicaoNoMapa() == nrSquares) {
-                            food = new MovementResult(comida, alimentos.getNomeAlimento());
-                            return food;
-                        }
                     }
                 }
                 if ((contador + 1) == meusJogadores.size()) {
