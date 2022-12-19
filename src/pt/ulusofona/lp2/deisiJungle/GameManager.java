@@ -291,19 +291,14 @@ public class GameManager {
                 }
             }
         }
-        try {
-            if (arrayRetornar[2] != null) {
-                if (ultimaLetra(arrayRetornar[2]) == ',') {
-                    arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length() - 1);
-                }
+        if (arrayRetornar[2] != null) {
+            if (ultimaLetra(arrayRetornar[2]) == ',') {
+                arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length() - 1);
             }
-        } catch (Exception e) {
-            return null;
         }
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
-            arrayRetornar[1] = "Vazio";
-            arrayRetornar[2] = "";
+            arrayRetornar[1] = "Meta";
         }
         for (Alimentos meusAlimentos : minhasComidas) {
             if (String.valueOf(meusAlimentos.getIdentificador()).equals(meuMapa.get(squareNr))) {
@@ -386,6 +381,8 @@ public class GameManager {
     MovementResult movimentoValido(int nrSquares) {
         MovementResultCode energia = MovementResultCode.NO_ENERGY;
         MovementResult energy = new MovementResult(energia, "");
+        MovementResultCode comida = MovementResultCode.CAUGHT_FOOD;
+        MovementResult food;
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
         MovementResult validMoviment = new MovementResult(movimentoValido, null);
         int contador = 0;
@@ -411,6 +408,12 @@ public class GameManager {
                             }
                         }
                         jogadas++;
+                    }
+                    for (Alimentos alimentos : minhasComidas) {
+                        if (alimentos.getPosicaoNoMapa() == nrSquares) {
+                            food = new MovementResult(comida, alimentos.getNomeAlimento());
+                            return food;
+                        }
                     }
                 }
                 if ((contador + 1) == meusJogadores.size()) {
