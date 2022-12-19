@@ -303,7 +303,7 @@ public class GameManager {
                 } else {
                     for (Alimentos alimentos : minhasComidas) {
                         if (alimentos.getIdentificador() == 'b') {
-                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : + 40 energia";
+                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : +40";
                         }
                     }
                 }
