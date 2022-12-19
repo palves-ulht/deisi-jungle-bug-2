@@ -16,7 +16,7 @@ public class Banana extends Alimentos {
 
     @Override
     public String getNomeAlimento() {
-        return nomeAlimento = "Banana";
+        return nomeAlimento = "Bananas";
     }
 
     @Override

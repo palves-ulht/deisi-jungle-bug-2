@@ -281,13 +281,11 @@ public class GameManager {
         arrayRetornar[2] = "";
         for (int contador = 0; contador < meusJogadores.size(); contador++) {
             if (meusJogadores.get(contador).getPosicaoActual() == squareNr) {
+                arrayRetornar[0] = meusJogadores.get(contador).getEspecies().getIcone();
+                arrayRetornar[1] = "Vazio";
+                arrayRetornar[2] += meusJogadores.get(contador).getIdentificador() + ",";
                 if (contador == meusJogadores.size() - 1) {
-                    arrayRetornar[0] = meusJogadores.get(contador).getEspecies().getIcone();
-                    arrayRetornar[1] = "Vazio";
-                    arrayRetornar[2] += meusJogadores.get(contador).getIdentificador();
-                    break;
-                } else {
-                    arrayRetornar[2] += meusJogadores.get(contador).getIdentificador() + ",";
+                    arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length()-1);
                 }
             }
         }
@@ -403,6 +401,17 @@ public class GameManager {
                                 for (Alimentos alimentos : minhasComidas) {
                                     if (alimentos.getPosicaoNoMapa() == position) {
                                         food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
+                                        if (alimentos.getIdentificador() == 'c') {
+                                            if (meusJogadore.getEspecies().getIdEspecie() == 'L' || meusJogadore.getEspecies().getIdEspecie() == 'T' || meusJogadore.getEspecies().getIdEspecie() == 'Z' || meusJogadore.getEspecies().getIdEspecie() == 'P') {
+                                                if (jogadas <= 12) {
+                                                    int enerigaInicial1 = meusJogadore.getEnergiaActual();
+                                                    meusJogadore.setEnergiaActual(enerigaInicial1 + 50);
+                                                } else {
+                                                    int enerigaInicial1 = meusJogadore.getEnergiaActual();
+                                                    meusJogadore.setEnergiaActual(enerigaInicial1 - 50);
+                                                }
+                                            }
+                                        }
                                         return food;
                                     }
                                 }
