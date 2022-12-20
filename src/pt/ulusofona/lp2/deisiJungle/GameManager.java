@@ -297,7 +297,7 @@ public class GameManager {
                     arrayRetornar[1] = "Agua : + 10U|20% energia";
                 } else if (meusAlimentos.getIdentificador() == 'c') {
                     if (jogadas < 13) {
-                        arrayRetornar[1] = "Carne : +- 50 energia : " + jogadas + " jogadas";
+                        arrayRetornar[1] = "Carne : + 50 energia : " + jogadas + " jogadas";
                     } else {
                         arrayRetornar[1] = "Carne toxica";
                     }
@@ -306,7 +306,7 @@ public class GameManager {
                 } else {
                     for (Alimentos alimentos : minhasComidas) {
                         if (alimentos.getIdentificador() == 'b') {
-                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : +40";
+                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : + 40";
                         }
                     }
                 }
