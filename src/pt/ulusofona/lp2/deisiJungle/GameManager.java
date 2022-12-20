@@ -271,18 +271,21 @@ public class GameManager {
             arrayRetornar[1] = "Vazio";
         }
         arrayRetornar[2] = "";
-        int cont = 0;
+        StringBuilder aux = new StringBuilder();
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getPosicaoActual() == squareNr) {
                 arrayRetornar[0] = meusJogadore.getEspecies().getIcone();
                 arrayRetornar[1] = "Vazio";
-                arrayRetornar[2] += meusJogadore.getIdentificador() + ",";
+                aux.append(meusJogadore.getIdentificador()).append(",");
             }
-            cont++;
         }
-        if (arrayRetornar[2].length() > 0) {
-            arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length() - 1);
+
+        if (aux.length() > 1) {
+            arrayRetornar[2] = aux.substring(0, aux.length() - 1);
+        } else {
+            arrayRetornar[2] = String.valueOf(aux);
         }
+
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
             arrayRetornar[1] = "Vazio";
