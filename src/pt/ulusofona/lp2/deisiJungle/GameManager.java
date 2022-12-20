@@ -296,7 +296,11 @@ public class GameManager {
                 } else if (meusAlimentos.getIdentificador() == 'a') {
                     arrayRetornar[1] = "Agua : + 10U|20% energia";
                 } else if (meusAlimentos.getIdentificador() == 'c') {
-                    arrayRetornar[1] = meusAlimentos.estadoCarne(jogadas);
+                    if (jogadas < 13) {
+                        arrayRetornar[1] = "Carne : +- 50 energia : " + jogadas + " jogadas";
+                    } else {
+                        arrayRetornar[1] = "Carne toxica";
+                    }
                 } else if (meusAlimentos.getIdentificador() == 'm') {
                     arrayRetornar[1] = "Cogumelo Magico: +- " + valorParaColgumelos + "% energia";
                 } else {
