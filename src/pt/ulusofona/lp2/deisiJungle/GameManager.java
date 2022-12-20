@@ -274,14 +274,12 @@ public class GameManager {
         StringBuilder aux = new StringBuilder();
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getPosicaoActual() == squareNr) {
-                arrayRetornar[0] = meusJogadore.getEspecies().getIcone();
-                arrayRetornar[1] = "Vazio";
                 aux.append(meusJogadore.getIdentificador()).append(",");
             }
         }
 
         if (aux.length() > 1) {
-            arrayRetornar[2] = aux.substring(0, aux.length() - 1);
+            arrayRetornar[2] = String.valueOf(aux.substring(0, aux.length() - 1));
         } else {
             arrayRetornar[2] = String.valueOf(aux);
         }
