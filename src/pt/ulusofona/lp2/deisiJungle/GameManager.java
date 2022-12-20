@@ -281,12 +281,11 @@ public class GameManager {
         arrayRetornar[2] = "";
         for (int contador = 0; contador < meusJogadores.size(); contador++) {
             if (meusJogadores.get(contador).getPosicaoActual() == squareNr) {
-                if (contador == meusJogadores.size() - 1) {
-                    arrayRetornar[2] += meusJogadores.get(contador).getIdentificador();
-                } else {
-                    arrayRetornar[0] = meusJogadores.get(contador).getEspecies().getIcone();
-                    arrayRetornar[1] = "Vazio";
-                    arrayRetornar[2] += meusJogadores.get(contador).getIdentificador() + ",";
+                arrayRetornar[0] = meusJogadores.get(contador).getEspecies().getIcone();
+                arrayRetornar[1] = "Vazio";
+                arrayRetornar[2] += "," + meusJogadores.get(contador).getIdentificador();
+                if (contador == meusJogadores.size() - 1){
+                    arrayRetornar[2] = arrayRetornar[2].replaceFirst(",", "");
                 }
             }
         }
