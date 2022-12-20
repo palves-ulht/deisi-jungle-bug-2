@@ -261,14 +261,6 @@ public class GameManager {
         return meuArray;
     }
 
-    public static char ultimaLetra(String nome) {
-        if (nome != null && nome.length() > 0) {
-            // aqui você pega o último char
-            return nome.charAt(nome.length() - 1);
-        }
-        return (char) 0;
-    }
-
     public String[] getSquareInfo(int squareNr) {
         if (squareNr <= 0 || squareNr > tamanhoMapa) {
             return null;
@@ -279,14 +271,19 @@ public class GameManager {
             arrayRetornar[1] = "Vazio";
         }
         arrayRetornar[2] = "";
+        int cont = 0;
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getPosicaoActual() == squareNr) {
                 arrayRetornar[0] = meusJogadore.getEspecies().getIcone();
                 arrayRetornar[1] = "Vazio";
-                arrayRetornar[2] += meusJogadore.getIdentificador() + ",";
+                if (cont + 1 == meusJogadores.size()) {
+                    arrayRetornar[2] += meusJogadore.getIdentificador();
+                } else {
+                    arrayRetornar[2] += meusJogadore.getIdentificador() + ",";
+                }
             }
+            cont++;
         }
-
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
             arrayRetornar[1] = "Vazio";
@@ -310,13 +307,6 @@ public class GameManager {
                     }
                 }
             }
-        }
-        int cont = 0;
-        for (String m : arrayRetornar) {
-            if (cont == 2) {
-                arrayRetornar[2] = m.substring(0, m.length() - 1);
-            }
-            cont++;
         }
 
         return arrayRetornar;
