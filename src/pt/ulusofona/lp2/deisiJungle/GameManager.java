@@ -410,6 +410,11 @@ public class GameManager {
                                         }
                                         return food;
                                     }
+                                    if ((contador + 1) == meusJogadores.size()) {
+                                        setJogadorActual(0);
+                                    } else {
+                                        setJogadorActual(contador + 1);
+                                    }
                                 }
                             }
                         }
