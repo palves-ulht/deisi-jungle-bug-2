@@ -276,13 +276,12 @@ public class GameManager {
             if (meusJogadore.getPosicaoActual() == squareNr) {
                 arrayRetornar[0] = meusJogadore.getEspecies().getIcone();
                 arrayRetornar[1] = "Vazio";
-                if (cont + 1 == meusJogadores.size()) {
-                    arrayRetornar[2] += meusJogadore.getIdentificador();
-                } else {
-                    arrayRetornar[2] += meusJogadore.getIdentificador() + ",";
-                }
+                arrayRetornar[2] += meusJogadore.getIdentificador() + ",";
             }
             cont++;
+        }
+        if (arrayRetornar[2].length() > 0) {
+            arrayRetornar[2] = arrayRetornar[2].substring(0, arrayRetornar[2].length() - 1);
         }
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
