@@ -270,7 +270,7 @@ public class GameManager {
             arrayRetornar[0] = "blank.png";
             arrayRetornar[1] = "Vazio";
         }
-        arrayRetornar[2] = "";
+
         StringBuilder aux = new StringBuilder();
         for (Player meusJogadore : meusJogadores) {
             if (meusJogadore.getPosicaoActual() == squareNr) {
@@ -286,7 +286,7 @@ public class GameManager {
 
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
-            arrayRetornar[1] = "Vazio";
+            arrayRetornar[1] = "Meta";
         }
         for (Alimentos meusAlimentos : minhasComidas) {
             if (String.valueOf(meusAlimentos.getIdentificador()).equals(meuMapa.get(squareNr))) {
@@ -296,17 +296,13 @@ public class GameManager {
                 } else if (meusAlimentos.getIdentificador() == 'a') {
                     arrayRetornar[1] = "Agua : + 10U|20% energia";
                 } else if (meusAlimentos.getIdentificador() == 'c') {
-                    if (jogadas < 13) {
-                        arrayRetornar[1] = "Carne : + 50 energia : " + jogadas + " jogadas";
-                    } else {
-                        arrayRetornar[1] = "Carne toxica";
-                    }
+                    arrayRetornar[1] = meusAlimentos.estadoCarne(jogadas);
                 } else if (meusAlimentos.getIdentificador() == 'm') {
                     arrayRetornar[1] = "Cogumelo Magico: +- " + valorParaColgumelos + "% energia";
                 } else {
                     for (Alimentos alimentos : minhasComidas) {
                         if (alimentos.getIdentificador() == 'b') {
-                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : + 40";
+                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : +40";
                         }
                     }
                 }
@@ -451,17 +447,14 @@ public class GameManager {
 
     public String[] getWinnerInfo() {
         String[] winner = new String[5];
-        for (int contaMapa = 0; contaMapa < getTamanhoMapa(); contaMapa++) {
-            for (Player meusJogadore : meusJogadores) {
-                if (meusJogadore.getPosicaoActual() >= getTamanhoMapa()) {
-                    winner[0] = String.valueOf(meusJogadore.getIdentificador());
-                    winner[1] = meusJogadore.getNome();
-                    winner[2] = String.valueOf(meusJogadore.getEspecies().getIdEspecie());
-                    winner[3] = String.valueOf(meusJogadore.getEnergiaActual());
-                    winner[4] = String.valueOf(meusJogadore.getEspecies().getVelocidade());
-                    return winner;
-                }
-            }
+        meusJogadores.sort(Comparator.comparing(Player::getPosicaoActual).reversed());
+        if (meusJogadores.get(0).getPosicaoActual() >= tamanhoMapa) {
+            winner[0] = String.valueOf(meusJogadores.get(0).getIdentificador());
+            winner[1] = meusJogadores.get(0).getNome();
+            winner[2] = String.valueOf(meusJogadores.get(0).getEspecies().getIdEspecie());
+            winner[3] = String.valueOf(meusJogadores.get(0).getEnergiaActual());
+            winner[4] = String.valueOf(meusJogadores.get(0).getEspecies().getVelocidade());
+            return winner;
         }
         return null;
     }
