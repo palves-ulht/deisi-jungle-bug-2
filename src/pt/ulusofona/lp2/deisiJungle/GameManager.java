@@ -25,6 +25,7 @@ public class GameManager {
     int valorParaColgumelos = 0;
     ArrayList<Alimentos> minhasComidas = new ArrayList<>();
     HashMap<Character, Alimentos> refeicoes = new HashMap<>();
+    HashMap<Character, String> nomesAlimentos = new HashMap<>();
     HashMap<Integer, String> meuMapa = new HashMap<>();
 
     void setJogadorActual(int play) {
@@ -167,6 +168,7 @@ public class GameManager {
                 }
             }
             minhasComidas.add(alimentos);
+            nomesAlimentos.put(strings[0].charAt(0), alimentos.nomeAlimento);
             meuMapa.put(Integer.parseInt(strings[1]), strings[0]);
             meuMapa.put(tamanhoMapa, "finish.png");
         }
@@ -249,6 +251,7 @@ public class GameManager {
         meusJogadores = new ArrayList<>();
         meuMapa = new HashMap<>();
         refeicoes = new HashMap<>();
+        nomesAlimentos = new HashMap<>();
     }
 
     public int[] getPlayerIds(int squareNr) {
@@ -392,6 +395,21 @@ public class GameManager {
         }
     }
 
+    String especies(char especie){
+        if(especie == 'a'){
+            return "Agua";
+        }
+        if(especie == 'b'){
+            return "Bananas";
+        }
+        if(especie == 'e'){
+            return "Erva";
+        }
+        if(especie == 'm'){
+            return "Cogumelos magicos";
+        }
+        return "Carne";
+    }
     MovementResult movimentoValido(int nrSquares) {
         MovementResultCode energia = MovementResultCode.NO_ENERGY;
         MovementResult energy = new MovementResult(energia, "");
@@ -421,17 +439,8 @@ public class GameManager {
                                 meusJogadore.setEnergiaActual(enerigaInicial - consumo);
                                 for (Alimentos alimentos : minhasComidas) {
                                     if (alimentos.getPosicaoNoMapa() == position) {
-                                        if (alimentos.getIdentificador() == 'a') {
-                                            if (energiaAgua(meusJogadore.getEspecies().getIdEspecie()) == 15) {
-                                                meusJogadore.setEnergiaActual(meusJogadore.getEnergiaActual() + 15);
-                                            } else {
-                                                int power = meusJogadore.getEnergiaActual();
-                                                int percent = (int) (power * 0.2);
-                                                power += percent;
-                                                meusJogadore.setEnergiaActual(power);
-                                            }
-                                        }
-                                        food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
+
+                                        food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
                                         return food;
                                     }
                                     if ((contador + 1) == meusJogadores.size()) {
