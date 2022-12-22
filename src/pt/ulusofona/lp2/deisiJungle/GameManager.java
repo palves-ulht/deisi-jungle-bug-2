@@ -241,7 +241,8 @@ public class GameManager {
         }
         return null;
     }
-    void reset(){
+
+    void reset() {
         minhasComidas = new ArrayList<>();
         minhasEspecies = new HashMap<>();
         minhaListaPlayers = new HashMap<>();
@@ -270,6 +271,7 @@ public class GameManager {
     }
 
     public String[] getSquareInfo(int squareNr) {
+
         if (squareNr <= 0 || squareNr > tamanhoMapa) {
             return null;
         }
@@ -293,10 +295,38 @@ public class GameManager {
         }
 
         if (squareNr == tamanhoMapa) {
-            arrayRetornar[0] = meuMapa.get(tamanhoMapa);
+            arrayRetornar[0] = "finish.png";
             arrayRetornar[1] = "Meta";
         }
-
+        for (Alimentos meusAlimentos : minhasComidas) {
+            if (String.valueOf(meusAlimentos.getIdentificador()).equals(meuMapa.get(squareNr))) {
+                if (meusAlimentos.getIdentificador() == 'e') {
+                    Erva erva = new Erva();
+                    arrayRetornar[0] = erva.getIconAlimento();
+                    arrayRetornar[1] = "Erva : +- 20 energia";
+                } else if (meusAlimentos.getIdentificador() == 'a') {
+                    Agua agua = new Agua();
+                    arrayRetornar[0] = agua.getIconAlimento();
+                    arrayRetornar[1] = "Agua : + 10U|20% energia";
+                } else if (meusAlimentos.getIdentificador() == 'c') {
+                    Carne carne = new Carne();
+                    arrayRetornar[0] = carne.getIconAlimento();
+                    arrayRetornar[1] = meusAlimentos.estadoCarne(jogadas);
+                } else if (meusAlimentos.getIdentificador() == 'm') {
+                    Cogumelos cogumelos = new Cogumelos();
+                    arrayRetornar[0] = cogumelos.getIconAlimento();
+                    arrayRetornar[1] = "Cogumelo Magico: +- " + valorParaColgumelos + "% energia";
+                } else {
+                    for (Alimentos alimentos : minhasComidas) {
+                        if (alimentos.getIdentificador() == 'b') {
+                            Banana banana = new Banana();
+                            arrayRetornar[0] = banana.getIconAlimento();
+                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : +40";
+                        }
+                    }
+                }
+            }
+        }
         return arrayRetornar;
     }
 
