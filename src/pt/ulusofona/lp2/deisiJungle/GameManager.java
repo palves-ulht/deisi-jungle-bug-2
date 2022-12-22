@@ -421,9 +421,6 @@ public class GameManager {
             if (!byPasseValidation) {
                 if (nrSquares >= -6 && nrSquares <= 6) {
                     if (meusJogadore.getIdentificador() == getJogadorActual()) {
-                        if ((meusJogadore.getPosicaoActual() + nrSquares) < 1) {
-                            return null;
-                        }
                         if (meusJogadore.getEnergiaActual() < nrSquares) {
                             return energy;
                         } else if (nrSquares == 0) {
@@ -433,7 +430,16 @@ public class GameManager {
                             meusJogadore.setEnergiaActual(result);
                         } else if (meusJogadore.getIdentificador() == jogadorActual) {
                             int position = nrSquares + meusJogadore.getPosicaoActual();
-                            meusJogadore.setPosicaoActual(position);
+                            if (nrSquares > 0) {
+                                meusJogadore.setPosicaoActual(position);
+                            } else {
+                                int diferenca = meusJogadore.getPosicaoActual() - nrSquares;
+                                if (diferenca < 1) {
+                                    return null;
+                                } else {
+                                    meusJogadore.setPosicaoActual(diferenca);
+                                }
+                            }
                             int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
                             int enerigaInicial = meusJogadore.getEnergiaActual();
                             meusJogadore.setEnergiaActual(enerigaInicial - consumo);
@@ -470,14 +476,14 @@ public class GameManager {
                         meusJogadore.setEnergiaActual(result);
                     } else if (meusJogadore.getIdentificador() == jogadorActual) {
                         int position = nrSquares + meusJogadore.getPosicaoActual();
-                        if (nrSquares < 0) {
+                        if (nrSquares > 0) {
                             meusJogadore.setPosicaoActual(position);
                         } else {
-                            int pos = meusJogadore.getPosicaoActual() - nrSquares;
-                            if (pos < 1) {
+                            int diferenca = meusJogadore.getPosicaoActual() - nrSquares;
+                            if (diferenca < 1) {
                                 return null;
                             } else {
-                                meusJogadore.setPosicaoActual(pos);
+                                meusJogadore.setPosicaoActual(diferenca);
                             }
                         }
                         int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
