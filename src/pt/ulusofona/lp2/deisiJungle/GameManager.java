@@ -318,14 +318,12 @@ public class GameManager {
                 } else if (meusAlimentos.getIdentificador() == 'm') {
                     Cogumelos cogumelos = new Cogumelos();
                     arrayRetornar[0] = cogumelos.getIconAlimento();
-                    arrayRetornar[1] = "Cogumelo Magico: +- " + valorParaColgumelos + "% energia";
+                    arrayRetornar[1] = "Cogumelo Magico : +- " + valorParaColgumelos + "% energia";
                 } else {
-                    for (Alimentos alimentos : minhasComidas) {
-                        if (alimentos.getIdentificador() == 'b') {
-                            Banana banana = new Banana();
-                            arrayRetornar[0] = banana.getIconAlimento();
-                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : +40";
-                        }
+                    if (meusAlimentos.getIdentificador() == 'b') {
+                        Banana banana = new Banana();
+                        arrayRetornar[0] = banana.getIconAlimento();
+                        arrayRetornar[1] = "Bananas : " + meusAlimentos.getContadorBananas() + " : +40";
                     }
                 }
             }
@@ -463,9 +461,6 @@ public class GameManager {
                 }
             } else {
                 if (meusJogadore.getIdentificador() == getJogadorActual()) {
-                    if ((meusJogadore.getPosicaoActual() + nrSquares) < 1) {
-                        return null;
-                    }
                     if (meusJogadore.getEnergiaActual() < nrSquares) {
                         return energy;
                     } else if (nrSquares == 0) {
@@ -475,7 +470,16 @@ public class GameManager {
                         meusJogadore.setEnergiaActual(result);
                     } else if (meusJogadore.getIdentificador() == jogadorActual) {
                         int position = nrSquares + meusJogadore.getPosicaoActual();
-                        meusJogadore.setPosicaoActual(position);
+                        if (nrSquares < 0) {
+                            meusJogadore.setPosicaoActual(position);
+                        } else {
+                            int pos = meusJogadore.getPosicaoActual() - nrSquares;
+                            if (pos < 1) {
+                                return null;
+                            } else {
+                                meusJogadore.setPosicaoActual(pos);
+                            }
+                        }
                         int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
                         int enerigaInicial = meusJogadore.getEnergiaActual();
                         meusJogadore.setEnergiaActual(enerigaInicial - consumo);
