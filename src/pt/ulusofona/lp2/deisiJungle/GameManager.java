@@ -272,17 +272,17 @@ public class GameManager {
         }
 
         StringBuilder aux = new StringBuilder();
-        for (Player meusJogadore : meusJogadores) {
-            if (meusJogadore.getPosicaoActual() == squareNr) {
-                aux.append(meusJogadore.getIdentificador()).append(",");
+        for (int conta = 0; conta < meusJogadores.size(); conta++) {
+            if (meusJogadores.get(conta).getPosicaoActual() == squareNr) {
+                if (conta == meusJogadores.size() - 1) {
+                    aux.append(meusJogadores.get(conta).getIdentificador());
+                } else {
+                    aux.append(meusJogadores.get(conta).getIdentificador()).append(",");
+                }
             }
         }
 
-        if (aux.length() > 1) {
-            arrayRetornar[2] = String.valueOf(aux.substring(0, aux.length() - 1));
-        } else {
-            arrayRetornar[2] = String.valueOf(aux);
-        }
+        arrayRetornar[2] = String.valueOf(aux);
 
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
