@@ -60,7 +60,7 @@ public class Alimentos {
         if (jogadas > 12) {
             return "Carne toxica";
         } else {
-            return "Carne : +- 50 energia : " + jogadas + " jogadas";
+            return "Carne : + 50 energia : " + jogadas + " jogadas";
         }
     }
 }

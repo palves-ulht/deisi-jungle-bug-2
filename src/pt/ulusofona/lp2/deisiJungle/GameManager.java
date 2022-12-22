@@ -366,6 +366,13 @@ public class GameManager {
         return arrayRetornar;
     }
 
+    int energiaAgua(char especie) {
+        if (especie == 'L' || especie == 'E' || especie == 'T') {
+            return 15;
+        } else {
+            return 20;
+        }
+    }
 
     MovementResult movimentoValido(int nrSquares) {
         MovementResultCode energia = MovementResultCode.NO_ENERGY;
@@ -396,18 +403,17 @@ public class GameManager {
                                 meusJogadore.setEnergiaActual(enerigaInicial - consumo);
                                 for (Alimentos alimentos : minhasComidas) {
                                     if (alimentos.getPosicaoNoMapa() == position) {
-                                        food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                                        if (alimentos.getIdentificador() == 'c') {
-                                            if (meusJogadore.getEspecies().getIdEspecie() == 'L' || meusJogadore.getEspecies().getIdEspecie() == 'T' || meusJogadore.getEspecies().getIdEspecie() == 'Z' || meusJogadore.getEspecies().getIdEspecie() == 'P') {
-                                                if (jogadas <= 12) {
-                                                    int enerigaInicial1 = meusJogadore.getEnergiaActual();
-                                                    meusJogadore.setEnergiaActual(enerigaInicial1 + 50);
-                                                } else {
-                                                    int enerigaInicial1 = meusJogadore.getEnergiaActual();
-                                                    meusJogadore.setEnergiaActual(enerigaInicial1 - 50);
-                                                }
+                                        if (alimentos.getIdentificador() == 'a') {
+                                            if (energiaAgua(meusJogadore.getEspecies().getIdEspecie()) == 15) {
+                                                meusJogadore.setEnergiaActual(meusJogadore.getEnergiaActual() + 15);
+                                            } else {
+                                                int power = meusJogadore.getEnergiaActual();
+                                                int percent = (int) (power * 0.2);
+                                                power += percent;
+                                                meusJogadore.setEnergiaActual(power);
                                             }
                                         }
+                                        food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
                                         return food;
                                     }
                                     if ((contador + 1) == meusJogadores.size()) {
