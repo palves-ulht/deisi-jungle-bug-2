@@ -481,7 +481,7 @@ public class GameManager {
                         } else {
                             int diferenca = meusJogadore.getPosicaoActual() - nrSquares;
                             if (diferenca < 1) {
-                                return null;
+                                meusJogadore.setPosicaoActual(1);
                             } else {
                                 meusJogadore.setPosicaoActual(diferenca);
                             }
