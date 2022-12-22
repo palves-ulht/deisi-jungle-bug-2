@@ -50,7 +50,6 @@ public class GameManager {
     }
 
     HashMap<Character, Especies> minhasEspecies = new HashMap<>();
-    ArrayList<Especies> especiesL = new ArrayList<>();
     HashMap<Integer, Player> minhaListaPlayers = new HashMap<>();
     ArrayList<Player> meusJogadores = new ArrayList<>();
 
@@ -183,6 +182,7 @@ public class GameManager {
     }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
+        reset();
         minhaEspecies1();
         int contadorTarzan = 0;
         InitializationError error = new InitializationError();
@@ -240,6 +240,14 @@ public class GameManager {
             setJogadorActual(0);
         }
         return null;
+    }
+    void reset(){
+        minhasComidas = new ArrayList<>();
+        minhasEspecies = new HashMap<>();
+        minhaListaPlayers = new HashMap<>();
+        meusJogadores = new ArrayList<>();
+        meuMapa = new HashMap<>();
+        refeicoes = new HashMap<>();
     }
 
     public int[] getPlayerIds(int squareNr) {
