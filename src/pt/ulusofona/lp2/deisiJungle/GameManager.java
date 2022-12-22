@@ -272,41 +272,21 @@ public class GameManager {
         }
 
         StringBuilder aux = new StringBuilder();
-        for (int conta = 0; conta < meusJogadores.size(); conta++) {
-            if (meusJogadores.get(conta).getPosicaoActual() == squareNr) {
-                if (conta == meusJogadores.size() - 1) {
-                    aux.append(meusJogadores.get(conta).getIdentificador());
-                } else {
-                    aux.append(meusJogadores.get(conta).getIdentificador()).append(",");
-                }
+        for (Player meusJogadore : meusJogadores) {
+            if (meusJogadore.getPosicaoActual() == squareNr) {
+                aux.append(meusJogadore.getIdentificador()).append(",");
             }
         }
 
-        arrayRetornar[2] = String.valueOf(aux);
+        if (aux.length() > 1) {
+            arrayRetornar[2] = String.valueOf(aux.substring(0, aux.length() - 1));
+        } else {
+            arrayRetornar[2] = String.valueOf(aux);
+        }
 
         if (squareNr == tamanhoMapa) {
             arrayRetornar[0] = meuMapa.get(tamanhoMapa);
             arrayRetornar[1] = "Meta";
-        }
-        for (Alimentos meusAlimentos : minhasComidas) {
-            if (String.valueOf(meusAlimentos.getIdentificador()).equals(meuMapa.get(squareNr))) {
-                arrayRetornar[0] = meusAlimentos.getIconAlimento();
-                if (meusAlimentos.getIdentificador() == 'e') {
-                    arrayRetornar[1] = "Erva : +- 20 energia";
-                } else if (meusAlimentos.getIdentificador() == 'a') {
-                    arrayRetornar[1] = "Agua : + 10U|20% energia";
-                } else if (meusAlimentos.getIdentificador() == 'c') {
-                    arrayRetornar[1] = meusAlimentos.estadoCarne(jogadas);
-                } else if (meusAlimentos.getIdentificador() == 'm') {
-                    arrayRetornar[1] = "Cogumelo Magico: +- " + valorParaColgumelos + "% energia";
-                } else {
-                    for (Alimentos alimentos : minhasComidas) {
-                        if (alimentos.getIdentificador() == 'b') {
-                            arrayRetornar[1] = "Bananas : " + alimentos.getContadorBananas() + " : +40";
-                        }
-                    }
-                }
-            }
         }
 
         return arrayRetornar;
