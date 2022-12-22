@@ -395,22 +395,23 @@ public class GameManager {
         }
     }
 
-    String especies(char especie){
-        if(especie == 'a'){
+    String especies(char especie) {
+        if (especie == 'a') {
             return "Agua";
         }
-        if(especie == 'b'){
+        if (especie == 'b') {
             return "Bananas";
         }
-        if(especie == 'e'){
+        if (especie == 'e') {
             return "Erva";
         }
-        if(especie == 'm'){
+        if (especie == 'm') {
             return "Cogumelos magicos";
         }
         return "Carne";
     }
-    MovementResult movimentoValido(int nrSquares) {
+
+    MovementResult movimentoValido(int nrSquares, boolean byPasseValidation) {
         MovementResultCode energia = MovementResultCode.NO_ENERGY;
         MovementResult energy = new MovementResult(energia, "");
         MovementResultCode comida = MovementResultCode.CAUGHT_FOOD;
@@ -419,47 +420,84 @@ public class GameManager {
         MovementResult validMoviment = new MovementResult(movimentoValido, null);
         int contador = 0;
         for (Player meusJogadore : meusJogadores) {
-            if (meusJogadore.getIdentificador() == getJogadorActual()) {
-                if (nrSquares == 0) {
-                    int x = meusJogadore.getEspecies().getGanhoEnergia();
-                    int y = meusJogadore.getEnergiaActual();
-                    int soma = x + y;
-                    meusJogadore.setEnergiaActual(soma);
-                    jogadas++;
-                } else {
-                    if (meusJogadore.getEnergiaActual() < nrSquares) {
-                        return energy;
-                    } else {
-                        if (meusJogadore.getIdentificador() == jogadorActual) {
+            if (!byPasseValidation) {
+                if (nrSquares >= -6 && nrSquares <= 6) {
+                    if (meusJogadore.getIdentificador() == getJogadorActual()) {
+                        if ((meusJogadore.getPosicaoActual() + nrSquares) < 1) {
+                            return null;
+                        }
+                        if (meusJogadore.getEnergiaActual() < nrSquares) {
+                            return energy;
+                        } else if (nrSquares == 0) {
+                            int x = meusJogadore.getEspecies().getGanhoEnergia();
+                            int y = meusJogadore.getEnergiaActual();
+                            int result = x + y;
+                            meusJogadore.setEnergiaActual(result);
+                        } else if (meusJogadore.getIdentificador() == jogadorActual) {
                             int position = nrSquares + meusJogadore.getPosicaoActual();
-                            if (position >= 1) {
-                                meusJogadore.setPosicaoActual(position);
-                                int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
-                                int enerigaInicial = meusJogadore.getEnergiaActual();
-                                meusJogadore.setEnergiaActual(enerigaInicial - consumo);
-                                for (Alimentos alimentos : minhasComidas) {
-                                    if (alimentos.getPosicaoNoMapa() == position) {
-
-                                        food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
-                                        return food;
-                                    }
-                                    if ((contador + 1) == meusJogadores.size()) {
-                                        setJogadorActual(0);
-                                    } else {
-                                        setJogadorActual(contador + 1);
-                                    }
+                            meusJogadore.setPosicaoActual(position);
+                            int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
+                            int enerigaInicial = meusJogadore.getEnergiaActual();
+                            meusJogadore.setEnergiaActual(enerigaInicial - consumo);
+                            for (Alimentos alimentos : minhasComidas) {
+                                if (alimentos.getPosicaoNoMapa() == position) {
+                                    food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
+                                    return food;
+                                }
+                                if ((contador + 1) == meusJogadores.size()) {
+                                    setJogadorActual(0);
+                                } else {
+                                    setJogadorActual(contador + 1);
                                 }
                             }
                         }
-                        jogadas++;
+                        if ((contador + 1) == meusJogadores.size()) {
+                            setJogadorActual(0);
+                        } else {
+                            setJogadorActual(contador + 1);
+                        }
+                        break;
                     }
-                }
-                if ((contador + 1) == meusJogadores.size()) {
-                    setJogadorActual(0);
                 } else {
-                    setJogadorActual(contador + 1);
+                    return null;
                 }
-                break;
+            } else {
+                if (meusJogadore.getIdentificador() == getJogadorActual()) {
+                    if ((meusJogadore.getPosicaoActual() + nrSquares) < 1) {
+                        return null;
+                    }
+                    if (meusJogadore.getEnergiaActual() < nrSquares) {
+                        return energy;
+                    } else if (nrSquares == 0) {
+                        int x = meusJogadore.getEspecies().getGanhoEnergia();
+                        int y = meusJogadore.getEnergiaActual();
+                        int result = x + y;
+                        meusJogadore.setEnergiaActual(result);
+                    } else if (meusJogadore.getIdentificador() == jogadorActual) {
+                        int position = nrSquares + meusJogadore.getPosicaoActual();
+                        meusJogadore.setPosicaoActual(position);
+                        int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
+                        int enerigaInicial = meusJogadore.getEnergiaActual();
+                        meusJogadore.setEnergiaActual(enerigaInicial - consumo);
+                        for (Alimentos alimentos : minhasComidas) {
+                            if (alimentos.getPosicaoNoMapa() == position) {
+                                food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
+                                return food;
+                            }
+                            if ((contador + 1) == meusJogadores.size()) {
+                                setJogadorActual(0);
+                            } else {
+                                setJogadorActual(contador + 1);
+                            }
+                        }
+                    }
+                    if ((contador + 1) == meusJogadores.size()) {
+                        setJogadorActual(0);
+                    } else {
+                        setJogadorActual(contador + 1);
+                    }
+                    break;
+                }
             }
             contador++;
         }
@@ -467,15 +505,7 @@ public class GameManager {
     }
 
     public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
-        if (!bypassValidations) {
-            if (nrSquares >= -6 && nrSquares <= 6) {
-                return movimentoValido(nrSquares);
-            } else {
-                return null;
-            }
-        } else {
-            return movimentoValido(nrSquares);
-        }
+        return movimentoValido(nrSquares, bypassValidations);
     }
 
     public String[] getWinnerInfo() {
