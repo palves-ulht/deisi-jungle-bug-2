@@ -489,14 +489,16 @@ public class GameManager {
                                     setJogadorActual(0);
                                     if (alimentos.getIdentificador() == 'c') {
                                         if (jogador.getEspecies().getIdEspecie() == 'E' || jogador.getEspecies().getIdEspecie() == 'T') {
-                                            break;
+                                            return validMoviment;
                                         }
                                     }
+                                    jogadas++;
                                     return food;
                                 } else {
                                     contador++;
                                     setJogadorActual(contador);
                                 }
+                                jogadas++;
                                 return food;
                             }
                         }
@@ -593,14 +595,16 @@ public class GameManager {
                                 setJogadorActual(0);
                                 if (alimentos.getIdentificador() == 'c') {
                                     if (jogador.getEspecies().getIdEspecie() == 'E' || jogador.getEspecies().getIdEspecie() == 'T') {
-                                        break;
+                                        return validMoviment;
                                     }
                                 }
+                                jogadas++;
                                 return food;
                             } else {
                                 contador++;
                                 setJogadorActual(contador);
                             }
+                            jogadas++;
                             return food;
                         }
                     }
