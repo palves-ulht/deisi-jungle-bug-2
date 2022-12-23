@@ -458,6 +458,19 @@ public class GameManager {
                         for (Alimentos alimentos : minhasComidas) {
                             if (alimentos.getPosicaoNoMapa() == position) {
                                 food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
+                                if (alimentos.getIdentificador() == 'a') {
+                                    if (jogador.getEspecies().getIdEspecie() == 'L') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 15);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'T') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 15);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'E') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 15);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
+                                        jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'P') {
+                                        jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
+                                    }
+                                }
                                 if (contador == meusJogadores.size() - 1) {
                                     setJogadorActual(0);
                                     return food;
@@ -520,6 +533,19 @@ public class GameManager {
                     for (Alimentos alimentos : minhasComidas) {
                         if (alimentos.getPosicaoNoMapa() == position) {
                             food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
+                            if (alimentos.getIdentificador() == 'a') {
+                                if (jogador.getEspecies().getIdEspecie() == 'L') {
+                                    jogador.setEnergiaActual(jogador.getEnergiaActual() + 15);
+                                } else if (jogador.getEspecies().getIdEspecie() == 'T') {
+                                    jogador.setEnergiaActual(jogador.getEnergiaActual() + 15);
+                                } else if (jogador.getEspecies().getIdEspecie() == 'E') {
+                                    jogador.setEnergiaActual(jogador.getEnergiaActual() + 15);
+                                } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
+                                    jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
+                                } else if (jogador.getEspecies().getIdEspecie() == 'P') {
+                                    jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
+                                }
+                            }
                             if (contador == meusJogadores.size() - 1) {
                                 setJogadorActual(0);
                                 return food;
