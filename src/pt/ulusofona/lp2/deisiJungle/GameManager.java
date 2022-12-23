@@ -487,9 +487,13 @@ public class GameManager {
                                 }
                                 if (contador == meusJogadores.size() - 1) {
                                     setJogadorActual(0);
+                                    if (alimentos.getIdentificador() == 'c') {
+                                        if (jogador.getEspecies().getIdEspecie() == 'E' || jogador.getEspecies().getIdEspecie() == 'T') {
+                                            break;
+                                        }
+                                    }
                                     return food;
                                 } else {
-                                    jogadas++;
                                     contador++;
                                     setJogadorActual(contador);
                                 }
@@ -587,9 +591,13 @@ public class GameManager {
                             }
                             if (contador == meusJogadores.size() - 1) {
                                 setJogadorActual(0);
+                                if (alimentos.getIdentificador() == 'c') {
+                                    if (jogador.getEspecies().getIdEspecie() == 'E' || jogador.getEspecies().getIdEspecie() == 'T') {
+                                        break;
+                                    }
+                                }
                                 return food;
                             } else {
-                                jogadas++;
                                 contador++;
                                 setJogadorActual(contador);
                             }
