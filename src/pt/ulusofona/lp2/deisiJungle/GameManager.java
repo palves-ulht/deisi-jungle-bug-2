@@ -410,6 +410,7 @@ public class GameManager {
     }
 
     MovementResult movimentoValido(int nrSquares, boolean byPasseValidation) {
+        meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
         MovementResultCode energia = MovementResultCode.NO_ENERGY;
         MovementResult energy = new MovementResult(energia, "");
         MovementResultCode comida = MovementResultCode.CAUGHT_FOOD;
@@ -417,104 +418,82 @@ public class GameManager {
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
         MovementResult validMoviment = new MovementResult(movimentoValido, null);
         int contador = 0;
-        for (Player meusJogadore : meusJogadores) {
-            if (!byPasseValidation) {
-                if (nrSquares >= -6 && nrSquares <= 6) {
-                    if (meusJogadore.getIdentificador() == getJogadorActual()) {
-                        if (meusJogadore.getEnergiaActual() < nrSquares) {
+        if (!byPasseValidation) {
+            if (nrSquares >= -6 && nrSquares <= 6) {
+                for (Player jogador : meusJogadores) {
+                    if (jogador.getIdentificador() == getJogadorActual()) {
+                        if (jogador.getEnergiaActual() < nrSquares) {
                             return energy;
-                        } else if (nrSquares == 0) {
-                            int x = meusJogadore.getEspecies().getGanhoEnergia();
-                            int y = meusJogadore.getEnergiaActual();
-                            int result = x + y;
-                            meusJogadore.setEnergiaActual(result);
-                        } else if (meusJogadore.getIdentificador() == jogadorActual) {
-                            int position = nrSquares + meusJogadore.getPosicaoActual();
-                            if (nrSquares > 0) {
-                                meusJogadore.setPosicaoActual(position);
-                            } else {
-                                int diferenca = meusJogadore.getPosicaoActual() - nrSquares;
-                                if (diferenca < 1) {
-                                    return null;
-                                } else {
-                                    meusJogadore.setPosicaoActual(diferenca);
-                                }
-                            }
-                            int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
-                            int enerigaInicial = meusJogadore.getEnergiaActual();
-                            meusJogadore.setEnergiaActual(enerigaInicial - consumo);
-                            for (Alimentos alimentos : minhasComidas) {
-                                if (alimentos.getPosicaoNoMapa() == position) {
-                                    food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
-                                    return food;
-                                }
-                                if ((contador + 1) == meusJogadores.size()) {
-                                    setJogadorActual(0);
-                                } else {
-                                    setJogadorActual(contador + 1);
-                                }
-                            }
                         }
-                        if ((contador + 1) == meusJogadores.size()) {
-                            setJogadorActual(0);
+                        if (nrSquares > 0) {
+                            jogador.setPosicaoActual(nrSquares + jogador.getPosicaoActual());
+                            int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
+                            int enerigaInicial = jogador.getEnergiaActual();
+                            jogador.setEnergiaActual(enerigaInicial - consumo);
+                        } else if (nrSquares < 0) {
+                            jogador.setPosicaoActual(Math.max((jogador.getPosicaoActual() + nrSquares), 1));
+                            int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
+                            int enerigaInicial = jogador.getEnergiaActual();
+                            jogador.setEnergiaActual(enerigaInicial - consumo);
                         } else {
-                            setJogadorActual(contador + 1);
+                            int x = jogador.getEspecies().getGanhoEnergia();
+                            int y = jogador.getEnergiaActual();
+                            int result = x + y;
+                            jogador.setEnergiaActual(result);
+                        }
+                        if (contador == meusJogadores.size() - 1) {
+                            setJogadorActual(0);
+                            break;
+                        } else {
+                            contador++;
+                            setJogadorActual(contador);
                         }
                         break;
                     }
-                } else {
-                    return null;
+                    contador++;
                 }
             } else {
-                if (meusJogadore.getIdentificador() == getJogadorActual()) {
-                    if (meusJogadore.getEnergiaActual() < nrSquares) {
+                return null;
+            }
+        } else {
+            for (Player jogador : meusJogadores) {
+                if (jogador.getIdentificador() == getJogadorActual()) {
+                    if (jogador.getEnergiaActual() < nrSquares) {
                         return energy;
-                    } else if (nrSquares == 0) {
-                        int x = meusJogadore.getEspecies().getGanhoEnergia();
-                        int y = meusJogadore.getEnergiaActual();
-                        int result = x + y;
-                        meusJogadore.setEnergiaActual(result);
-                    } else if (meusJogadore.getIdentificador() == jogadorActual) {
-                        int position = nrSquares + meusJogadore.getPosicaoActual();
-                        if (nrSquares > 0) {
-                            meusJogadore.setPosicaoActual(position);
-                        } else {
-                            int diferenca = meusJogadore.getPosicaoActual() - nrSquares;
-                            if (diferenca < 1) {
-                                meusJogadore.setPosicaoActual(1);
-                            } else {
-                                meusJogadore.setPosicaoActual(diferenca);
-                            }
-                        }
-                        int consumo = meusJogadore.getEspecies().getConsumoEnergia() * nrSquares;
-                        int enerigaInicial = meusJogadore.getEnergiaActual();
-                        meusJogadore.setEnergiaActual(enerigaInicial - consumo);
-                        for (Alimentos alimentos : minhasComidas) {
-                            if (alimentos.getPosicaoNoMapa() == position) {
-                                food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
-                                return food;
-                            }
-                            if ((contador + 1) == meusJogadores.size()) {
-                                setJogadorActual(0);
-                            } else {
-                                setJogadorActual(contador + 1);
-                            }
-                        }
                     }
-                    if ((contador + 1) == meusJogadores.size()) {
-                        setJogadorActual(0);
+                    if (nrSquares > 0) {
+                        jogador.setPosicaoActual(nrSquares + jogador.getPosicaoActual());
+                        int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
+                        int enerigaInicial = jogador.getEnergiaActual();
+                        jogador.setEnergiaActual(enerigaInicial - consumo);
+                    } else if (nrSquares < 0) {
+                        jogador.setPosicaoActual(Math.max((jogador.getPosicaoActual() + nrSquares), 1));
+                        int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
+                        int enerigaInicial = jogador.getEnergiaActual();
+                        jogador.setEnergiaActual(enerigaInicial - consumo);
                     } else {
-                        setJogadorActual(contador + 1);
+                        int x = jogador.getEspecies().getGanhoEnergia();
+                        int y = jogador.getEnergiaActual();
+                        int result = x + y;
+                        jogador.setEnergiaActual(result);
+                    }
+                    if (contador == meusJogadores.size() - 1) {
+                        setJogadorActual(0);
+                        break;
+                    } else {
+                        contador++;
+                        setJogadorActual(contador);
                     }
                     break;
                 }
+                contador++;
             }
-            contador++;
         }
         return validMoviment;
     }
 
     public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
+
         return movimentoValido(nrSquares, bypassValidations);
     }
 
