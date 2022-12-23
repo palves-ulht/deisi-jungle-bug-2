@@ -454,7 +454,7 @@ public class GameManager {
                                     } else if (jogador.getEspecies().getIdEspecie() == 'P') {
                                         jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual() * (0.2)));
                                     }
-                                } else if (alimentos.getIdentificador() == 'e') {
+                                } else if (alimentos.getIdentificador() == 'c') {
                                     if (jogadas <= 12) {
                                         if (jogador.getEspecies().getIdEspecie() == 'L') {
                                             jogador.setEnergiaActual(jogador.getEnergiaActual() + 50);
@@ -472,7 +472,7 @@ public class GameManager {
                                             jogador.setEnergiaActual(jogador.getEnergiaActual() - 50);
                                         }
                                     }
-                                } else if (alimentos.getIdentificador() == 'c') {
+                                } else if (alimentos.getIdentificador() == 'e') {
                                     if (jogador.getEspecies().getIdEspecie() == 'L') {
                                         jogador.setEnergiaActual(jogador.getEnergiaActual() - 20);
                                     } else if (jogador.getEspecies().getIdEspecie() == 'T') {
@@ -554,7 +554,7 @@ public class GameManager {
                                 } else if (jogador.getEspecies().getIdEspecie() == 'P') {
                                     jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual() * (0.2)));
                                 }
-                            } else if (alimentos.getIdentificador() == 'e') {
+                            } else if (alimentos.getIdentificador() == 'c') {
                                 if (jogadas <= 12) {
                                     if (jogador.getEspecies().getIdEspecie() == 'L') {
                                         jogador.setEnergiaActual(jogador.getEnergiaActual() + 50);
@@ -572,7 +572,7 @@ public class GameManager {
                                         jogador.setEnergiaActual(jogador.getEnergiaActual() - 50);
                                     }
                                 }
-                            } else if (alimentos.getIdentificador() == 'c') {
+                            } else if (alimentos.getIdentificador() == 'e') {
                                 if (jogador.getEspecies().getIdEspecie() == 'L') {
                                     jogador.setEnergiaActual(jogador.getEnergiaActual() - 20);
                                 } else if (jogador.getEspecies().getIdEspecie() == 'T') {
