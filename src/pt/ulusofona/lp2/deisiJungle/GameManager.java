@@ -418,6 +418,7 @@ public class GameManager {
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
         MovementResult validMoviment = new MovementResult(movimentoValido, null);
         int contador = 0;
+        int position = 0;
         if (!byPasseValidation) {
             if (nrSquares >= -6 && nrSquares <= 6) {
                 for (Player jogador : meusJogadores) {
@@ -426,12 +427,22 @@ public class GameManager {
                             return energy;
                         }
                         if (nrSquares > 0) {
-                            jogador.setPosicaoActual(nrSquares + jogador.getPosicaoActual());
+                            position = jogador.getPosicaoActual() + nrSquares;
+                            if (position > getTamanhoMapa()) {
+                                jogador.setPosicaoActual(getTamanhoMapa());
+                            } else {
+                                jogador.setPosicaoActual(position);
+                            }
                             int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                             int enerigaInicial = jogador.getEnergiaActual();
                             jogador.setEnergiaActual(enerigaInicial - consumo);
                         } else if (nrSquares < 0) {
-                            jogador.setPosicaoActual(Math.max((jogador.getPosicaoActual() + nrSquares), 1));
+                            position = jogador.getPosicaoActual() + nrSquares;
+                            if (position < 1) {
+                                jogador.setPosicaoActual(1);
+                            } else {
+                                jogador.setPosicaoActual(position);
+                            }
                             int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                             int enerigaInicial = jogador.getEnergiaActual();
                             jogador.setEnergiaActual(enerigaInicial - consumo);
@@ -440,6 +451,12 @@ public class GameManager {
                             int y = jogador.getEnergiaActual();
                             int result = x + y;
                             jogador.setEnergiaActual(result);
+                        }
+                        for (Alimentos alimentos : minhasComidas) {
+                            if (alimentos.getPosicaoNoMapa() == position) {
+                                food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
+                                return food;
+                            }
                         }
                         if (contador == meusJogadores.size() - 1) {
                             setJogadorActual(0);
@@ -462,12 +479,22 @@ public class GameManager {
                         return energy;
                     }
                     if (nrSquares > 0) {
-                        jogador.setPosicaoActual(nrSquares + jogador.getPosicaoActual());
+                        position = jogador.getPosicaoActual() + nrSquares;
+                        if (position > getTamanhoMapa()) {
+                            jogador.setPosicaoActual(getTamanhoMapa());
+                        } else {
+                            jogador.setPosicaoActual(position);
+                        }
                         int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                         int enerigaInicial = jogador.getEnergiaActual();
                         jogador.setEnergiaActual(enerigaInicial - consumo);
                     } else if (nrSquares < 0) {
-                        jogador.setPosicaoActual(Math.max((jogador.getPosicaoActual() + nrSquares), 1));
+                        position = jogador.getPosicaoActual() + nrSquares;
+                        if (position < 1) {
+                            jogador.setPosicaoActual(1);
+                        } else {
+                            jogador.setPosicaoActual(position);
+                        }
                         int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                         int enerigaInicial = jogador.getEnergiaActual();
                         jogador.setEnergiaActual(enerigaInicial - consumo);
@@ -477,18 +504,24 @@ public class GameManager {
                         int result = x + y;
                         jogador.setEnergiaActual(result);
                     }
-                    if (contador == meusJogadores.size() - 1) {
-                        setJogadorActual(0);
-                        break;
-                    } else {
-                        contador++;
-                        setJogadorActual(contador);
+                    for (Alimentos alimentos : minhasComidas) {
+                        if (alimentos.getPosicaoNoMapa() == position) {
+                            food = new MovementResult(comida, "Apanhou " + especies(alimentos.identificador));
+                            return food;
+                        }
                     }
-                    break;
                 }
-                contador++;
+                if (contador == meusJogadores.size() - 1) {
+                    setJogadorActual(0);
+                    break;
+                } else {
+                    contador++;
+                    setJogadorActual(contador);
+                }
+                break;
             }
         }
+
         return validMoviment;
     }
 
