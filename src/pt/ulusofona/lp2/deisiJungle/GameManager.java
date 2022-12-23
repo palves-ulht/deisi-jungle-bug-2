@@ -323,7 +323,7 @@ public class GameManager {
                     if (meusAlimentos.getIdentificador() == 'b') {
                         Banana banana = new Banana();
                         arrayRetornar[0] = banana.getIconAlimento();
-                        arrayRetornar[1] = "Bananas : " + meusAlimentos.getContadorBananas() + " : +40";
+                        arrayRetornar[1] = "Bananas : 3 : + 40 energia";
                     }
                 }
             }
@@ -385,14 +385,6 @@ public class GameManager {
         return arrayRetornar;
     }
 
-    int energiaAgua(char especie) {
-        if (especie == 'L' || especie == 'E' || especie == 'T') {
-            return 15;
-        } else {
-            return 20;
-        }
-    }
-
     String especies(char especie) {
         if (especie == 'a') {
             return "Agua";
@@ -428,11 +420,7 @@ public class GameManager {
                                 return energy;
                             }
                             position = jogador.getPosicaoActual() + nrSquares;
-                            if (position > getTamanhoMapa()) {
-                                jogador.setPosicaoActual(getTamanhoMapa());
-                            } else {
-                                jogador.setPosicaoActual(position);
-                            }
+                            jogador.setPosicaoActual(Math.min(position, getTamanhoMapa()));
                             int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                             int enerigaInicial = jogador.getEnergiaActual();
                             jogador.setEnergiaActual(enerigaInicial - consumo);
@@ -441,11 +429,7 @@ public class GameManager {
                                 return energy;
                             }
                             position = jogador.getPosicaoActual() + nrSquares;
-                            if (position < 1) {
-                                jogador.setPosicaoActual(1);
-                            } else {
-                                jogador.setPosicaoActual(position);
-                            }
+                            jogador.setPosicaoActual(Math.max(position, 1));
                             int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                             int enerigaInicial = jogador.getEnergiaActual();
                             jogador.setEnergiaActual(enerigaInicial + consumo);
@@ -466,11 +450,29 @@ public class GameManager {
                                     } else if (jogador.getEspecies().getIdEspecie() == 'E') {
                                         jogador.setEnergiaActual(jogador.getEnergiaActual() + 15);
                                     } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
-                                        jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
+                                        jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual() * (0.2)));
                                     } else if (jogador.getEspecies().getIdEspecie() == 'P') {
-                                        jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
+                                        jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual() * (0.2)));
                                     }
-                                }else if(alimentos.getIdentificador() == 'e'){
+                                } else if (alimentos.getIdentificador() == 'e') {
+                                    if (jogadas <= 12) {
+                                        if (jogador.getEspecies().getIdEspecie() == 'L') {
+                                            jogador.setEnergiaActual(jogador.getEnergiaActual() + 50);
+                                        } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
+                                            jogador.setEnergiaActual(jogador.getEnergiaActual() + 50);
+                                        } else if (jogador.getEspecies().getIdEspecie() == 'P') {
+                                            jogador.setEnergiaActual(jogador.getEnergiaActual() + 50);
+                                        }
+                                    } else {
+                                        if (jogador.getEspecies().getIdEspecie() == 'L') {
+                                            jogador.setEnergiaActual(jogador.getEnergiaActual() - 50);
+                                        } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
+                                            jogador.setEnergiaActual(jogador.getEnergiaActual() - 50);
+                                        } else if (jogador.getEspecies().getIdEspecie() == 'P') {
+                                            jogador.setEnergiaActual(jogador.getEnergiaActual() - 50);
+                                        }
+                                    }
+                                } else if (alimentos.getIdentificador() == 'c') {
                                     if (jogador.getEspecies().getIdEspecie() == 'L') {
                                         jogador.setEnergiaActual(jogador.getEnergiaActual() - 20);
                                     } else if (jogador.getEspecies().getIdEspecie() == 'T') {
@@ -487,6 +489,7 @@ public class GameManager {
                                     setJogadorActual(0);
                                     return food;
                                 } else {
+                                    jogadas++;
                                     contador++;
                                     setJogadorActual(contador);
                                 }
@@ -497,11 +500,13 @@ public class GameManager {
                             setJogadorActual(0);
                             break;
                         } else {
+                            jogadas++;
                             contador++;
                             setJogadorActual(contador);
                         }
                         break;
                     }
+                    jogadas++;
                     contador++;
                 }
             } else {
@@ -515,11 +520,7 @@ public class GameManager {
                             return energy;
                         }
                         position = jogador.getPosicaoActual() + nrSquares;
-                        if (position > getTamanhoMapa()) {
-                            jogador.setPosicaoActual(getTamanhoMapa());
-                        } else {
-                            jogador.setPosicaoActual(position);
-                        }
+                        jogador.setPosicaoActual(Math.min(position, getTamanhoMapa()));
                         int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                         int enerigaInicial = jogador.getEnergiaActual();
                         jogador.setEnergiaActual(enerigaInicial - consumo);
@@ -528,11 +529,7 @@ public class GameManager {
                             return energy;
                         }
                         position = jogador.getPosicaoActual() + nrSquares;
-                        if (position < 1) {
-                            jogador.setPosicaoActual(1);
-                        } else {
-                            jogador.setPosicaoActual(position);
-                        }
+                        jogador.setPosicaoActual(Math.max(position, 1));
                         int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                         int enerigaInicial = jogador.getEnergiaActual();
                         jogador.setEnergiaActual(enerigaInicial + consumo);
@@ -553,11 +550,29 @@ public class GameManager {
                                 } else if (jogador.getEspecies().getIdEspecie() == 'E') {
                                     jogador.setEnergiaActual(jogador.getEnergiaActual() + 15);
                                 } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
-                                    jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
+                                    jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual() * (0.2)));
                                 } else if (jogador.getEspecies().getIdEspecie() == 'P') {
-                                    jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
+                                    jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual() * (0.2)));
                                 }
-                            }else if(alimentos.getIdentificador() == 'e'){
+                            } else if (alimentos.getIdentificador() == 'e') {
+                                if (jogadas <= 12) {
+                                    if (jogador.getEspecies().getIdEspecie() == 'L') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 50);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 50);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'P') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 50);
+                                    }
+                                } else {
+                                    if (jogador.getEspecies().getIdEspecie() == 'L') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() - 50);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() - 50);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'P') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() - 50);
+                                    }
+                                }
+                            } else if (alimentos.getIdentificador() == 'c') {
                                 if (jogador.getEspecies().getIdEspecie() == 'L') {
                                     jogador.setEnergiaActual(jogador.getEnergiaActual() - 20);
                                 } else if (jogador.getEspecies().getIdEspecie() == 'T') {
@@ -574,6 +589,7 @@ public class GameManager {
                                 setJogadorActual(0);
                                 return food;
                             } else {
+                                jogadas++;
                                 contador++;
                                 setJogadorActual(contador);
                             }
@@ -584,11 +600,13 @@ public class GameManager {
                         setJogadorActual(0);
                         break;
                     } else {
+                        jogadas++;
                         contador++;
                         setJogadorActual(contador);
                     }
                     break;
                 }
+                jogadas++;
                 contador++;
             }
         }
