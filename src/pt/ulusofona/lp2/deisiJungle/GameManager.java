@@ -448,7 +448,7 @@ public class GameManager {
                             }
                             int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                             int enerigaInicial = jogador.getEnergiaActual();
-                            jogador.setEnergiaActual(enerigaInicial - consumo);
+                            jogador.setEnergiaActual(enerigaInicial + consumo);
                         } else {
                             int x = jogador.getEspecies().getGanhoEnergia();
                             int y = jogador.getEnergiaActual();
@@ -510,7 +510,7 @@ public class GameManager {
                         }
                         int consumo = jogador.getEspecies().getConsumoEnergia() * nrSquares;
                         int enerigaInicial = jogador.getEnergiaActual();
-                        jogador.setEnergiaActual(enerigaInicial - consumo);
+                        jogador.setEnergiaActual(enerigaInicial + consumo);
                     } else {
                         int x = jogador.getEspecies().getGanhoEnergia();
                         int y = jogador.getEnergiaActual();
