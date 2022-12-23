@@ -470,6 +470,18 @@ public class GameManager {
                                     } else if (jogador.getEspecies().getIdEspecie() == 'P') {
                                         jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
                                     }
+                                }else if(alimentos.getIdentificador() == 'e'){
+                                    if (jogador.getEspecies().getIdEspecie() == 'L') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() - 20);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'T') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 20);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'E') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 20);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 20);
+                                    } else if (jogador.getEspecies().getIdEspecie() == 'P') {
+                                        jogador.setEnergiaActual(jogador.getEnergiaActual() + 20);
+                                    }
                                 }
                                 if (contador == meusJogadores.size() - 1) {
                                     setJogadorActual(0);
@@ -544,6 +556,18 @@ public class GameManager {
                                     jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
                                 } else if (jogador.getEspecies().getIdEspecie() == 'P') {
                                     jogador.setEnergiaActual((int) (jogador.getEnergiaActual() + jogador.getEnergiaActual()*(0.2)));
+                                }
+                            }else if(alimentos.getIdentificador() == 'e'){
+                                if (jogador.getEspecies().getIdEspecie() == 'L') {
+                                    jogador.setEnergiaActual(jogador.getEnergiaActual() - 20);
+                                } else if (jogador.getEspecies().getIdEspecie() == 'T') {
+                                    jogador.setEnergiaActual(jogador.getEnergiaActual() + 20);
+                                } else if (jogador.getEspecies().getIdEspecie() == 'E') {
+                                    jogador.setEnergiaActual(jogador.getEnergiaActual() + 20);
+                                } else if (jogador.getEspecies().getIdEspecie() == 'Z') {
+                                    jogador.setEnergiaActual(jogador.getEnergiaActual() + 20);
+                                } else if (jogador.getEspecies().getIdEspecie() == 'P') {
+                                    jogador.setEnergiaActual(jogador.getEnergiaActual() + 20);
                                 }
                             }
                             if (contador == meusJogadores.size() - 1) {
