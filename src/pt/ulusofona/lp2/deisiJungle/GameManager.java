@@ -2,7 +2,10 @@ package pt.ulusofona.lp2.deisiJungle;
 
 
 import javax.swing.*;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class GameManager {
@@ -491,9 +494,10 @@ public class GameManager {
                                         if (jogador.getEspecies().getIdEspecie() == 'E' || jogador.getEspecies().getIdEspecie() == 'T') {
                                             return validMoviment;
                                         }
+                                    }else {
+                                        jogadas++;
+                                        return food;
                                     }
-                                    jogadas++;
-                                    return food;
                                 } else {
                                     contador++;
                                     setJogadorActual(contador);
@@ -667,7 +671,55 @@ public class GameManager {
     }
 
     public boolean saveGame(File file) {
-        return false;
+        StringBuilder allInformationGame = new StringBuilder();
+        allInformationGame.append("<Elementos Do Jogo>");
+        allInformationGame.append("<Jogadores do Jogo>\n");
+        for (Player player : meusJogadores) {
+            allInformationGame.append("<Players>\n");
+            allInformationGame.append("<Id>").append(player.getIdentificador()).append("</Id>");
+            allInformationGame.append("<Nome>").append(player.getNome()).append("</Nome>");
+            allInformationGame.append("<PositionMapa>").append(player.getPosicaoActual()).append("</PositionMapa>");
+            allInformationGame.append("<Energy>").append(player.getEnergiaActual()).append("</Energy>");
+            allInformationGame.append("<Especie>").append(player.getEspecies().getIdEspecie()).append("</Especie>");
+            allInformationGame.append("</Players>\n");
+        }
+        allInformationGame.append("</Jogadores do Jogo>\n");
+        allInformationGame.append("<Especies do Jogo>\n");
+        for (Map.Entry<Character, Especies> especies : minhasEspecies.entrySet()) {
+            allInformationGame.append("<Especies:>\n");
+            allInformationGame.append("<Id>").append(especies.getValue().getIdEspecie()).append("</Id>");
+            allInformationGame.append("<Nome>").append(especies.getValue().getNome()).append("</Nome>");
+            allInformationGame.append("<Icone>").append(especies.getValue().getIcone()).append("</Icone>");
+            allInformationGame.append("<Velocidade>").append(especies.getValue().getVelocidade()).append("</Velocidade>");
+            allInformationGame.append("<GanhoEnergia>").append(especies.getValue().getGanhoEnergia()).append("</GanhoEnergia>");
+            allInformationGame.append("<PerdaEnergia>").append(especies.getValue().getConsumoEnergia()).append("</PerdaEnergia>");
+            allInformationGame.append("</Especies:>\n");
+        }
+        allInformationGame.append("</Especies do Jogo>\n");
+        allInformationGame.append("<Alimentos do Jogo>\n");
+        for (Alimentos alimentos : minhasComidas) {
+            allInformationGame.append("<Comidas:>\n");
+            allInformationGame.append("<Id>").append(alimentos.getIdentificador()).append("</Id>");
+            allInformationGame.append("<Nome>").append(alimentos.getNomeAlimento()).append("</Nome>");
+            allInformationGame.append("<Icone>").append(alimentos.getIconAlimento()).append("</Icone>");
+            allInformationGame.append("<PositionMapa>").append(alimentos.getPosicaoNoMapa()).append("</PositionMapa>");
+            allInformationGame.append("</Comidas:>\n");
+        }
+        allInformationGame.append("</Alimentos do Jogo>\n");
+        allInformationGame.append("<Jogo>\n");
+        allInformationGame.append("<JogadorActual>").append(getJogadorActual()).append("</JogadorActual>");
+        allInformationGame.append("<TurnosJogados>").append(jogadas).append("</TurnosJogados>");
+        allInformationGame.append("<TamanhoMapa>").append(getTamanhoMapa()).append("</TamanhoMapa>");
+        allInformationGame.append("</Jogo>\n");
+        allInformationGame.append("</Elementos Do Jogo>");
+
+        try (FileWriter writer = new FileWriter(file);
+             BufferedWriter bw = new BufferedWriter(writer)) {
+            bw.write(allInformationGame.toString());
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 
     public boolean loadGame(File file) {
