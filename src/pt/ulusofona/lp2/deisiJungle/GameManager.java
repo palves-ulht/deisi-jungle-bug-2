@@ -750,11 +750,12 @@ public class GameManager {
                     String id = especieNode1.getElementsByTagName("Id").item(0).getTextContent();
                     idEspecie = id;
                     String nome = especieNode1.getElementsByTagName("Nome").item(0).getTextContent();
-                    String energia = especieNode1.getElementsByTagName("Energia").item(0).getTextContent();
                     String icone = especieNode1.getElementsByTagName("Icone").item(0).getTextContent();
+                    String energia = especieNode1.getElementsByTagName("Energy").item(0).getTextContent();
                     String velocidade = especieNode1.getElementsByTagName("Velocidade").item(0).getTextContent();
                     String ganhoEnergia = especieNode1.getElementsByTagName("GanhoEnergia").item(0).getTextContent();
                     String perdaEnergia = especieNode1.getElementsByTagName("PerdaEnergia").item(0).getTextContent();
+
                     if (id.equals("L")) {
                         Especies leao = new Leao();
                         leao.setIdEspecie(id.charAt(0));
@@ -822,6 +823,7 @@ public class GameManager {
                     String positionMapa = playerElement.getElementsByTagName("PositionMapa").item(0).getTextContent();
                     String energy = playerElement.getElementsByTagName("Energy").item(0).getTextContent();
                     Especies especie = (Especies) playerElement.getElementsByTagName("Especie");
+
                     Player player = new Player();
                     player.setIdentificador(Integer.parseInt(id));
                     player.setNome(nome);
@@ -841,9 +843,10 @@ public class GameManager {
                 if (food.getNodeType() == Node.ELEMENT_NODE) {
                     Element foodElemet = (Element) food;
                     String id = foodElemet.getElementsByTagName("Id").item(0).getTextContent();
-                    String nome = foodElemet.getElementsByTagName("Id").item(0).getTextContent();
+                    String nome = foodElemet.getElementsByTagName("Nome").item(0).getTextContent();
                     String icone = foodElemet.getElementsByTagName("Icone").item(0).getTextContent();
-                    String posicao = foodElemet.getElementsByTagName("Id").item(0).getTextContent();
+                    String posicao = foodElemet.getElementsByTagName("PositionMapa").item(0).getTextContent();
+
                     Alimentos alimentos = new Alimentos();
                     alimentos.setIdentificador(id.charAt(0));
                     alimentos.setNomeAlimento(nome);
