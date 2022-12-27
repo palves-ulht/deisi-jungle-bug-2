@@ -417,8 +417,8 @@ public class GameManager {
         meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
         MovementResultCode energia = MovementResultCode.NO_ENERGY;
         MovementResult energy = new MovementResult(energia, "");
-        MovementResultCode invalido = MovementResultCode.INVALID_MOVEMENT;
-        MovementResult movimentoInvalido = new MovementResult(invalido, null);
+        MovementResultCode invalido = MovementResultCode.NO_ENERGY;
+        MovementResult movimentoInvalido = new MovementResult(invalido, "");
         MovementResultCode comida = MovementResultCode.CAUGHT_FOOD;
         MovementResult food;
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
@@ -531,6 +531,13 @@ public class GameManager {
                     contador++;
                 }
             } else {
+                if (contador == meusJogadores.size() - 1) {
+                    setJogadorActual(0);
+                } else {
+                    jogadas++;
+                    contador++;
+                    setJogadorActual(contador);
+                }
                 return movimentoInvalido;
             }
         } else {
@@ -667,13 +674,11 @@ public class GameManager {
             return winner;
         }
         if (meusJogadores.get(0).getPosicaoActual() - meusJogadores.get(1).getPosicaoActual() > getTamanhoMapa() / 2) {
-            meusJogadores.get(1).setPosicaoActual(getTamanhoMapa());
-            meusJogadores.sort(Comparator.comparing(Player::getPosicaoActual).reversed());
-            winner[0] = String.valueOf(meusJogadores.get(0).getIdentificador());
-            winner[1] = meusJogadores.get(0).getNome();
-            winner[2] = String.valueOf(meusJogadores.get(0).getEspecies().getIdEspecie());
-            winner[3] = String.valueOf(meusJogadores.get(0).getEnergiaActual());
-            winner[4] = String.valueOf(meusJogadores.get(0).getEspecies().getVelocidade());
+            winner[0] = String.valueOf(meusJogadores.get(1).getIdentificador());
+            winner[1] = meusJogadores.get(1).getNome();
+            winner[2] = String.valueOf(meusJogadores.get(1).getEspecies().getIdEspecie());
+            winner[3] = String.valueOf(meusJogadores.get(1).getEnergiaActual());
+            winner[4] = String.valueOf(meusJogadores.get(1).getEspecies().getVelocidade());
             return winner;
         }
 
