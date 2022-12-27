@@ -655,6 +655,15 @@ public class GameManager {
             winner[4] = String.valueOf(meusJogadores.get(0).getEspecies().getVelocidade());
             return winner;
         }
+        if (meusJogadores.get(0).getPosicaoActual() - meusJogadores.get(1).getPosicaoActual() > getTamanhoMapa() / 2) {
+            winner[0] = String.valueOf(meusJogadores.get(1).getIdentificador());
+            winner[1] = meusJogadores.get(1).getNome();
+            winner[2] = String.valueOf(meusJogadores.get(1).getEspecies().getIdEspecie());
+            winner[3] = String.valueOf(meusJogadores.get(1).getEnergiaActual());
+            winner[4] = String.valueOf(meusJogadores.get(1).getEspecies().getVelocidade());
+            return winner;
+        }
+
         return null;
     }
 
