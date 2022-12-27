@@ -322,7 +322,7 @@ public class GameManager {
                 } else if (meusAlimentos.getIdentificador() == 'a') {
                     Agua agua = new Agua();
                     arrayRetornar[0] = agua.getIconAlimento();
-                    arrayRetornar[1] = "Agua : + 10U|20% energia";
+                    arrayRetornar[1] = "Agua : + 15U|20% energia";
                 } else if (meusAlimentos.getIdentificador() == 'c') {
                     Carne carne = new Carne();
                     arrayRetornar[0] = carne.getIconAlimento();
