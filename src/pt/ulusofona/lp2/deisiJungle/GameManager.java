@@ -417,6 +417,8 @@ public class GameManager {
         meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
         MovementResultCode energia = MovementResultCode.NO_ENERGY;
         MovementResult energy = new MovementResult(energia, "");
+        MovementResultCode invalido = MovementResultCode.NO_ENERGY;
+        MovementResult movimentoInvalido = new MovementResult(invalido, "");
         MovementResultCode comida = MovementResultCode.CAUGHT_FOOD;
         MovementResult food;
         MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
@@ -529,7 +531,7 @@ public class GameManager {
                     contador++;
                 }
             } else {
-                return null;
+                return movimentoInvalido;
             }
         } else {
             for (Player jogador : meusJogadores) {
