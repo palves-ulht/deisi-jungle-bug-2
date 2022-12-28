@@ -10,12 +10,12 @@ public class Alimentos {
     protected int cogumelos;
 
     public int getCogumelos() {
-        return cogumelos;
+        return this.cogumelos;
     }
 
     public void setCogumelos() {
         Random cogumelo = new Random();
-        cogumelos = 10 + cogumelo.nextInt((50 - 10) + 1);
+        this.cogumelos = 10 + cogumelo.nextInt((50 - 10) + 1);
     }
 
     public int getPosicaoNoMapa() {
@@ -32,8 +32,8 @@ public class Alimentos {
         return contadorBananas;
     }
 
-    public void setContadorBananas(int contadorBananas) {
-        this.contadorBananas = contadorBananas;
+    public void setContadorBananas() {
+        this.contadorBananas = 3;
     }
 
     public Alimentos() {
@@ -106,6 +106,16 @@ public class Alimentos {
             return -20;
         } else {
             return 20;
+        }
+    }
+
+    int efeitoCogumelos(int nrSquare, int energia, int percenteValue) {
+        if (nrSquare % 2 == 0) {
+            energia = energia + percenteValue;
+            return energia;
+        } else {
+            energia = energia - percenteValue;
+            return energia;
         }
     }
 }

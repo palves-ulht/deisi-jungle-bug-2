@@ -174,7 +174,6 @@ public class GameManager {
     }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo, String[][] foodsInfo) {
-        Random cogumeloValue;
         setTamanhoMapa(jungleSize);
         InitializationError error = new InitializationError();
         InitializationError secondFunction = createInitialJungle(jungleSize, playersInfo);
@@ -188,27 +187,28 @@ public class GameManager {
             }
         }
         for (String[] strings : foodsInfo) {
-            Alimentos alimentos = new Alimentos();
+
             try {
                 if (Integer.parseInt(strings[1]) <= 1 || Integer.parseInt(strings[1]) >= getTamanhoMapa()) {
                     error.setMessage("Os alimentos têm que estar posicionados dentro dos limites do terreno");
                     return error;
                 }
-                alimentos.setIdentificador(strings[0].charAt(0));
-                alimentos.setPosicaoNoMapa(Integer.parseInt(strings[1]));
-                alimentos.setNomeAlimento(retornaNomeAlimento(strings[0].charAt(0)));
-                alimentos.setIconAlimento(retornaFotoAlimento(alimentos.getIdentificador()));
-                alimentos.setCogumelos();
-                alimentos.setContadorBananas(3);
-                minhasComidas.add(alimentos);
-                nomesAlimentos.put(strings[0].charAt(0), alimentos.getNomeAlimento());
-                meuMapa.put(Integer.parseInt(strings[1]), strings[0]);
-                meuMapa.put(getTamanhoMapa(), "finish.png");
-                refeicoes.put(strings[0].charAt(0), alimentos);
             } catch (Exception e) {
                 error.setMessage("String fora do formato");
                 return error;
             }
+            Alimentos alimentos = new Alimentos();
+            alimentos.setIdentificador(strings[0].charAt(0));
+            alimentos.setPosicaoNoMapa(Integer.parseInt(strings[1]));
+            alimentos.setNomeAlimento(retornaNomeAlimento(strings[0].charAt(0)));
+            alimentos.setIconAlimento(retornaFotoAlimento(alimentos.getIdentificador()));
+            alimentos.setContadorBananas();
+            alimentos.setCogumelos();
+            minhasComidas.add(alimentos);
+            nomesAlimentos.put(strings[0].charAt(0), alimentos.getNomeAlimento());
+            meuMapa.put(Integer.parseInt(strings[1]), strings[0]);
+            meuMapa.put(getTamanhoMapa(), "finish.png");
+            refeicoes.put(strings[0].charAt(0), alimentos);
         }
         return null;
     }
@@ -358,7 +358,7 @@ public class GameManager {
                 } else {
                     Banana banana = new Banana();
                     arrayRetornar[0] = banana.getIconAlimento();
-                    arrayRetornar[1] = "Bananas : " + meusAlimentos.contadorBananas + " : + 40 energia";
+                    arrayRetornar[1] = "Bananas : " + meusAlimentos.getContadorBananas() + " : + 40 energia";
                 }
             }
         }
@@ -499,6 +499,18 @@ public class GameManager {
                             mudancaTurno(meusJogadores);
                             return food;
                         }
+                        if (alimentos.getIdentificador() == 'm') {
+                            jogador.setEnergiaActual(alimentos.efeitoCogumelos(nrSquares, jogador.getEnergiaActual(), alimentos.getCogumelos()));
+                            food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
+                            mudancaTurno(meusJogadores);
+                            return food;
+                        }
+                        if (alimentos.getIdentificador() == 'b') {
+                            jogador.setEnergiaActual((jogador.getEnergiaActual() + alimentos.efeitoErvas(especie)));
+                            food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
+                            mudancaTurno(meusJogadores);
+                            return food;
+                        }
                     }
                 }
                 mudancaTurno(meusJogadores);
@@ -559,6 +571,18 @@ public class GameManager {
                                     return food;
                                 }
                                 if (alimentos.getIdentificador() == 'e') {
+                                    jogador.setEnergiaActual((jogador.getEnergiaActual() + alimentos.efeitoErvas(especie)));
+                                    food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
+                                    mudancaTurno(meusJogadores);
+                                    return food;
+                                }
+                                if (alimentos.getIdentificador() == 'm') {
+                                    jogador.setEnergiaActual(alimentos.efeitoCogumelos(nrSquares, jogador.getEnergiaActual(), alimentos.getCogumelos()));
+                                    food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
+                                    mudancaTurno(meusJogadores);
+                                    return food;
+                                }
+                                if (alimentos.getIdentificador() == 'b') {
                                     jogador.setEnergiaActual((jogador.getEnergiaActual() + alimentos.efeitoErvas(especie)));
                                     food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
                                     mudancaTurno(meusJogadores);
@@ -690,7 +714,7 @@ public class GameManager {
     }
 
     public boolean loadGame(File file) {
-        String idEspecie = "";
+        Scanner leitura = new Scanner(System.in);
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
