@@ -705,7 +705,6 @@ public class GameManager {
                 if (especieNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element especieNode1 = (Element) especieNode;
                     String id = especieNode1.getElementsByTagName("Id").item(0).getTextContent();
-                    idEspecie = id;
                     String nome = especieNode1.getElementsByTagName("Nome").item(0).getTextContent();
                     String icone = especieNode1.getElementsByTagName("Icone").item(0).getTextContent();
                     String energia = especieNode1.getElementsByTagName("Energy").item(0).getTextContent();
