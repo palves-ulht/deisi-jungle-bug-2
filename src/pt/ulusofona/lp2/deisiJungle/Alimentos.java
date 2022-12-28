@@ -1,11 +1,22 @@
 package pt.ulusofona.lp2.deisiJungle;
 
+import java.util.Random;
+
 public class Alimentos {
     protected char identificador;
     protected String nomeAlimento;
     protected String iconAlimento;
     protected int contadorBananas;
+    protected int cogumelos;
 
+    public int getCogumelos() {
+        return cogumelos;
+    }
+
+    public void setCogumelos() {
+        Random cogumelo = new Random();
+        cogumelos = 10 + cogumelo.nextInt((50 - 10) + 1);
+    }
 
     public int getPosicaoNoMapa() {
         return posicaoNoMapa;
