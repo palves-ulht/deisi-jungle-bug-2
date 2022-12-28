@@ -478,11 +478,11 @@ public class GameManager {
                             return food;
                         }
                         if (alimentos.getIdentificador() == 'c') {
-                            if (jogador.getEspecies().getIdEspecie() == 'E' || jogador.getEspecies().getIdEspecie() == 'T') {
+                            if (jogador.getEspecies().getIdEspecie() == 'E') {
                                 mudancaTurno(meusJogadores);
                                 return validMoviment;
                             }
-                            jogador.setEnergiaActual((jogador.getEnergiaActual() + alimentos.efeitoCarne(especie, jogadas)));
+                            jogador.setEnergiaActual(alimentos.efeitoCarne(especie, jogadas, jogador.getEnergiaActual()));
                             food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
                             mudancaTurno(meusJogadores);
                             return food;
@@ -536,11 +536,11 @@ public class GameManager {
                                     return food;
                                 }
                                 if (alimentos.getIdentificador() == 'c') {
-                                    if (jogador.getEspecies().getIdEspecie() == 'E' || jogador.getEspecies().getIdEspecie() == 'T') {
+                                    if (jogador.getEspecies().getIdEspecie() == 'E') {
                                         mudancaTurno(meusJogadores);
                                         return validMoviment;
                                     }
-                                    jogador.setEnergiaActual((jogador.getEnergiaActual() + alimentos.efeitoCarne(especie, jogadas)));
+                                    jogador.setEnergiaActual(alimentos.efeitoCarne(especie, jogadas, jogador.getEnergiaActual()));
                                     food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
                                     mudancaTurno(meusJogadores);
                                     return food;

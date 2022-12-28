@@ -75,14 +75,16 @@ public class Alimentos {
         return energiaActual;
     }
 
-    int efeitoCarne(char especie, int jogadas) {
+    int efeitoCarne(char especie, int jogadas, int energia) {
         if (jogadas <= 12) {
+            energia += 50;
             if (especie == 'L' || especie == 'Z' || especie == 'P') {
-                return 50;
+                return energia;
             }
         } else {
             if (especie == 'L' || especie == 'Z' || especie == 'P') {
-                return -50;
+                energia /= 2;
+                return energia;
             }
         }
         return 0;
