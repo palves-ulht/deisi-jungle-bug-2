@@ -47,7 +47,7 @@ public class GameManager {
     MovementResultCode comida = MovementResultCode.CAUGHT_FOOD;
     MovementResult food;
     MovementResultCode movimentoValido = MovementResultCode.VALID_MOVEMENT;
-    MovementResult validMoviment = new MovementResult(movimentoValido, "");
+    MovementResult validMoviment = new MovementResult(movimentoValido, null);
 
 
     void setJogadorActual(int play) {
@@ -558,6 +558,7 @@ public class GameManager {
                     }
                 }
             } else {
+                mudancaTurno(meusJogadores);
                 return movimentoInvalido;
             }
         } else {
