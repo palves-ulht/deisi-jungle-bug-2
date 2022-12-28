@@ -463,7 +463,8 @@ public class GameManager {
                     if (jogador.getEnergiaActual() < nrSquares) {
                         return energy;
                     } else if (position < 1) {
-                        jogador.setPosicaoActual(1);
+                        mudancaTurno(meusJogadores);
+                        return movimentoInvalido;
                     } else {
                         jogador.setPosicaoActual(position);
                         jogador.setEnergiaActual(jogador.getEnergiaActual() + jogador.getEspecies().getConsumoEnergia() * nrSquares);
@@ -527,7 +528,8 @@ public class GameManager {
                             if (jogador.getEnergiaActual() < nrSquares) {
                                 return energy;
                             } else if (position < 1) {
-                                jogador.setPosicaoActual(1);
+                                mudancaTurno(meusJogadores);
+                                return movimentoInvalido;
                             } else {
                                 jogador.setPosicaoActual(position);
                                 jogador.setEnergiaActual(jogador.getEnergiaActual() + jogador.getEspecies().getConsumoEnergia() * nrSquares);
@@ -638,17 +640,25 @@ public class GameManager {
             allInformationGame.append("</Especies>\n");
         }
         allInformationGame.append("</Especies>\n");
-        allInformationGame.append("Players\n");
+
+        allInformationGame.append("<Players>\n");
         for (Player player : meusJogadores) {
             allInformationGame.append("<Players>\n");
             allInformationGame.append("<Id>").append(player.getIdentificador()).append("</Id>");
             allInformationGame.append("<Nome>").append(player.getNome()).append("</Nome>");
             allInformationGame.append("<PositionMapa>").append(player.getPosicaoActual()).append("</PositionMapa>");
             allInformationGame.append("<Energy>").append(player.getEnergiaActual()).append("</Energy>");
-            allInformationGame.append("<Especie>").append(player.getEspecies()).append("</Especie>");
+            allInformationGame.append("<iD_Especie>").append(player.getEspecies().getIdEspecie()).append("</iD_Especie>");
+            allInformationGame.append("<nome_Especie>").append(player.getEspecies().getNome()).append("</nome_Especie>");
+            allInformationGame.append("<iconeEspecie>").append(player.getEspecies().getIcone()).append("</iconeEspecie>");
+            allInformationGame.append("<energiaEspecie>").append(player.getEspecies().getEnergiaInicial()).append("</energiaEspecie>");
+            allInformationGame.append("<ganhoEspecie>").append(player.getEspecies().getGanhoEnergia()).append("</ganhoEspecie>");
+            allInformationGame.append("<perdaEspecie>").append(player.getEspecies().getConsumoEnergia()).append("</perdaEspecie>");
+            allInformationGame.append("<velocidadeEspecie>").append(player.getEspecies().getVelocidade()).append("</velocidadeEspecie>");
             allInformationGame.append("</Players>\n");
         }
         allInformationGame.append("</Players>\n");
+
         allInformationGame.append("<Comidas>\n");
         for (Alimentos alimentos : minhasComidas) {
             allInformationGame.append("<Comidas>\n");
@@ -659,13 +669,17 @@ public class GameManager {
             allInformationGame.append("</Comidas>\n");
         }
         allInformationGame.append("</Comidas>\n");
+
+        allInformationGame.append("<Jogo>\n");
         allInformationGame.append("<Jogo>\n");
         allInformationGame.append("<JogadorActual>").append(getJogadorActual()).append("</JogadorActual>");
         allInformationGame.append("<TurnosJogados>").append(jogadas).append("</TurnosJogados>");
         allInformationGame.append("<TamanhoMapa>").append(getTamanhoMapa()).append("</TamanhoMapa>");
         allInformationGame.append("</Jogo>\n");
-        allInformationGame.append("</Elementos>");
+        allInformationGame.append("</Jogo>\n");
 
+        allInformationGame.append("</Elementos>");
+        allInformationGame.append("</Elementos>");
         try (FileWriter writer = new FileWriter(file);
              BufferedWriter bw = new BufferedWriter(writer)) {
             bw.write(allInformationGame.toString());
@@ -765,18 +779,28 @@ public class GameManager {
                     String nome = playerElement.getElementsByTagName("Nome").item(0).getTextContent();
                     String positionMapa = playerElement.getElementsByTagName("PositionMapa").item(0).getTextContent();
                     String energy = playerElement.getElementsByTagName("Energy").item(0).getTextContent();
-                    Especies especie = (Especies) playerElement.getElementsByTagName("Especie");
+                    String idEspec = playerElement.getElementsByTagName("iD_Especie").item(0).getTextContent();
+                    String nomeE = playerElement.getElementsByTagName("nome_Especie").item(0).getTextContent();
+                    String iconeE = playerElement.getElementsByTagName("iconeEspecie").item(0).getTextContent();
+                    String energiaE = playerElement.getElementsByTagName("energiaEspecie").item(0).getTextContent();
+                    String ganhoE = playerElement.getElementsByTagName("ganhoEspecie").item(0).getTextContent();
+                    String perdaE = playerElement.getElementsByTagName("perdaEspecie").item(0).getTextContent();
+                    String velocidadeE = playerElement.getElementsByTagName("velocidadeEspecie").item(0).getTextContent();
+
+                    Especies especie = new Especies();
+                    especie.setIdEspecie(idEspec.charAt(0));
+                    especie.setNome(nomeE);
+                    especie.setIcone(iconeE);
+                    especie.setEnergiaInicial(Integer.parseInt(energiaE));
+                    especie.setGanhoEnergia(Integer.parseInt(ganhoE));
+                    especie.setConsumoEnergia(Integer.parseInt(perdaE));
+                    especie.setVelocidade(velocidadeE);
 
                     Player player = new Player();
                     player.setIdentificador(Integer.parseInt(id));
                     player.setNome(nome);
                     player.setPosicaoActual(Integer.parseInt(positionMapa));
-                    for (Map.Entry<Character, Especies> especies : minhasEspecies.entrySet()) {
-                        if (especies.getKey() == idEspecie.charAt(0)) {
-                            especies.getValue().setEnergiaInicial(Integer.parseInt(energy));
-                            player.setEspecies(especies.getValue());
-                        }
-                    }
+                    player.setEspecies(especie);
                     meusJogadores.add(player);
                 }
             }

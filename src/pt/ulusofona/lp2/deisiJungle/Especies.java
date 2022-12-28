@@ -1,6 +1,6 @@
 package pt.ulusofona.lp2.deisiJungle;
 
-public abstract class Especies {
+public class Especies {
     protected char idEspecie;
     protected String nome;
     protected String icone;
