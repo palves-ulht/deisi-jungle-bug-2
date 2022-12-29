@@ -35,10 +35,8 @@ public class GameManager {
 
     int jogadas = 0;
     int contador = 0;
-    int valorParaColgumelos = 0;
+
     ArrayList<Alimentos> minhasComidas = new ArrayList<>();
-    HashMap<Character, Alimentos> refeicoes = new HashMap<>();
-    HashMap<Character, String> nomesAlimentos = new HashMap<>();
     HashMap<Integer, String> meuMapa = new HashMap<>();
     MovementResultCode energia = MovementResultCode.NO_ENERGY;
     MovementResult energy = new MovementResult(energia, "");
@@ -73,6 +71,27 @@ public class GameManager {
     }
 
     HashMap<Character, Especies> minhasEspecies = new HashMap<>();
+
+    public HashMap<Character, Especies> minhasEspecieFuntion() {
+        minhasEspecies.put('E', new Elefante());
+        minhasEspecies.put('L', new Leao());
+        minhasEspecies.put('P', new Passaro());
+        minhasEspecies.put('Z', new Tarzan());
+        minhasEspecies.put('T', new Tartaruga());
+        return minhasEspecies;
+    }
+
+    HashMap<Character, Alimentos> meusAlimentos = new HashMap<>();
+
+    public HashMap<Character, Alimentos> refeicoes() {
+        meusAlimentos.put('a', new Agua());
+        meusAlimentos.put('b', new Banana());
+        meusAlimentos.put('c', new Carne());
+        meusAlimentos.put('m', new Cogumelos());
+        meusAlimentos.put('e', new Erva());
+        return meusAlimentos;
+    }
+
     HashMap<Integer, Player> minhaListaPlayers = new HashMap<>();
     ArrayList<Player> meusJogadores = new ArrayList<>();
 
@@ -145,35 +164,8 @@ public class GameManager {
         return foods;
     }
 
-    String retornaNomeAlimento(char alimento) {
-        if (alimento == 'b') {
-            return "Bananas";
-        } else if (alimento == 'e') {
-            return "Erva";
-        } else if (alimento == 'a') {
-            return "Agua";
-        } else if (alimento == 'c') {
-            return "Carne";
-        } else {
-            return "Cogumelos magicos";
-        }
-    }
-
-    String retornaFotoAlimento(char alimento) {
-        if (alimento == 'b') {
-            return "bananas.png";
-        } else if (alimento == 'e') {
-            return "grass.png";
-        } else if (alimento == 'a') {
-            return "water.png";
-        } else if (alimento == 'c') {
-            return "meat.png";
-        } else {
-            return "mushroom.png";
-        }
-    }
-
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo, String[][] foodsInfo) {
+
         setTamanhoMapa(jungleSize);
         InitializationError error = new InitializationError();
         InitializationError secondFunction = createInitialJungle(jungleSize, playersInfo);
@@ -200,30 +192,22 @@ public class GameManager {
             Alimentos alimentos = new Alimentos();
             alimentos.setIdentificador(strings[0].charAt(0));
             alimentos.setPosicaoNoMapa(Integer.parseInt(strings[1]));
-            alimentos.setNomeAlimento(retornaNomeAlimento(strings[0].charAt(0)));
-            alimentos.setIconAlimento(retornaFotoAlimento(alimentos.getIdentificador()));
-            alimentos.setContadorBananas();
-            alimentos.setCogumelos();
+            for (Map.Entry<Character, Alimentos> alimento : refeicoes().entrySet()) {
+                if (alimento.getKey() == strings[0].charAt(0)) {
+                    alimentos.setIconAlimento(alimento.getValue().getIconAlimento());
+                    alimentos.setNomeAlimento(alimento.getValue().getNomeAlimento());
+                }
+            }
             minhasComidas.add(alimentos);
-            nomesAlimentos.put(strings[0].charAt(0), alimentos.getNomeAlimento());
             meuMapa.put(Integer.parseInt(strings[1]), strings[0]);
             meuMapa.put(getTamanhoMapa(), "finish.png");
-            refeicoes.put(strings[0].charAt(0), alimentos);
         }
         return null;
     }
 
-    void minhaEspecies1() {
-        minhasEspecies.put('E', new Elefante('E', "Elefante", "elephant.png", "1..6", 180, 4, 10));
-        minhasEspecies.put('L', new Leao('L', "Leao", "lion.png", "4..6", 80, 2, 10));
-        minhasEspecies.put('P', new Passaro('P', "Passaro", "bird.png", "5..6", 70, 4, 50));
-        minhasEspecies.put('Z', new Tarzan('Z', "Tarzan", "tarzan.png", "1..6", 70, 2, 20));
-        minhasEspecies.put('T', new Tartaruga('T', "Tartaruga", "turtle.png", "1..3", 150, 1, 5));
-    }
 
     public InitializationError createInitialJungle(int jungleSize, String[][] playersInfo) {
         reset();
-        minhaEspecies1();
         int contadorTarzan = 0;
         InitializationError error = new InitializationError();
         setTamanhoMapa(jungleSize);
@@ -246,7 +230,7 @@ public class GameManager {
                 return error;
             }
             players.setNome(jogador[1]);
-            for (Map.Entry<Character, Especies> minhas : minhasEspecies.entrySet()) {
+            for (Map.Entry<Character, Especies> minhas : minhasEspecieFuntion().entrySet()) {
                 if (minhas.getKey() == jogador[2].charAt(0)) {
                     players.setEspecies(minhas.getValue());
                     players.setEnergiaActual(minhas.getValue().getEnergiaInicial());
@@ -286,8 +270,7 @@ public class GameManager {
         minhaListaPlayers = new HashMap<>();
         meusJogadores = new ArrayList<>();
         meuMapa = new HashMap<>();
-        refeicoes = new HashMap<>();
-        nomesAlimentos = new HashMap<>();
+        meusAlimentos = new HashMap<>();
     }
 
     public int[] getPlayerIds(int squareNr) {
@@ -337,29 +320,10 @@ public class GameManager {
             arrayRetornar[0] = "finish.png";
             arrayRetornar[1] = "Meta";
         }
-        for (Alimentos meusAlimentos : minhasComidas) {
-            if (String.valueOf(meusAlimentos.getIdentificador()).equals(meuMapa.get(squareNr))) {
-                if (meusAlimentos.getIdentificador() == 'e') {
-                    Erva erva = new Erva();
-                    arrayRetornar[0] = erva.getIconAlimento();
-                    arrayRetornar[1] = "Erva : +- 20 energia";
-                } else if (meusAlimentos.getIdentificador() == 'a') {
-                    Agua agua = new Agua();
-                    arrayRetornar[0] = agua.getIconAlimento();
-                    arrayRetornar[1] = "Agua : + 15U|20% energia";
-                } else if (meusAlimentos.getIdentificador() == 'c') {
-                    Carne carne = new Carne();
-                    arrayRetornar[0] = carne.getIconAlimento();
-                    arrayRetornar[1] = meusAlimentos.estadoCarne(jogadas);
-                } else if (meusAlimentos.getIdentificador() == 'm') {
-                    Cogumelos cogumelos = new Cogumelos();
-                    arrayRetornar[0] = cogumelos.getIconAlimento();
-                    arrayRetornar[1] = "Cogumelo Magico : +- " + meusAlimentos.getCogumelos() + "% energia";
-                } else {
-                    Banana banana = new Banana();
-                    arrayRetornar[0] = banana.getIconAlimento();
-                    arrayRetornar[1] = "Bananas : " + meusAlimentos.getContadorBananas() + " : + 40 energia";
-                }
+        for (Map.Entry<Character, Alimentos> alimento : refeicoes().entrySet()) {
+            if (String.valueOf(alimento.getValue().getIdentificador()).equals(meuMapa.get(squareNr))) {
+                arrayRetornar[0] = alimento.getValue().getIconAlimento();
+                arrayRetornar[1] = alimento.getValue().getInfo(jogadas);
             }
         }
         return arrayRetornar;
@@ -419,22 +383,6 @@ public class GameManager {
         return arrayRetornar;
     }
 
-    String especies(char especie) {
-        if (especie == 'a') {
-            return "Agua";
-        }
-        if (especie == 'b') {
-            return "Bananas";
-        }
-        if (especie == 'e') {
-            return "Erva";
-        }
-        if (especie == 'm') {
-            return "Cogumelos magicos";
-        }
-        return "Carne";
-    }
-
     public void mudancaTurno(ArrayList<Player> lista) {
         if (contador == lista.size() - 1) {
             contador = 0;
@@ -445,71 +393,27 @@ public class GameManager {
         setJogadorActual(contador);
     }
 
-    public MovementResult segundaMoveCurrentPlayer(int nrSquares) {
-        meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
+    public MovementResult movimento2(int nrSquares) {
         for (Player jogador : meusJogadores) {
+            int position = jogador.getPosicaoActual() + nrSquares;
             if (jogador.getIdentificador() == getJogadorActual()) {
-                int position = jogador.getPosicaoActual() + nrSquares;
-                if (nrSquares > 0) {
-                    if (jogador.getEnergiaActual() < nrSquares) {
-                        return energy;
-                    } else if (position > getTamanhoMapa()) {
-                        jogador.setPosicaoActual(getTamanhoMapa());
-                    } else {
-                        jogador.setEnergiaActual(jogador.getEnergiaActual() - jogador.getEspecies().getConsumoEnergia() * nrSquares);
-                        jogador.setPosicaoActual(position);
-                    }
-                } else if (nrSquares < 0) {
-                    if (jogador.getEnergiaActual() < nrSquares) {
-                        return energy;
-                    } else if (position < 1) {
-                        mudancaTurno(meusJogadores);
-                        return movimentoInvalido;
-                    } else {
-                        jogador.setPosicaoActual(position);
-                        jogador.setEnergiaActual(jogador.getEnergiaActual() + jogador.getEspecies().getConsumoEnergia() * nrSquares);
-                    }
-                } else {
-                    jogador.setEnergiaActual(jogador.getEnergiaActual() + jogador.getEspecies().getGanhoEnergia());
-                    mudancaTurno(meusJogadores);
-                    return validMoviment;
+                if (jogador.getEnergiaActual() < nrSquares) {
+                    return energy;
                 }
+                jogador.mover(nrSquares, getTamanhoMapa());
                 for (Alimentos alimentos : minhasComidas) {
                     if (alimentos.getPosicaoNoMapa() == position) {
-                        char especie = jogador.getEspecies().getIdEspecie();
-                        if (alimentos.getIdentificador() == 'a') {
-                            jogador.setEnergiaActual(alimentos.efeitoAgua(especie, jogador.getEnergiaActual()));
-                            food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                            mudancaTurno(meusJogadores);
-                            return food;
-                        }
-                        if (alimentos.getIdentificador() == 'c') {
-                            if (jogador.getEspecies().getIdEspecie() == 'E') {
+                        for (Map.Entry<Character, Alimentos> alimento : refeicoes().entrySet()) {
+                            if (alimento.getValue().getIdentificador() == alimentos.getIdentificador()) {
+                                if (alimento.getKey() == 'c' && (jogador.getEspecies().getIdEspecie() == 'E')) {
+                                    mudancaTurno(meusJogadores);
+                                    return validMoviment;
+                                }
+                                jogador.setEnergiaActual(alimento.getValue().getEfeitoEnergia(jogador.getEspecies().getIdEspecie(), jogador.getEnergiaActual(), jogadas));
+                                food = new MovementResult(comida, "Apanhou " + alimento.getValue().getNomeAlimento());
                                 mudancaTurno(meusJogadores);
-                                return validMoviment;
+                                return food;
                             }
-                            jogador.setEnergiaActual(alimentos.efeitoCarne(especie, jogadas, jogador.getEnergiaActual()));
-                            food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                            mudancaTurno(meusJogadores);
-                            return food;
-                        }
-                        if (alimentos.getIdentificador() == 'e') {
-                            jogador.setEnergiaActual((jogador.getEnergiaActual() + alimentos.efeitoErvas(especie)));
-                            food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                            mudancaTurno(meusJogadores);
-                            return food;
-                        }
-                        if (alimentos.getIdentificador() == 'm') {
-                            jogador.setEnergiaActual(alimentos.efeitoCogumelos(nrSquares, jogador.getEnergiaActual(), alimentos.getCogumelos()));
-                            food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                            mudancaTurno(meusJogadores);
-                            return food;
-                        }
-                        if (alimentos.getIdentificador() == 'b') {
-                            jogador.setEnergiaActual((jogador.getEnergiaActual() + alimentos.efeitoErvas(especie)));
-                            food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                            mudancaTurno(meusJogadores);
-                            return food;
                         }
                     }
                 }
@@ -517,7 +421,7 @@ public class GameManager {
                 return validMoviment;
             }
         }
-        return validMoviment;
+        return movimentoInvalido;
     }
 
     public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
@@ -527,66 +431,23 @@ public class GameManager {
                 for (Player jogador : meusJogadores) {
                     if (jogador.getIdentificador() == getJogadorActual()) {
                         int position = jogador.getPosicaoActual() + nrSquares;
-                        if (nrSquares > 0) {
-                            if (jogador.getEnergiaActual() < nrSquares) {
-                                return energy;
-                            } else if (position > getTamanhoMapa()) {
-                                jogador.setPosicaoActual(getTamanhoMapa());
-                            } else {
-                                jogador.setEnergiaActual(jogador.getEnergiaActual() - jogador.getEspecies().getConsumoEnergia() * nrSquares);
-                                jogador.setPosicaoActual(position);
-                            }
-                        } else if (nrSquares < 0) {
-                            if (jogador.getEnergiaActual() < nrSquares) {
-                                return energy;
-                            } else if (position < 1) {
-                                mudancaTurno(meusJogadores);
-                                return movimentoInvalido;
-                            } else {
-                                jogador.setPosicaoActual(position);
-                                jogador.setEnergiaActual(jogador.getEnergiaActual() + jogador.getEspecies().getConsumoEnergia() * nrSquares);
-                            }
-                        } else {
-                            jogador.setEnergiaActual(jogador.getEnergiaActual() + jogador.getEspecies().getGanhoEnergia());
-                            mudancaTurno(meusJogadores);
-                            return validMoviment;
+                        if (jogador.getEnergiaActual() < nrSquares) {
+                            return energy;
                         }
+                        jogador.mover(nrSquares, getTamanhoMapa());
                         for (Alimentos alimentos : minhasComidas) {
                             if (alimentos.getPosicaoNoMapa() == position) {
-                                char especie = jogador.getEspecies().getIdEspecie();
-                                if (alimentos.getIdentificador() == 'a') {
-                                    jogador.setEnergiaActual(alimentos.efeitoAgua(especie, jogador.getEnergiaActual()));
-                                    food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                                    mudancaTurno(meusJogadores);
-                                    return food;
-                                }
-                                if (alimentos.getIdentificador() == 'c') {
-                                    if (jogador.getEspecies().getIdEspecie() == 'E') {
+                                for (Map.Entry<Character, Alimentos> alimento : refeicoes().entrySet()) {
+                                    if (alimento.getValue().getIdentificador() == alimentos.getIdentificador()) {
+                                        if (alimento.getKey() == 'c' && (jogador.getEspecies().getIdEspecie() == 'E')) {
+                                            mudancaTurno(meusJogadores);
+                                            return validMoviment;
+                                        }
+                                        jogador.setEnergiaActual(alimento.getValue().getEfeitoEnergia(jogador.getEspecies().getIdEspecie(), jogador.getEnergiaActual(), jogadas));
+                                        food = new MovementResult(comida, "Apanhou " + alimento.getValue().getNomeAlimento());
                                         mudancaTurno(meusJogadores);
-                                        return validMoviment;
+                                        return food;
                                     }
-                                    jogador.setEnergiaActual(alimentos.efeitoCarne(especie, jogadas, jogador.getEnergiaActual()));
-                                    food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                                    mudancaTurno(meusJogadores);
-                                    return food;
-                                }
-                                if (alimentos.getIdentificador() == 'e') {
-                                    jogador.setEnergiaActual((jogador.getEnergiaActual() + alimentos.efeitoErvas(especie)));
-                                    food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                                    mudancaTurno(meusJogadores);
-                                    return food;
-                                }
-                                if (alimentos.getIdentificador() == 'm') {
-                                    jogador.setEnergiaActual(alimentos.efeitoCogumelos(nrSquares, jogador.getEnergiaActual(), alimentos.getCogumelos()));
-                                    food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                                    mudancaTurno(meusJogadores);
-                                    return food;
-                                }
-                                if (alimentos.getIdentificador() == 'b') {
-                                    jogador.setEnergiaActual((jogador.getEnergiaActual() + alimentos.efeitoErvas(especie)));
-                                    food = new MovementResult(comida, "Apanhou " + alimentos.getNomeAlimento());
-                                    mudancaTurno(meusJogadores);
-                                    return food;
                                 }
                             }
                         }
@@ -595,13 +456,12 @@ public class GameManager {
                     }
                 }
             } else {
-                mudancaTurno(meusJogadores);
                 return movimentoInvalido;
             }
         } else {
-            return segundaMoveCurrentPlayer(nrSquares);
+            return movimento2(nrSquares);
         }
-        return validMoviment;
+        return movimentoInvalido;
     }
 
     public String[] getWinnerInfo() {

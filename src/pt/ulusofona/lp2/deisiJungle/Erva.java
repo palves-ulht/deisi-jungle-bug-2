@@ -5,7 +5,26 @@ public class Erva extends Alimentos {
         super(identificador, nomeAlimento, iconAlimento);
     }
 
+    String info;
+
+
     Erva() {
+    }
+
+    @Override
+    public int getEfeitoEnergia(char especie, int energia, int jogadas) {
+        int energy = 100;
+        return 100;
+    }
+
+    @Override
+    public int getPosicaoNoMapa() {
+        return super.getPosicaoNoMapa();
+    }
+
+    @Override
+    public String getInfo(int jogadas) {
+        return "Erva : +- 20 energia";
     }
 
     @Override
@@ -22,4 +41,5 @@ public class Erva extends Alimentos {
     public String getIconAlimento() {
         return iconAlimento = "grass.png";
     }
+
 }

@@ -1,14 +1,13 @@
 package pt.ulusofona.lp2.deisiJungle;
 
-public class Leao extends Especies{
-    Leao(char id, String name, String image, String velocidade, int energia, int consumo, int ganho) {
+public class Leao extends Especies {
+    Leao(char id, String name, String image) {
         super(id, name, image);
-        this.velocidade = velocidade;
-        this.energiaInicial = energia;
-        this.consumoEnergia = consumo;
-        this.ganhoEnergia = ganho;
     }
-    Leao(){}
+
+    Leao() {
+    }
+
     @Override
     public char getIdEspecie() {
         idEspecie = 'L';
@@ -50,4 +49,5 @@ public class Leao extends Especies{
         velocidade = "4..6";
         return velocidade;
     }
+
 }

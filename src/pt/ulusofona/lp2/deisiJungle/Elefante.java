@@ -1,17 +1,12 @@
 package pt.ulusofona.lp2.deisiJungle;
 
 public class Elefante extends Especies {
-    Elefante(char id, String name, String image, String velocidade, int energia, int consumo, int ganho) {
+    Elefante(char id, String name, String image) {
         super(id, name, image);
-        this.velocidade = velocidade;
-        this.energiaInicial = energia;
-        this.consumoEnergia = consumo;
-        this.ganhoEnergia = ganho;
     }
 
     Elefante() {
     }
-
     @Override
     public char getIdEspecie() {
         idEspecie = 'E';

@@ -6,7 +6,8 @@ public class Player {
     private int posicaoActual;
     private int energiaActual;
     private Especies especies;
-    Player(){
+
+    Player() {
     }
 
     public int getIdentificador() {
@@ -49,12 +50,24 @@ public class Player {
         this.especies = especies;
     }
 
-    void mover(int nrSquares, Player meuJogador, int jogadorActual) {
-        if (meuJogador.getIdentificador() == jogadorActual) {
-            int position = nrSquares + meuJogador.getPosicaoActual();
-            if (position >= 1) {
-                meuJogador.setPosicaoActual(position);
+    public void mover(int nrSquares, int tamanhoMapa) {
+        int position = getPosicaoActual() + nrSquares;
+        if (nrSquares > 0) {
+            if (position > tamanhoMapa) {
+                setPosicaoActual(tamanhoMapa);
+            } else {
+                setEnergiaActual(getEnergiaActual() - getEspecies().getConsumoEnergia() * nrSquares);
+                setPosicaoActual(position);
             }
+        } else if (nrSquares < 0) {
+            if (position < 1) {
+                setPosicaoActual(1);
+            } else {
+                setPosicaoActual(position);
+                setEnergiaActual(getEnergiaActual() + getEspecies().getConsumoEnergia() * nrSquares);
+            }
+        } else {
+            setEnergiaActual(getEnergiaActual() + getEspecies().getGanhoEnergia());
         }
     }
 }
