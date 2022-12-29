@@ -13,8 +13,13 @@ public class Erva extends Alimentos {
 
     @Override
     public int getEfeitoEnergia(char especie, int energia, int jogadas) {
-        int energy = 100;
-        return 100;
+        if (especie == 'L') {
+            energia = energia - 20;
+            return energia;
+        } else {
+            energia = energia + 20;
+            return energia;
+        }
     }
 
     @Override

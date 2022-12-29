@@ -421,6 +421,7 @@ public class GameManager {
                 return validMoviment;
             }
         }
+        mudancaTurno(meusJogadores);
         return movimentoInvalido;
     }
 
@@ -456,11 +457,13 @@ public class GameManager {
                     }
                 }
             } else {
+                mudancaTurno(meusJogadores);
                 return movimentoInvalido;
             }
         } else {
             return movimento2(nrSquares);
         }
+        mudancaTurno(meusJogadores);
         return movimentoInvalido;
     }
 
