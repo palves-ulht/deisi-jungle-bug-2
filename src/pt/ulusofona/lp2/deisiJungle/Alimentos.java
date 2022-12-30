@@ -1,27 +1,24 @@
 package pt.ulusofona.lp2.deisiJungle;
+
 public class Alimentos {
     protected char identificador;
     protected String nomeAlimento;
     protected String iconAlimento;
     protected int posicaoNoMapa;
     protected String info;
-    protected int contaJogadas;
-    protected int efeitoEnergia;
 
-    public int getEfeitoEnergia(char especie, int energia, int jogadas) {
+    protected int efeitoEnergia;
+    Alimentos(char identificador, String nomeAlimento, String iconAlimento) {
+        this.identificador = identificador;
+        this.nomeAlimento = nomeAlimento;
+        this.iconAlimento = iconAlimento;
+    }
+    public int getEfeitoEnergia(char especie, int energia, int jogadas, int nrSquare) {
         return efeitoEnergia;
     }
 
     public void setEfeitoEnergia(int efeitoEnergia) {
         this.efeitoEnergia = efeitoEnergia;
-    }
-
-    public int getContaJogadas() {
-        return contaJogadas;
-    }
-
-    public void setContaJogadas() {
-        this.contaJogadas += 1;
     }
 
     public String getInfo(int jogadas) {
@@ -67,10 +64,6 @@ public class Alimentos {
         this.iconAlimento = iconAlimento;
     }
 
-    Alimentos(char identificador, String nomeAlimento, String iconAlimento) {
-        this.identificador = identificador;
-        this.nomeAlimento = nomeAlimento;
-        this.iconAlimento = iconAlimento;
-    }
+
 
 }

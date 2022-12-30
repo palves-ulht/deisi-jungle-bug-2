@@ -16,7 +16,7 @@ public class Cogumelos extends Alimentos {
     }
 
     public int getCogumelos() {
-        if(cogumelos == 0){
+        if (cogumelos == 0) {
             setCogumelos();
         }
         return this.cogumelos;
@@ -45,8 +45,16 @@ public class Cogumelos extends Alimentos {
     }
 
     @Override
-    public int getEfeitoEnergia(char especie, int energia, int jogadas) {
-        return super.getEfeitoEnergia(especie, energia, jogadas);
+    public int getEfeitoEnergia(char especie, int energia, int jogadas, int nrSquare) {
+        if (nrSquare % 2 == 0) {
+            double result = (double) (getCogumelos() / 100) * energia;
+            energia = energia + (int) result;
+            return energia;
+        } else {
+            double result = (double) (getCogumelos() / 100) * energia;
+            energia = energia - (int) result;
+            return energia;
+        }
     }
 
     @Override

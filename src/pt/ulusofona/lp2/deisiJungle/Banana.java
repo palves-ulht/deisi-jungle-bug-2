@@ -1,28 +1,29 @@
 package pt.ulusofona.lp2.deisiJungle;
 
 public class Banana extends Alimentos {
-    protected int contaBanas;
+
+    private int contaBananas = 4;
 
     Banana(char identificador, String nomeAlimento, String iconAlimento) {
         super(identificador, nomeAlimento, iconAlimento);
     }
 
+    public int getContaBananas() {
+        return contaBananas;
+    }
+
+    public void setContaBananas() {
+        contaBananas = 1;
+    }
+
     @Override
     public String getInfo(int jogadas) {
-        return "Bananas : " + getContaBanas() + " : + 40 energia";
+        return "Bananas : " + getContaBananas() + " : + 40 energia";
     }
 
     @Override
     public int getPosicaoNoMapa() {
         return super.getPosicaoNoMapa();
-    }
-
-    public int getContaBanas() {
-        return contaBanas;
-    }
-
-    public void setContaBanas(int contaBanas) {
-        this.contaBanas = 3;
     }
 
     Banana() {
@@ -44,16 +45,12 @@ public class Banana extends Alimentos {
     }
 
     @Override
-    public int getEfeitoEnergia(char especie, int energia, int jogadas) {
-        return super.getEfeitoEnergia(especie, energia, jogadas);
-    }
-
-    int efeitoEnergia(char especie, int energiaActual) {
-        if (especie == 'L' || especie == 'T' || especie == 'E') {
-            energiaActual = energiaActual + 15;
-        } else {
-            energiaActual = (int) (energiaActual + energiaActual * 0.2);
+    public int getEfeitoEnergia(char especie, int energia, int jogadas, int nrQuare) {
+        if (getContaBananas() > 0) {
+            energia = energia + 40;
+            setContaBananas();
+            return energia;
         }
-        return energiaActual;
+        return energia;
     }
 }

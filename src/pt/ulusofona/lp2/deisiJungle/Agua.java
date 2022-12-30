@@ -17,7 +17,7 @@ public class Agua extends Alimentos {
     }
 
     @Override
-    public int getEfeitoEnergia(char especie, int energia, int jogadas) {
+    public int getEfeitoEnergia(char especie, int energia, int jogadas, int nrSquare) {
         if (especie == 'L' || especie == 'T' || especie == 'E') {
             energia = energia + 15;
         } else {

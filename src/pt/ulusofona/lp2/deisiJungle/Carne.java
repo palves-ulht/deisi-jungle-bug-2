@@ -39,7 +39,7 @@ public class Carne extends Alimentos {
     }
 
     @Override
-    public int getEfeitoEnergia(char especie, int energia, int jogadas) {
+    public int getEfeitoEnergia(char especie, int energia, int jogadas,int nrSquare) {
         if (jogadas <= 12) {
             if (especie == 'L' || especie == 'Z' || especie == 'P' || especie == 'T') {
                 energia += 50;

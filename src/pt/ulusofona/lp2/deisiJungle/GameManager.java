@@ -409,7 +409,7 @@ public class GameManager {
                                     mudancaTurno(meusJogadores);
                                     return validMoviment;
                                 }
-                                jogador.setEnergiaActual(alimento.getValue().getEfeitoEnergia(jogador.getEspecies().getIdEspecie(), jogador.getEnergiaActual(), jogadas));
+                                jogador.setEnergiaActual(alimento.getValue().getEfeitoEnergia(jogador.getEspecies().getIdEspecie(), jogador.getEnergiaActual(), jogadas, nrSquares));
                                 food = new MovementResult(comida, "Apanhou " + alimento.getValue().getNomeAlimento());
                                 mudancaTurno(meusJogadores);
                                 return food;
@@ -444,7 +444,7 @@ public class GameManager {
                                             mudancaTurno(meusJogadores);
                                             return validMoviment;
                                         }
-                                        jogador.setEnergiaActual(alimento.getValue().getEfeitoEnergia(jogador.getEspecies().getIdEspecie(), jogador.getEnergiaActual(), jogadas));
+                                        jogador.setEnergiaActual(alimento.getValue().getEfeitoEnergia(jogador.getEspecies().getIdEspecie(), jogador.getEnergiaActual(), jogadas, nrSquares));
                                         food = new MovementResult(comida, "Apanhou " + alimento.getValue().getNomeAlimento());
                                         mudancaTurno(meusJogadores);
                                         return food;
