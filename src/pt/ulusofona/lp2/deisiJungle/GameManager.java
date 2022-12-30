@@ -514,21 +514,6 @@ public class GameManager {
     public boolean saveGame(File file) {
         StringBuilder allInformationGame = new StringBuilder();
         allInformationGame.append("<Elementos>\n");
-        allInformationGame.append("<Especies>\n");
-        for (Map.Entry<Character, Especies> especies : minhasEspecies.entrySet()) {
-            allInformationGame.append("<Especies>");
-            allInformationGame.append("<Id>").append(especies.getValue().getIdEspecie()).append("</Id>");
-            allInformationGame.append("<Nome>").append(especies.getValue().getNome()).append("</Nome>");
-            allInformationGame.append("<Energia>").append(especies.getValue().getEnergiaInicial()).append("</Energia>");
-            allInformationGame.append("<Icone>").append(especies.getValue().getIcone()).append("</Icone>");
-            allInformationGame.append("<Velocidade>").append(especies.getValue().getVelocidade()).append("</Velocidade>");
-            allInformationGame.append("<GanhoEnergia>").append(especies.getValue().getGanhoEnergia()).append("</GanhoEnergia>");
-            allInformationGame.append("<PerdaEnergia>").append(especies.getValue().getConsumoEnergia()).append("</PerdaEnergia>");
-            allInformationGame.append("</Especies>\n");
-        }
-        allInformationGame.append("</Especies>\n");
-
-        allInformationGame.append("<Players>\n");
         for (Player player : meusJogadores) {
             allInformationGame.append("<Players>");
             allInformationGame.append("<Id>").append(player.getIdentificador()).append("</Id>");
@@ -538,9 +523,7 @@ public class GameManager {
             allInformationGame.append("<iD_Especie>").append(player.getEspecies().getIdEspecie()).append("</iD_Especie>");
             allInformationGame.append("</Players>\n");
         }
-        allInformationGame.append("</Players>\n");
 
-        allInformationGame.append("<Comidas>\n");
         for (Alimentos alimentos : minhasComidas) {
             allInformationGame.append("<Comidas>");
             allInformationGame.append("<Id>").append(alimentos.getIdentificador()).append("</Id>");
@@ -549,14 +532,10 @@ public class GameManager {
             allInformationGame.append("<PositionMapa>").append(alimentos.getPosicaoNoMapa()).append("</PositionMapa>");
             allInformationGame.append("</Comidas>\n");
         }
-        allInformationGame.append("</Comidas>\n");
-
-        allInformationGame.append("<Jogo>\n");
         allInformationGame.append("<Jogo>");
         allInformationGame.append("<JogadorActual>").append(getJogadorActual()).append("</JogadorActual>");
         allInformationGame.append("<TurnosJogados>").append(jogadas).append("</TurnosJogados>");
         allInformationGame.append("<TamanhoMapa>").append(getTamanhoMapa()).append("</TamanhoMapa>");
-        allInformationGame.append("</Jogo>\n");
         allInformationGame.append("</Jogo>\n");
 
         allInformationGame.append("</Elementos>");
@@ -571,38 +550,13 @@ public class GameManager {
     }
 
     public boolean loadGame(File file) {
+        int cont = 0;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document doc = documentBuilder.parse(file);
             reset();
-            NodeList especiesNodes = doc.getElementsByTagName("Especies");
-            for (int i = 0; i < especiesNodes.getLength(); i++) {
-                Node especieNode = especiesNodes.item(i);
-                if (especieNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element especieNode1 = (Element) especieNode;
-                    String id = especieNode1.getElementsByTagName("Id").item(0).getTextContent();
-                    String nome = especieNode1.getElementsByTagName("Nome").item(0).getTextContent();
-                    String icone = especieNode1.getElementsByTagName("Icone").item(0).getTextContent();
-                    String energia = especieNode1.getElementsByTagName("Energia").item(0).getTextContent();
-                    String velocidade = especieNode1.getElementsByTagName("Velocidade").item(0).getTextContent();
-                    String ganhoEnergia = especieNode1.getElementsByTagName("GanhoEnergia").item(0).getTextContent();
-                    String perdaEnergia = especieNode1.getElementsByTagName("PerdaEnergia").item(0).getTextContent();
-
-                    for (Map.Entry<Character, Especies> especie : minhasEspecieFuntion().entrySet()) {
-                        if (especie.getKey() == id.charAt(0)) {
-                            especie.getValue().setIdEspecie(id.charAt(0));
-                            especie.getValue().setNome(nome);
-                            especie.getValue().setEnergiaInicial(Integer.parseInt(energia));
-                            especie.getValue().setIcone(icone);
-                            especie.getValue().setVelocidade(velocidade);
-                            especie.getValue().setGanhoEnergia(Integer.parseInt(ganhoEnergia));
-                            especie.getValue().setConsumoEnergia(Integer.parseInt(perdaEnergia));
-                            minhasEspecies.put(id.charAt(0), especie.getValue());
-                        }
-                    }
-                }
-            }
+            minhasEspecies.putAll(minhasEspecieFuntion());
             NodeList playerNodes = doc.getElementsByTagName("Players");
             for (int i = 0; i < playerNodes.getLength(); i++) {
                 Node jogadorNode = playerNodes.item(i);
@@ -613,7 +567,6 @@ public class GameManager {
                     String positionMapa = playerElement.getElementsByTagName("PositionMapa").item(0).getTextContent();
                     String energy = playerElement.getElementsByTagName("Energy").item(0).getTextContent();
                     String idEspec = playerElement.getElementsByTagName("iD_Especie").item(0).getTextContent();
-
                     for (Map.Entry<Character, Especies> especie : minhasEspecieFuntion().entrySet()) {
                         if (especie.getValue().getIdEspecie() == idEspec.charAt(0)) {
                             Player player = new Player();
@@ -623,7 +576,7 @@ public class GameManager {
                             player.setEnergiaActual(Integer.parseInt(energy));
                             player.setEspecies(especie.getValue());
                             meusJogadores.add(player);
-                            break;
+                            meusJogadores.sort(Comparator.comparingInt((Player::getPosicaoActual)).reversed());
                         }
                     }
                 }
@@ -637,7 +590,6 @@ public class GameManager {
                     String nome = foodElemet.getElementsByTagName("Nome").item(0).getTextContent();
                     String icone = foodElemet.getElementsByTagName("Icone").item(0).getTextContent();
                     String posicao = foodElemet.getElementsByTagName("PositionMapa").item(0).getTextContent();
-
                     Alimentos alimentos = new Alimentos();
                     alimentos.setIdentificador(id.charAt(0));
                     alimentos.setNomeAlimento(nome);
@@ -657,7 +609,8 @@ public class GameManager {
                     setTamanhoMapa(Integer.parseInt(foodElemet.getElementsByTagName("TamanhoMapa").item(0).getTextContent()));
                 }
             }
-        } catch (ParserConfigurationException | IOException | SAXException e) {
+        } catch (ParserConfigurationException | IOException |
+                 SAXException e) {
             return false;
         }
         return true;
