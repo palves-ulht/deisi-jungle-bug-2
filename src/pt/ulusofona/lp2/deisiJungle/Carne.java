@@ -1,7 +1,7 @@
 package pt.ulusofona.lp2.deisiJungle;
 
 public class Carne extends Alimentos {
-
+    
     @Override
     public String getInfo(int jogadas) {
         if (jogadas > 12) {

@@ -9,7 +9,7 @@ public class Passaro extends Especies{
         this.consumoEnergia = consumo;
         this.ganhoEnergia = ganho;
     }
-    Passaro(){}
+Passaro(){}
     @Override
     public char getIdEspecie() {
         idEspecie = 'P';

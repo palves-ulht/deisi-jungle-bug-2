@@ -3,6 +3,10 @@ package pt.ulusofona.lp2.deisiJungle;
 import java.util.Random;
 
 public class Cogumelos extends Alimentos {
+    Cogumelos(char identificador, String nomeAlimento, String iconAlimento) {
+        super(identificador, nomeAlimento, iconAlimento);
+    }
+
     protected int cogumelos;
 
     @Override
@@ -27,10 +31,6 @@ public class Cogumelos extends Alimentos {
         this.cogumelos = 10 + cogumelo.nextInt((50 - 10) + 1);
     }
 
-    Cogumelos(char identificador, String nomeAlimento, String iconAlimento) {
-        super(identificador, nomeAlimento, iconAlimento);
-    }
-
     Cogumelos() {
     }
 
@@ -41,19 +41,23 @@ public class Cogumelos extends Alimentos {
 
     @Override
     public String getNomeAlimento() {
-        return nomeAlimento = "Cogumelos magicos";
+        return nomeAlimento = "Cogumelo magico";
     }
 
     @Override
     public int getEfeitoEnergia(char especie, int energia, int jogadas, int nrSquare) {
         if (nrSquare % 2 == 0) {
-            double result = (double) (getCogumelos() / 100) * energia;
-            energia = energia + (int) result;
-            return energia;
+            int aux = energia;
+            double percentagem = (double) getCogumelos() / 100;
+            energia *= percentagem;
+            aux += energia;
+            return aux;
         } else {
-            double result = (double) (getCogumelos() / 100) * energia;
-            energia = energia - (int) result;
-            return energia;
+            int aux = energia;
+            double percentagem = (double) getCogumelos() / 100;
+            energia *= percentagem;
+            aux -= energia;
+            return aux;
         }
     }
 

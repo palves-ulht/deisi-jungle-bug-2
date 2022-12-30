@@ -9,7 +9,7 @@ public class Tartaruga extends Especies{
         this.consumoEnergia = consumo;
         this.ganhoEnergia = ganho;
     }
-    Tartaruga(){}
+Tartaruga(){}
     @Override
     public char getIdEspecie() {
         idEspecie = 'T';

@@ -9,7 +9,7 @@ public class Tarzan extends Especies {
         this.consumoEnergia = consumo;
         this.ganhoEnergia = ganho;
     }
-    Tarzan(){}
+Tarzan(){}
     @Override
     public char getIdEspecie() {
         idEspecie = 'Z';
