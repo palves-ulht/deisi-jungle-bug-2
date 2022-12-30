@@ -513,10 +513,10 @@ public class GameManager {
 
     public boolean saveGame(File file) {
         StringBuilder allInformationGame = new StringBuilder();
-        allInformationGame.append("<Elementos>");
+        allInformationGame.append("<Elementos>\n");
         allInformationGame.append("<Especies>\n");
         for (Map.Entry<Character, Especies> especies : minhasEspecies.entrySet()) {
-            allInformationGame.append("<Especies>\n");
+            allInformationGame.append("<Especies>");
             allInformationGame.append("<Id>").append(especies.getValue().getIdEspecie()).append("</Id>");
             allInformationGame.append("<Nome>").append(especies.getValue().getNome()).append("</Nome>");
             allInformationGame.append("<Energia>").append(especies.getValue().getEnergiaInicial()).append("</Energia>");
@@ -530,25 +530,19 @@ public class GameManager {
 
         allInformationGame.append("<Players>\n");
         for (Player player : meusJogadores) {
-            allInformationGame.append("<Players>\n");
+            allInformationGame.append("<Players>");
             allInformationGame.append("<Id>").append(player.getIdentificador()).append("</Id>");
             allInformationGame.append("<Nome>").append(player.getNome()).append("</Nome>");
             allInformationGame.append("<PositionMapa>").append(player.getPosicaoActual()).append("</PositionMapa>");
             allInformationGame.append("<Energy>").append(player.getEnergiaActual()).append("</Energy>");
             allInformationGame.append("<iD_Especie>").append(player.getEspecies().getIdEspecie()).append("</iD_Especie>");
-            allInformationGame.append("<nome_Especie>").append(player.getEspecies().getNome()).append("</nome_Especie>");
-            allInformationGame.append("<iconeEspecie>").append(player.getEspecies().getIcone()).append("</iconeEspecie>");
-            allInformationGame.append("<energiaEspecie>").append(player.getEspecies().getEnergiaInicial()).append("</energiaEspecie>");
-            allInformationGame.append("<ganhoEspecie>").append(player.getEspecies().getGanhoEnergia()).append("</ganhoEspecie>");
-            allInformationGame.append("<perdaEspecie>").append(player.getEspecies().getConsumoEnergia()).append("</perdaEspecie>");
-            allInformationGame.append("<velocidadeEspecie>").append(player.getEspecies().getVelocidade()).append("</velocidadeEspecie>");
             allInformationGame.append("</Players>\n");
         }
         allInformationGame.append("</Players>\n");
 
         allInformationGame.append("<Comidas>\n");
         for (Alimentos alimentos : minhasComidas) {
-            allInformationGame.append("<Comidas>\n");
+            allInformationGame.append("<Comidas>");
             allInformationGame.append("<Id>").append(alimentos.getIdentificador()).append("</Id>");
             allInformationGame.append("<Nome>").append(alimentos.getNomeAlimento()).append("</Nome>");
             allInformationGame.append("<Icone>").append(alimentos.getIconAlimento()).append("</Icone>");
@@ -558,7 +552,7 @@ public class GameManager {
         allInformationGame.append("</Comidas>\n");
 
         allInformationGame.append("<Jogo>\n");
-        allInformationGame.append("<Jogo>\n");
+        allInformationGame.append("<Jogo>");
         allInformationGame.append("<JogadorActual>").append(getJogadorActual()).append("</JogadorActual>");
         allInformationGame.append("<TurnosJogados>").append(jogadas).append("</TurnosJogados>");
         allInformationGame.append("<TamanhoMapa>").append(getTamanhoMapa()).append("</TamanhoMapa>");
@@ -566,7 +560,7 @@ public class GameManager {
         allInformationGame.append("</Jogo>\n");
 
         allInformationGame.append("</Elementos>");
-        allInformationGame.append("</Elementos>");
+
         try (FileWriter writer = new FileWriter(file);
              BufferedWriter bw = new BufferedWriter(writer)) {
             bw.write(allInformationGame.toString());
@@ -577,15 +571,11 @@ public class GameManager {
     }
 
     public boolean loadGame(File file) {
-        Scanner leitura = new Scanner(System.in);
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document doc = documentBuilder.parse(file);
-            meusJogadores = new ArrayList<>();
-            minhasEspecies = new HashMap<>();
-            minhasComidas = new ArrayList<>();
-            meuMapa = new HashMap<>();
+            reset();
             NodeList especiesNodes = doc.getElementsByTagName("Especies");
             for (int i = 0; i < especiesNodes.getLength(); i++) {
                 Node especieNode = especiesNodes.item(i);
@@ -594,65 +584,22 @@ public class GameManager {
                     String id = especieNode1.getElementsByTagName("Id").item(0).getTextContent();
                     String nome = especieNode1.getElementsByTagName("Nome").item(0).getTextContent();
                     String icone = especieNode1.getElementsByTagName("Icone").item(0).getTextContent();
-                    String energia = especieNode1.getElementsByTagName("Energy").item(0).getTextContent();
+                    String energia = especieNode1.getElementsByTagName("Energia").item(0).getTextContent();
                     String velocidade = especieNode1.getElementsByTagName("Velocidade").item(0).getTextContent();
                     String ganhoEnergia = especieNode1.getElementsByTagName("GanhoEnergia").item(0).getTextContent();
                     String perdaEnergia = especieNode1.getElementsByTagName("PerdaEnergia").item(0).getTextContent();
 
-                    if (id.equals("L")) {
-                        Especies leao = new Leao();
-                        leao.setIdEspecie(id.charAt(0));
-                        leao.setNome(nome);
-                        leao.setEnergiaInicial(Integer.parseInt(energia));
-                        leao.setIcone(icone);
-                        leao.setVelocidade(velocidade);
-                        leao.setGanhoEnergia(Integer.parseInt(ganhoEnergia));
-                        leao.setConsumoEnergia(Integer.parseInt(perdaEnergia));
-                        minhasEspecies.put('L', leao);
-                    }
-                    if (id.equals("E")) {
-                        Especies elefante = new Elefante();
-                        elefante.setIdEspecie(id.charAt(0));
-                        elefante.setNome(nome);
-                        elefante.setEnergiaInicial(Integer.parseInt(energia));
-                        elefante.setIcone(icone);
-                        elefante.setVelocidade(velocidade);
-                        elefante.setGanhoEnergia(Integer.parseInt(ganhoEnergia));
-                        elefante.setConsumoEnergia(Integer.parseInt(perdaEnergia));
-                        minhasEspecies.put('E', elefante);
-                    }
-                    if (id.equals("T")) {
-                        Especies tartaruga = new Tartaruga();
-                        tartaruga.setIdEspecie(id.charAt(0));
-                        tartaruga.setNome(nome);
-                        tartaruga.setEnergiaInicial(Integer.parseInt(energia));
-                        tartaruga.setIcone(icone);
-                        tartaruga.setVelocidade(velocidade);
-                        tartaruga.setGanhoEnergia(Integer.parseInt(ganhoEnergia));
-                        tartaruga.setConsumoEnergia(Integer.parseInt(perdaEnergia));
-                        minhasEspecies.put('T', tartaruga);
-                    }
-                    if (id.equals("P")) {
-                        Especies passaro = new Leao();
-                        passaro.setIdEspecie(id.charAt(0));
-                        passaro.setNome(nome);
-                        passaro.setEnergiaInicial(Integer.parseInt(energia));
-                        passaro.setIcone(icone);
-                        passaro.setVelocidade(velocidade);
-                        passaro.setGanhoEnergia(Integer.parseInt(ganhoEnergia));
-                        passaro.setConsumoEnergia(Integer.parseInt(perdaEnergia));
-                        minhasEspecies.put('P', passaro);
-                    }
-                    if (id.equals("Z")) {
-                        Especies tarzan = new Leao();
-                        tarzan.setIdEspecie(id.charAt(0));
-                        tarzan.setNome(nome);
-                        tarzan.setEnergiaInicial(Integer.parseInt(energia));
-                        tarzan.setIcone(icone);
-                        tarzan.setVelocidade(velocidade);
-                        tarzan.setGanhoEnergia(Integer.parseInt(ganhoEnergia));
-                        tarzan.setConsumoEnergia(Integer.parseInt(perdaEnergia));
-                        minhasEspecies.put('Z', tarzan);
+                    for (Map.Entry<Character, Especies> especie : minhasEspecieFuntion().entrySet()) {
+                        if (especie.getKey() == id.charAt(0)) {
+                            especie.getValue().setIdEspecie(id.charAt(0));
+                            especie.getValue().setNome(nome);
+                            especie.getValue().setEnergiaInicial(Integer.parseInt(energia));
+                            especie.getValue().setIcone(icone);
+                            especie.getValue().setVelocidade(velocidade);
+                            especie.getValue().setGanhoEnergia(Integer.parseInt(ganhoEnergia));
+                            especie.getValue().setConsumoEnergia(Integer.parseInt(perdaEnergia));
+                            minhasEspecies.put(id.charAt(0), especie.getValue());
+                        }
                     }
                 }
             }
@@ -666,28 +613,19 @@ public class GameManager {
                     String positionMapa = playerElement.getElementsByTagName("PositionMapa").item(0).getTextContent();
                     String energy = playerElement.getElementsByTagName("Energy").item(0).getTextContent();
                     String idEspec = playerElement.getElementsByTagName("iD_Especie").item(0).getTextContent();
-                    String nomeE = playerElement.getElementsByTagName("nome_Especie").item(0).getTextContent();
-                    String iconeE = playerElement.getElementsByTagName("iconeEspecie").item(0).getTextContent();
-                    String energiaE = playerElement.getElementsByTagName("energiaEspecie").item(0).getTextContent();
-                    String ganhoE = playerElement.getElementsByTagName("ganhoEspecie").item(0).getTextContent();
-                    String perdaE = playerElement.getElementsByTagName("perdaEspecie").item(0).getTextContent();
-                    String velocidadeE = playerElement.getElementsByTagName("velocidadeEspecie").item(0).getTextContent();
 
-                    Especies especie = new Especies();
-                    especie.setIdEspecie(idEspec.charAt(0));
-                    especie.setNome(nomeE);
-                    especie.setIcone(iconeE);
-                    especie.setEnergiaInicial(Integer.parseInt(energiaE));
-                    especie.setGanhoEnergia(Integer.parseInt(ganhoE));
-                    especie.setConsumoEnergia(Integer.parseInt(perdaE));
-                    especie.setVelocidade(velocidadeE);
-
-                    Player player = new Player();
-                    player.setIdentificador(Integer.parseInt(id));
-                    player.setNome(nome);
-                    player.setPosicaoActual(Integer.parseInt(positionMapa));
-                    player.setEspecies(especie);
-                    meusJogadores.add(player);
+                    for (Map.Entry<Character, Especies> especie : minhasEspecieFuntion().entrySet()) {
+                        if (especie.getValue().getIdEspecie() == idEspec.charAt(0)) {
+                            Player player = new Player();
+                            player.setIdentificador(Integer.parseInt(id));
+                            player.setNome(nome);
+                            player.setPosicaoActual(Integer.parseInt(positionMapa));
+                            player.setEnergiaActual(Integer.parseInt(energy));
+                            player.setEspecies(especie.getValue());
+                            meusJogadores.add(player);
+                            break;
+                        }
+                    }
                 }
             }
             NodeList foodNodes = doc.getElementsByTagName("Comidas");
