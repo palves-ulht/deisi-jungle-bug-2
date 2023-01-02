@@ -549,6 +549,7 @@ public class GameManager {
         return true;
     }
 
+
     public boolean loadGame(File file) {
         int cont = 0;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
