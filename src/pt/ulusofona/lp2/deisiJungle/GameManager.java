@@ -525,6 +525,19 @@ public class GameManager {
         return true;
     }
 
+    public void auxLoad(Document doc) {
+        NodeList gameNodes = doc.getElementsByTagName("Jogo");
+        for (int i = 0; i < gameNodes.getLength(); i++) {
+            Node gameNode = gameNodes.item(i);
+            if (gameNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element foodElemet = (Element) gameNode;
+                jogadorActual = Integer.parseInt(foodElemet.getElementsByTagName("JogadorActual").item(0).getTextContent());
+                jogadas = Integer.parseInt(foodElemet.getElementsByTagName("TurnosJogados").item(0).getTextContent());
+                setTamanhoMapa(Integer.parseInt(foodElemet.getElementsByTagName("TamanhoMapa").item(0).getTextContent()));
+            }
+        }
+    }
+
     public boolean loadGame(File file) {
         int cont = 0;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -575,16 +588,7 @@ public class GameManager {
                     meuMapa.put(Integer.parseInt(posicao), id);
                 }
             }
-            NodeList gameNodes = doc.getElementsByTagName("Jogo");
-            for (int i = 0; i < gameNodes.getLength(); i++) {
-                Node gameNode = gameNodes.item(i);
-                if (gameNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element foodElemet = (Element) gameNode;
-                    jogadorActual = Integer.parseInt(foodElemet.getElementsByTagName("JogadorActual").item(0).getTextContent());
-                    jogadas = Integer.parseInt(foodElemet.getElementsByTagName("TurnosJogados").item(0).getTextContent());
-                    setTamanhoMapa(Integer.parseInt(foodElemet.getElementsByTagName("TamanhoMapa").item(0).getTextContent()));
-                }
-            }
+            auxLoad(doc);
         } catch (ParserConfigurationException | IOException |
                  SAXException e) {
             return false;
