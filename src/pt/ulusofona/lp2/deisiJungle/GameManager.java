@@ -42,7 +42,7 @@ public class GameManager {
     ArrayList<Alimentos> minhasComidas = new ArrayList<>();
     HashMap<Integer, String> meuMapa = new HashMap<>();
     MovementResultCode energia = MovementResultCode.NO_ENERGY;
-    MovementResult energy = new MovementResult(energia, "");
+    MovementResult energy = new MovementResult(energia, null);
     MovementResultCode invalido = MovementResultCode.INVALID_MOVEMENT;
     MovementResult movimentoInvalido = new MovementResult(invalido, null);
     MovementResultCode comida = MovementResultCode.CAUGHT_FOOD;
@@ -419,6 +419,7 @@ public class GameManager {
                     return energy;
                 }
                 jogador.mover(nrSquares, getTamanhoMapa());
+                jogador.setContaDistancia(nrSquares);
                 for (Alimentos alimentos : minhasComidas) {
                     if (alimentos.getPosicaoNoMapa() == position) {
                         for (Map.Entry<Character, Alimentos> alimento : refeicoes().entrySet()) {
@@ -428,6 +429,7 @@ public class GameManager {
                                     return validMoviment;
                                 }
                                 jogador.setEnergiaActual(alimento.getValue().getEfeitoEnergia(jogador.getEspecies().getIdEspecie(), jogador.getEnergiaActual(), jogadas, nrSquares));
+                                jogador.setContaAlimentos(1);
                                 food = new MovementResult(comida, "Apanhou " + alimento.getValue().getNomeAlimento());
                                 mudancaTurno(meusJogadores);
                                 return food;
@@ -471,7 +473,7 @@ public class GameManager {
         int contador = 0;
         for (Player meusJogadore : meusJogadores) {
             contador++;
-            formato = "#" + contador + " " + meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getNome() + ", " + meusJogadore.getPosicaoActual();
+            formato = "#" + contador + " " + meusJogadore.getNome() + ", " + meusJogadore.getEspecies().getNome() + ", " + meusJogadore.getPosicaoActual() + ", " + meusJogadore.getContaDistancia() + ", " + meusJogadore.getContaAlimentos();
             resultadoPartida.add(formato);
         }
         return resultadoPartida;

@@ -7,6 +7,25 @@ public class Player {
     private int energiaActual;
     private Especies especies;
 
+    private int contaDistancia = 0;
+    private int contaAlimentos = 0;
+
+    public int getContaDistancia() {
+        return contaDistancia;
+    }
+
+    public void setContaDistancia(int nrSquare) {
+        contaDistancia += Math.abs(nrSquare);
+    }
+
+    public int getContaAlimentos() {
+        return contaAlimentos;
+    }
+
+    public void setContaAlimentos(int contaAlimentos) {
+        this.contaAlimentos += contaAlimentos;
+    }
+
     Player() {
     }
 

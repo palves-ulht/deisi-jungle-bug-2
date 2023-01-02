@@ -41,7 +41,7 @@ public class Cogumelos extends Alimentos {
 
     @Override
     public String getNomeAlimento() {
-        return nomeAlimento = "Cogumelo Magico";
+        return nomeAlimento = "Cogumelo magico";
     }
 
     @Override
