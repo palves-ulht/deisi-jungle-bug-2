@@ -431,6 +431,9 @@ public class GameManager {
                                 jogador.setEnergiaActual(alimento.getValue().getEfeitoEnergia(jogador.getEspecies().getIdEspecie(), jogador.getEnergiaActual(), jogadas, nrSquares));
                                 jogador.setContaAlimentos(1);
                                 food = new MovementResult(comida, "Apanhou " + alimento.getValue().getNomeAlimento());
+                                if (alimento.getValue().getIdentificador() == 'b') {
+                                    alimento.getValue().setContaBananas();
+                                }
                                 mudancaTurno(meusJogadores);
                                 return food;
                             }

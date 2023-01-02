@@ -7,6 +7,14 @@ public class Alimentos {
     protected int posicaoNoMapa;
     protected String info;
     protected int efeitoEnergia;
+    protected int contaBananas = 3;
+    public int getContaBananas() {
+        return contaBananas;
+    }
+
+    public void setContaBananas() {
+        this.contaBananas -= 1;
+    }
 
     Alimentos(char identificador, String nomeAlimento, String iconAlimento) {
         this.identificador = identificador;
