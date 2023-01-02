@@ -1,6 +1,8 @@
 package pt.ulusofona.lp2.deisiJungle;
 
-public class Passaro extends Especies{
+import java.util.ArrayList;
+
+public class Passaro extends Especies {
 
     Passaro(char id, String name, String image, String velocidade, int energia, int consumo, int ganho) {
         super(id, name, image);
@@ -9,11 +11,25 @@ public class Passaro extends Especies{
         this.consumoEnergia = consumo;
         this.ganhoEnergia = ganho;
     }
-Passaro(){}
+
+    Passaro() {
+    }
+
     @Override
     public char getIdEspecie() {
         idEspecie = 'P';
         return idEspecie;
+    }
+
+    @Override
+    public ArrayList<Integer> getVelocidadesPermitidas() {
+        velocidadesPermitidas = new ArrayList<>();
+        velocidadesPermitidas.add(5);
+        velocidadesPermitidas.add(6);
+        velocidadesPermitidas.add(0);
+        velocidadesPermitidas.add(-5);
+        velocidadesPermitidas.add(-6);
+        return velocidadesPermitidas;
     }
 
     @Override

@@ -433,9 +433,18 @@ public class GameManager {
         if (!bypassValidations) {
             if (nrSquares >= -6 && nrSquares <= 6) {
                 for (Player jogador : meusJogadores) {
+                    if (!jogador.getEspecies().getVelocidadesPermitidas().contains(nrSquares)) {
+                        return movimentoInvalido;
+                    }
                     if (jogador.getIdentificador() == getJogadorActual()) {
+                        int energiaNecessaria;
                         int position = jogador.getPosicaoActual() + nrSquares;
-                        if (jogador.getEnergiaActual() <= 0) {
+                        if (nrSquares < 0) {
+                            energiaNecessaria = (-1) * nrSquares * jogador.getEspecies().getConsumoEnergia();
+                        } else {
+                            energiaNecessaria = nrSquares * jogador.getEspecies().getConsumoEnergia();
+                        }
+                        if (jogador.getEnergiaActual() < energiaNecessaria) {
                             return energy;
                         }
                         jogador.mover(nrSquares, getTamanhoMapa());

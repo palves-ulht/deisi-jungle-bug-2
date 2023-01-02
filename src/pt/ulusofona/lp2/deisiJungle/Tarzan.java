@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.deisiJungle;
 
+import java.util.ArrayList;
+
 public class Tarzan extends Especies {
 
     Tarzan(char id, String name, String image,String velocidade, int energia, int consumo, int ganho) {
@@ -9,13 +11,20 @@ public class Tarzan extends Especies {
         this.consumoEnergia = consumo;
         this.ganhoEnergia = ganho;
     }
-Tarzan(){}
+    Tarzan(){}
     @Override
     public char getIdEspecie() {
         idEspecie = 'Z';
         return idEspecie;
     }
-
+    @Override
+    public ArrayList<Integer> getVelocidadesPermitidas() {
+        velocidadesPermitidas = new ArrayList<>();
+        for (int x = -6; x <= 6; x++) {
+            velocidadesPermitidas.add(x);
+        }
+        return velocidadesPermitidas;
+    }
     @Override
     public String getNome() {
         nome = "Tarzan";

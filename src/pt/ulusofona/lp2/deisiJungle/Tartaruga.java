@@ -1,6 +1,8 @@
 package pt.ulusofona.lp2.deisiJungle;
 
-public class Tartaruga extends Especies{
+import java.util.ArrayList;
+
+public class Tartaruga extends Especies {
 
     Tartaruga(char id, String name, String image, String velocidade, int energia, int consumo, int ganho) {
         super(id, name, image);
@@ -9,7 +11,10 @@ public class Tartaruga extends Especies{
         this.consumoEnergia = consumo;
         this.ganhoEnergia = ganho;
     }
-Tartaruga(){}
+
+    Tartaruga() {
+    }
+
     @Override
     public char getIdEspecie() {
         idEspecie = 'T';
@@ -20,6 +25,15 @@ Tartaruga(){}
     public String getNome() {
         nome = "Tartaruga";
         return nome;
+    }
+
+    @Override
+    public ArrayList<Integer> getVelocidadesPermitidas() {
+        velocidadesPermitidas = new ArrayList<>();
+        for (int x = -3; x <= 3; x++) {
+            velocidadesPermitidas.add(x);
+        }
+        return velocidadesPermitidas;
     }
 
     @Override

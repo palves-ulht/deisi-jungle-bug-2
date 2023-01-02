@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.deisiJungle;
 
+import java.util.ArrayList;
+
 public class Especies {
     protected char idEspecie;
     protected String nome;
@@ -9,6 +11,11 @@ public class Especies {
     protected int ganhoEnergia;
     protected String velocidade;
 
+    protected ArrayList<Integer> velocidadesPermitidas;
+
+    public ArrayList<Integer> getVelocidadesPermitidas() {
+        return velocidadesPermitidas;
+    }
     Especies(char id, String name, String image) {
         this.idEspecie = id;
         this.nome = name;

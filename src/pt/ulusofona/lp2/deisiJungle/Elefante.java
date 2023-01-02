@@ -1,5 +1,7 @@
 package pt.ulusofona.lp2.deisiJungle;
 
+import java.util.ArrayList;
+
 public class Elefante extends Especies {
     Elefante(char id, String name, String image) {
         super(id, name, image);
@@ -7,10 +9,20 @@ public class Elefante extends Especies {
 
     Elefante() {
     }
+
     @Override
     public char getIdEspecie() {
         idEspecie = 'E';
         return idEspecie;
+    }
+
+    @Override
+    public ArrayList<Integer> getVelocidadesPermitidas() {
+        velocidadesPermitidas = new ArrayList<>();
+        for (int x = -6; x <= 6; x++) {
+            velocidadesPermitidas.add(x);
+        }
+        return velocidadesPermitidas;
     }
 
     @Override
