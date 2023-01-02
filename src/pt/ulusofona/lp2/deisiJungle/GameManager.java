@@ -435,7 +435,7 @@ public class GameManager {
                 for (Player jogador : meusJogadores) {
                     if (jogador.getIdentificador() == getJogadorActual()) {
                         int position = jogador.getPosicaoActual() + nrSquares;
-                        if (jogador.getEnergiaActual() < nrSquares) {
+                        if (jogador.getEnergiaActual() <= 0) {
                             return energy;
                         }
                         jogador.mover(nrSquares, getTamanhoMapa());
