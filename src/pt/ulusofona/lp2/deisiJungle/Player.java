@@ -69,5 +69,8 @@ public class Player {
         } else {
             setEnergiaActual(getEnergiaActual() + getEspecies().getGanhoEnergia());
         }
+        if(getEnergiaActual() >= 200){
+            setEnergiaActual(200);
+        }
     }
 }

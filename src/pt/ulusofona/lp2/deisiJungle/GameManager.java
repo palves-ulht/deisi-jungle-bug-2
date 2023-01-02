@@ -15,7 +15,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameManager {
     private int tamanhoMapa;
@@ -548,7 +551,6 @@ public class GameManager {
         }
         return true;
     }
-
 
     public boolean loadGame(File file) {
         int cont = 0;
