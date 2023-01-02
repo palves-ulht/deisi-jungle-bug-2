@@ -50,6 +50,7 @@ public class Player {
         this.especies = especies;
     }
 
+
     public void mover(int nrSquares, int tamanhoMapa) {
         int position = getPosicaoActual() + nrSquares;
         if (nrSquares > 0) {
