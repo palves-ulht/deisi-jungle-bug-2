@@ -396,11 +396,26 @@ public class GameManager {
         setJogadorActual(contador);
     }
 
-    public MovementResult movimento2(int nrSquares) {
+    public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
+        meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
+        if (!bypassValidations && (nrSquares < -6 || nrSquares > 6)) {
+            mudancaTurno(meusJogadores);
+            return movimentoInvalido;
+        }
         for (Player jogador : meusJogadores) {
-            int position = jogador.getPosicaoActual() + nrSquares;
             if (jogador.getIdentificador() == getJogadorActual()) {
-                if (jogador.getEnergiaActual() < nrSquares) {
+                if (!jogador.getEspecies().getVelocidadesPermitidas().contains(nrSquares) && !bypassValidations) {
+                    mudancaTurno(meusJogadores);
+                    return movimentoInvalido;
+                }
+                int energiaNecessaria;
+                int position = jogador.getPosicaoActual() + nrSquares;
+                if (nrSquares < 0) {
+                    energiaNecessaria = (-1) * nrSquares * jogador.getEspecies().getConsumoEnergia();
+                } else {
+                    energiaNecessaria = nrSquares * jogador.getEspecies().getConsumoEnergia();
+                }
+                if (jogador.getEnergiaActual() < energiaNecessaria) {
                     return energy;
                 }
                 jogador.mover(nrSquares, getTamanhoMapa());
@@ -420,63 +435,10 @@ public class GameManager {
                         }
                     }
                 }
-                mudancaTurno(meusJogadores);
-                return validMoviment;
             }
         }
         mudancaTurno(meusJogadores);
-        return movimentoInvalido;
-    }
-
-    public MovementResult moveCurrentPlayer(int nrSquares, boolean bypassValidations) {
-        meusJogadores.sort(Comparator.comparing(Player::getIdentificador));
-        if (!bypassValidations) {
-            if (nrSquares >= -6 && nrSquares <= 6) {
-                for (Player jogador : meusJogadores) {
-                    if (!jogador.getEspecies().getVelocidadesPermitidas().contains(nrSquares)) {
-                        return movimentoInvalido;
-                    }
-                    if (jogador.getIdentificador() == getJogadorActual()) {
-                        int energiaNecessaria;
-                        int position = jogador.getPosicaoActual() + nrSquares;
-                        if (nrSquares < 0) {
-                            energiaNecessaria = (-1) * nrSquares * jogador.getEspecies().getConsumoEnergia();
-                        } else {
-                            energiaNecessaria = nrSquares * jogador.getEspecies().getConsumoEnergia();
-                        }
-                        if (jogador.getEnergiaActual() < energiaNecessaria) {
-                            return energy;
-                        }
-                        jogador.mover(nrSquares, getTamanhoMapa());
-                        for (Alimentos alimentos : minhasComidas) {
-                            if (alimentos.getPosicaoNoMapa() == position) {
-                                for (Map.Entry<Character, Alimentos> alimento : refeicoes().entrySet()) {
-                                    if (alimento.getValue().getIdentificador() == alimentos.getIdentificador()) {
-                                        if (alimento.getKey() == 'c' && (jogador.getEspecies().getIdEspecie() == 'E')) {
-                                            mudancaTurno(meusJogadores);
-                                            return validMoviment;
-                                        }
-                                        jogador.setEnergiaActual(alimento.getValue().getEfeitoEnergia(jogador.getEspecies().getIdEspecie(), jogador.getEnergiaActual(), jogadas, nrSquares));
-                                        food = new MovementResult(comida, "Apanhou " + alimento.getValue().getNomeAlimento());
-                                        mudancaTurno(meusJogadores);
-                                        return food;
-                                    }
-                                }
-                            }
-                        }
-                        mudancaTurno(meusJogadores);
-                        return validMoviment;
-                    }
-                }
-            } else {
-                mudancaTurno(meusJogadores);
-                return movimentoInvalido;
-            }
-        } else {
-            return movimento2(nrSquares);
-        }
-        mudancaTurno(meusJogadores);
-        return movimentoInvalido;
+        return validMoviment;
     }
 
     public String[] getWinnerInfo() {

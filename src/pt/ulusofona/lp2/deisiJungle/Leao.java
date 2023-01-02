@@ -37,12 +37,14 @@ public class Leao extends Especies {
     @Override
     public ArrayList<Integer> getVelocidadesPermitidas() {
         velocidadesPermitidas = new ArrayList<>();
-        for (int x = -6; x <= -4; x++) {
-            velocidadesPermitidas.add(x);
-        }
+        velocidadesPermitidas.add(-4);
+        velocidadesPermitidas.add(-5);
+        velocidadesPermitidas.add(-6);
         velocidadesPermitidas.add(0);
+        velocidadesPermitidas.add(4);
         velocidadesPermitidas.add(5);
         velocidadesPermitidas.add(6);
+
         return velocidadesPermitidas;
     }
 

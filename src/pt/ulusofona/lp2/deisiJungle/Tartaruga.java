@@ -30,9 +30,14 @@ public class Tartaruga extends Especies {
     @Override
     public ArrayList<Integer> getVelocidadesPermitidas() {
         velocidadesPermitidas = new ArrayList<>();
-        for (int x = -3; x <= 3; x++) {
-            velocidadesPermitidas.add(x);
-        }
+        velocidadesPermitidas.add(-3);
+        velocidadesPermitidas.add(-2);
+        velocidadesPermitidas.add(-1);
+        velocidadesPermitidas.add(0);
+        velocidadesPermitidas.add(3);
+        velocidadesPermitidas.add(2);
+        velocidadesPermitidas.add(1);
+
         return velocidadesPermitidas;
     }
 

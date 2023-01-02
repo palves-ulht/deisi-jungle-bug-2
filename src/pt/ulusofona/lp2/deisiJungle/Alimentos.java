@@ -6,13 +6,14 @@ public class Alimentos {
     protected String iconAlimento;
     protected int posicaoNoMapa;
     protected String info;
-
     protected int efeitoEnergia;
+
     Alimentos(char identificador, String nomeAlimento, String iconAlimento) {
         this.identificador = identificador;
         this.nomeAlimento = nomeAlimento;
         this.iconAlimento = iconAlimento;
     }
+
     public int getEfeitoEnergia(char especie, int energia, int jogadas, int nrSquare) {
         return efeitoEnergia;
     }
@@ -63,7 +64,4 @@ public class Alimentos {
     public void setIconAlimento(String iconAlimento) {
         this.iconAlimento = iconAlimento;
     }
-
-
-
 }

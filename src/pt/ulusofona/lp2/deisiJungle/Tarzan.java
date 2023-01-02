@@ -4,27 +4,43 @@ import java.util.ArrayList;
 
 public class Tarzan extends Especies {
 
-    Tarzan(char id, String name, String image,String velocidade, int energia, int consumo, int ganho) {
+    Tarzan(char id, String name, String image, String velocidade, int energia, int consumo, int ganho) {
         super(id, name, image);
         this.velocidade = velocidade;
         this.energiaInicial = energia;
         this.consumoEnergia = consumo;
         this.ganhoEnergia = ganho;
     }
-    Tarzan(){}
+
+    Tarzan() {
+    }
+
     @Override
     public char getIdEspecie() {
         idEspecie = 'Z';
         return idEspecie;
     }
+
     @Override
     public ArrayList<Integer> getVelocidadesPermitidas() {
         velocidadesPermitidas = new ArrayList<>();
-        for (int x = -6; x <= 6; x++) {
-            velocidadesPermitidas.add(x);
-        }
+        velocidadesPermitidas.add(-6);
+        velocidadesPermitidas.add(-5);
+        velocidadesPermitidas.add(-4);
+        velocidadesPermitidas.add(-3);
+        velocidadesPermitidas.add(-2);
+        velocidadesPermitidas.add(-1);
+        velocidadesPermitidas.add(0);
+        velocidadesPermitidas.add(1);
+        velocidadesPermitidas.add(2);
+        velocidadesPermitidas.add(3);
+        velocidadesPermitidas.add(4);
+        velocidadesPermitidas.add(5);
+        velocidadesPermitidas.add(6);
+
         return velocidadesPermitidas;
     }
+
     @Override
     public String getNome() {
         nome = "Tarzan";
