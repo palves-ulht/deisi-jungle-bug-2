@@ -1,7 +1,7 @@
 package pt.ulusofona.lp2.deisiJungle;
 
 public class Carne extends Alimentos {
-    
+
     @Override
     public String getInfo(int jogadas) {
         if (jogadas > 12) {
@@ -39,7 +39,7 @@ public class Carne extends Alimentos {
     }
 
     @Override
-    public int getEfeitoEnergia(char especie, int energia, int jogadas,int nrSquare) {
+    public int getEfeitoEnergia(char especie, int energia, int jogadas, int nrSquare) {
         if (jogadas <= 12) {
             if (especie == 'L' || especie == 'Z' || especie == 'P' || especie == 'T') {
                 energia += 50;
@@ -50,6 +50,10 @@ public class Carne extends Alimentos {
                 energia /= 2;
                 return energia;
             }
+        }
+
+        if (energia >= 200) {
+            energia = 200;
         }
         return energia;
     }

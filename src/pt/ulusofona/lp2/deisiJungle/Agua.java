@@ -13,7 +13,7 @@ public class Agua extends Alimentos {
 
     @Override
     public int getPosicaoNoMapa() {
-        return super.getPosicaoNoMapa();
+        return posicaoNoMapa;
     }
 
     @Override
@@ -22,6 +22,10 @@ public class Agua extends Alimentos {
             energia = energia + 15;
         } else {
             energia = (int) (energia + energia * 0.2);
+        }
+
+        if (energia >= 200) {
+            energia = 200;
         }
         return energia;
     }

@@ -41,7 +41,7 @@ public class Cogumelos extends Alimentos {
 
     @Override
     public String getNomeAlimento() {
-        return nomeAlimento = "Cogumelo Magico";
+        return nomeAlimento = "Cogumelo magico";
     }
 
     @Override
@@ -51,12 +51,18 @@ public class Cogumelos extends Alimentos {
             double percentagem = (double) getCogumelos() / 100;
             energia *= percentagem;
             aux += energia;
+            if (aux >= 200) {
+                aux = 200;
+            }
             return aux;
         } else {
             int aux = energia;
             double percentagem = (double) getCogumelos() / 100;
             energia *= percentagem;
             aux -= energia;
+            if (aux >= 200) {
+                aux = 200;
+            }
             return aux;
         }
     }

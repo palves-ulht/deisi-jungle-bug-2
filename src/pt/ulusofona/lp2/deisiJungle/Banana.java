@@ -49,6 +49,9 @@ public class Banana extends Alimentos {
         if (getContaBananas() > 0) {
             energia = energia + 40;
             setContaBananas();
+            if (energia >= 200) {
+                energia = 200;
+            }
             return energia;
         }
         return energia;
