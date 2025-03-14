@@ -1,86 +1,93 @@
 # Bug
 
-Quando um animal calha numa casa com bananas, deveria consumir uma banana e deixar 2. Quando se passa a tooltip diz que são 3
-à mesma. Depois de resolver, decrementa todas as casas com bananas.
+Ver issue 1
 
 ## Metodologia
 
-Criar um ficheiro bananas.txt que tenha bananas nas primeiras casas para facilitar o teste
+### Reproduzir o bug
 
-Vamos primeiro tentar adivinhar onde está o erro.
-Meti breakpoint na linha 434 do GameManager e fiz watch ao contaBananas e reduziu (pelo vistos não é aqui)
-De onde é que a tooltip obtém informação? Do getSqaureInfo(), vou meter breakpoint aqui. Ops, mas é complicado
-pois isso é chamado para cada quadrado e várias vezes.
-Posso meter um conditional breakpoint (squarenr == 3)
-Verifica que o problema parece estar em haver apenas uma representação de banana mas há 3 casas com bananas.
+Configurar o projeto de forma a arrancar o visualizador e conseguir reproduzir o que acontece no vídeo do issue 1.
 
-Vou retestar com apenas 1 banana.
+### Rastrear a execução (colocar "sondas")
 
-O problema mantém-se mas apenas com 1 banana (nota: arranjar o cenário mais simples possível que reproduza o problema)
+Para descobrirmos que funções são chamadas pelo visualizador, temos que colocar "sondas" na API.
 
-Está na altura de criar um teste unitário. Criei um teste unitário:
+Vamos colocar printlns em todas as funções "public" da classe GameManager (dica: usar o atalho do Intellij soutm seguido de tab)
+
+### Automatizar
+
+Acrescentar um teste unitário à classe TestGameManager que reproduza o bug.
+
+Para reproduzir o bug, o teste deve carregar o ficheiro de jogo 'bananas.txt', verificar a tooltip das 2 casas com bananas (getSquareInfo()),
+movimentar o jogador para a casa 3 (moveCurrentPlayer()) e voltar a verificar a tooltip das 2 casas com bananas.
+
 ```
 @Test
 public void comerBanana() {
     GameManager gm = new GameManager();
     gm.loadGame(new File("bananas.txt"));
 
-    System.out.println("Quantas bananas? " + gm.getSquareInfo(3)[1]);
+    assertEquals("Bananas : ? : + 40 energia", gm.getSquareInfo(...)[1]);
+    assertEquals(..., gm.getSquareInfo(...)[1]);
 
-    assertEquals(MovementResultCode.CAUGHT_FOOD, gm.moveCurrentPlayer(2, false).code());
+    // apanhou comida?
+    assertEquals(MovementResultCode.???, gm.moveCurrentPlayer(2, false).code());
 
-    System.out.println("Quantas bananas? " + gm.getSquareInfo(3)[1]);
-}
-```
-O problema verifica-se.
-
-Desconfio que o objeto afetado pelo moveCurrentPlayer é diferente do objeto que é retornado pelo getSquareInfo.
-Meto um sout dos respetivos objetos e confirmo que são diferentes.
-Mas vêem ambos do método refeicoes(). Vou ver o que se passa no refeicoes().
-
-Acho que descobri: o refeicoes() está sempre a fazer put() de um objeto novo. O map devia ser inicializado noutro lado
-e o refeicoes() apenas o lia. Ok, vou inicializá-lo no reset() e retornar apenas o meusAlimentos no refeicoes().
-Já está ok. (devo mudar os printlns do teste para assertEquals)
-
-Mas será que terminámos? Funciona para várias casas com banana? Vamos testar.
-```
-@Test
-public void comerBanana() {
-    GameManager gm = new GameManager();
-    gm.loadGame(new File("bananas.txt"));
-
-    System.out.println("Quantas bananas na pos 3? " + gm.getSquareInfo(3)[1]);
-    System.out.println("Quantas bananas na pos 4? " + gm.getSquareInfo(4)[1]);
-
-    assertEquals(MovementResultCode.CAUGHT_FOOD, gm.moveCurrentPlayer(2, false).code());
-
-    System.out.println("Quantas bananas na pos 3? " + gm.getSquareInfo(3)[1]);
-    System.out.println("Quantas bananas na pos 4? " + gm.getSquareInfo(4)[1]);
+    assertEquals(..., gm.getSquareInfo(...)[1]);
+    assertEquals(..., gm.getSquareInfo(...)[1]);
 }
 ```
 
-ops... são ambas afetadas.
+### Rastrear a execução
 
+#### Passo 1
 
-####
+Vamos agora correr em debug com um breakpoint na linha do `moveCurrentPlayer` até chegarmos a esta parte:
+```
+food = new MovementResult(comida, "Apanhou " + alimento.getValue().getNomeAlimento());
+if (alimento.getValue().getIdentificador() == 'b') {
+    alimento.getValue().setContaBananas();
+}
+```
+Verificamos que, estranhamente, o alimento atualizou bem a sua variável contaBananas.
 
-No reset() pus isto:
+#### Passo 2
+
+O objeto alimento afetado pelo moveCurrentPlayer é o mesmo que é retornado pelo getSquareInfo?
+
+Vamos colocar esta linha após as linhas do passo 1:
 ```
-meusAlimentos.put('a', new Agua());
-meusAlimentos.put('b', new Banana());
-meusAlimentos.put('c', new Carne());
-meusAlimentos.put('m', new Cogumelos());
-meusAlimentos.put('e', new Erva());
+System.out.println("alimento (moveCurrentPlayer) = " + alimento);
 ```
-No refeicoes() pus isto:
+
+E vamos colocar as linhas entre inicio e fim no getSquareInfo:
 ```
-public HashMap<Character, Alimentos> refeicoes() {
-        meusAlimentos.put('a', new Agua());
-        meusAlimentos.put('b', new Banana());
-        meusAlimentos.put('c', new Carne());
-        meusAlimentos.put('m', new Cogumelos());
-        meusAlimentos.put('e', new Erva());
-        return meusAlimentos;
+for (Map.Entry<Character, Alimentos> alimento : refeicoes().entrySet()) {
+    if (String.valueOf(alimento.getValue().getIdentificador()).equals(meuMapa.get(squareNr))) {
+        // início
+        if (squareNr == 3) {
+            System.out.println("alimento (getSquareInfo) = " + alimento);
+        }
+        // fim
+        arrayRetornar[0] = alimento.getValue().getIconAlimento();
+        arrayRetornar[1] = alimento.getValue().getInfo(jogadas);
     }
+}
 ```
+
+Ao correr o teste, apercebemo-nos que o objeto Banana é sempre diferente. Devia ser o mesmo...
+
+#### Passo 3
+
+De onde vem esse objeto? É criado no método refeicoes(). De cada vez que chamamos o refeicoes(), são colocados novos objetos
+no hashmap. Isso só devia ser feito uma vez. Vamos mudar o método reset() para inicializar o hashmap e o método refeicoes() para apenas retornar o hashmap.
+
+Corremos novamente o teste e já deve passar o assert que falhava antes. No entanto, falha no assert seguinte. Aparentemente, 
+já diminui a quantidade de bananas mas afeta as 2 casas.
+
+Faz sentido pois já vimos que o hashmap guarda um único objeto.
+
+#### Passo 4
+
+Fica como exercício alterar o programa para que existam objetos "banana" diferentes consoante a casa onde estão.
 
