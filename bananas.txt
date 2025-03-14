@@ -1,0 +1,7 @@
+<Elementos>
+<Players><Id>1</Id><Nome>dasd</Nome><PositionMapa>1</PositionMapa><Energy>180</Energy><iD_Especie>E</iD_Especie></Players>
+<Players><Id>2</Id><Nome>asd</Nome><PositionMapa>1</PositionMapa><Energy>180</Energy><iD_Especie>E</iD_Especie></Players>
+<Comidas><Id>b</Id><Nome>Bananas</Nome><Icone>bananas.png</Icone><PositionMapa>3</PositionMapa></Comidas>
+<Comidas><Id>b</Id><Nome>Bananas</Nome><Icone>bananas.png</Icone><PositionMapa>4</PositionMapa></Comidas>
+<Jogo><JogadorActual>1</JogadorActual><TurnosJogados>0</TurnosJogados><TamanhoMapa>47</TamanhoMapa></Jogo>
+</Elementos>
